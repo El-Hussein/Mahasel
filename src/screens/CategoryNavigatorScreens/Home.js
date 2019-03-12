@@ -21,16 +21,16 @@ import {
 } from 'react-native-responsive-screen';
 import Header from '../../components/Header';
 
-import market1 from '../../assets/images/market1.jpg';
-import market2 from '../../assets/images/market2.jpg';
-import market3 from '../../assets/images/market3.jpg';
-import market4 from '../../assets/images/market4.jpg';
-import market5 from '../../assets/images/market5.jpg';
-import market6 from '../../assets/images/market6.jpg';
-import market7 from '../../assets/images/market7.jpg';
-import market8 from '../../assets/images/market8.jpg';
-import market9 from '../../assets/images/market9.jpg';
-import BG from '../../assets/images/bg.jpg';
+// import market1 from '../../assets/images/market1.jpg';
+// import market2 from '../../assets/images/market2.jpg';
+// import market3 from '../../assets/images/market3.jpg';
+// import market4 from '../../assets/images/market4.jpg';
+// import market5 from '../../assets/images/market5.jpg';
+// import market6 from '../../assets/images/market6.jpg';
+// import market7 from '../../assets/images/market7.jpg';
+// import market8 from '../../assets/images/market8.jpg';
+// import market9 from '../../assets/images/market9.jpg';
+// import BG from '../../assets/images/bg.jpg';
 
 // const Slider = props => ( <View style={[styles.imageContainer, {alignItems:'center', justifyContent:'center', marginTop:10,}]}>
 //         <Image style={{height:hp('14.8%'), width:wp('99%')}} source={props.uri} resizeMode="contain"/>

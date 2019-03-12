@@ -3,10 +3,9 @@
 
 import { createStackNavigator } from 'react-navigation';
 
-import Home from '../pages/Home';
-import SubCategory from '../pages/SubCategory';
-import Products from '../pages/Products';
-import Product from '../pages/Product';
+import Home from '../screens/CategoryNavigatorScreens/Home';
+import Products from '../screens/CategoryNavigatorScreens/Products';
+import Product from '../screens/CategoryNavigatorScreens/Product';
 
 
 export default CategoryNavigator = createStackNavigator(
@@ -15,12 +14,6 @@ export default CategoryNavigator = createStackNavigator(
             screen: Home,
             navigationOption:{
                 title:"Home", 
-            }
-        },
-        SubCategory: {
-            screen: SubCategory,
-            navigationOption:{
-                title:"SubCategory", 
             }
         },
         Product: {

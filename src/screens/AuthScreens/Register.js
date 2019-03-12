@@ -17,12 +17,12 @@ import {
     removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import PhotoUpload from 'react-native-photo-upload'
+// import PhotoUpload from 'react-native-photo-upload'
 
 import Header from '../../components/Header';
 
-import BG from '../../assets/images/bg.png';
-import BGM from '../../assets/images/bg1.png';
+// import BG from '../../assets/images/bg.png';
+// import BGM from '../../assets/images/bg1.png';
 
 class Register extends Component{
 
@@ -156,7 +156,7 @@ class Register extends Component{
                         </View>
     
                         {/* image upload */}
-                        <View style={[styles.inputBorderMerchent, {backgroundColor:'#3FA9FD'}]} >
+                        {/* <View style={[styles.inputBorderMerchent, {backgroundColor:'#3FA9FD'}]} >
                             <PhotoUpload    
                             onPhotoSelect={avatar => {
                                 if (avatar) {
@@ -169,7 +169,7 @@ class Register extends Component{
                                 <Icon name="camera" size={wp('5%')} color="white"/>
                             </View>
                             </PhotoUpload>
-                        </View>
+                        </View> */}
 
                         <View style={styles.inputBorderMerchent} >
                             <TextInput

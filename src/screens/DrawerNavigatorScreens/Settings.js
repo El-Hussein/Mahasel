@@ -17,9 +17,9 @@ import {
   heightPercentageToDP as hp,
 } from 'react-native-responsive-screen';
 import localization from '../../localization/localization';
-import BG from '../../assets/images/bg.png';
-
 import Header from '../../components/Header';
+
+// import BG from '../../assets/images/bg.png';
 
 class Settings extends Component{
 

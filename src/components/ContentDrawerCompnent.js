@@ -17,8 +17,8 @@ import {
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import DrawerBG from '../assets/images/drawerBG.png';
-import ProfileDefault from '../assets/images/ProfileDefault.png';
+// import DrawerBG from '../assets/images/drawerBG.png';
+// import ProfileDefault from '../assets/images/ProfileDefault.png';
 import localization from '../localization/localization';
 
 class Artboard3 extends Component{

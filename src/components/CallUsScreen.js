@@ -15,14 +15,14 @@ class CallUsScreen extends Component{
     render(){
         return(
             <ImageBackground
-                source={require('../images/callUsBackground.png')}
+                source={require('../assets/images/callUsBackground.png')}
                 style={styles.backgroundImageStyle}
             >
                 <View style={styles.container}>
               
                     <View style={styles.logoView}>
                         <Image
-                            source={require('../images/registerLogo.png')}
+                            source={require('../assets/images/registerLogo.png')}
                             style={styles.logo}
                         />
                     </View>

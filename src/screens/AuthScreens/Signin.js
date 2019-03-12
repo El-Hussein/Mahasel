@@ -19,7 +19,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import Header from '../../components/Header';
 
-import BG from '../../assets/images/bg.png';
+// import BG from '../../assets/images/bg.png';
 
 class Signin extends Component{
 

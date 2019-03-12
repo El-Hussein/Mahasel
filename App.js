@@ -17,17 +17,6 @@ const NavigationApp = StackNavigator({
 })
   
 const store = configureStore()
-import MainNav from './src/screensNavigatior/MainNav';
-import CallUsScreen from './src/components/CallUsScreen';
-import FruitListScreen from './src/components/FruitListScreen';
-import ListItemScreen from './src/components/ListItemScreen';
-import LoginScreen from './src/components/LoginScreen';
-import LogoutScreen from './src/components/LogoutScreen';
-import MainScreen from './src/components/MainScreen';
-import PersonalScreen from './src/components/PersonalScreen';
-import RegisterScreen from './src/components/RegisterScreen';
-import SettingScreen from './src/components/SettingScreen';
-import TermsScreen from './src/components/TermsScreen';
 export default class App extends Component {
 
   render() {

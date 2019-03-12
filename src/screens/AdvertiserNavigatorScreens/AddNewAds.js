@@ -22,22 +22,22 @@ import {
 } from 'react-native-responsive-screen';
 import localization from '../../localization/localization';
 import Header from '../../components/Header';
-import MapView from 'react-native-maps';
+// import MapView from 'react-native-maps';
 
-import BG from '../../assets/images/bg.png';
-import BGM from '../../assets/images/bg1.png';
-import cat1_image from '../../assets/images/product.jpg';
-import cat2_image from '../../assets/images/can.jpeg';
-import cat3_image from '../../assets/images/joh.png';
-import cat4_image from '../../assets/images/van.jpeg';
-import plus from '../../assets/images/plus.png';
-import minus from '../../assets/images/minus.png';
-import del from '../../assets/images/del.png';
+// import BG from '../../assets/images/bg.png';
+// import BGM from '../../assets/images/bg1.png';
+// import cat1_image from '../../assets/images/product.jpg';
+// import cat2_image from '../../assets/images/can.jpeg';
+// import cat3_image from '../../assets/images/joh.png';
+// import cat4_image from '../../assets/images/van.jpeg';
+// import plus from '../../assets/images/plus.png';
+// import minus from '../../assets/images/minus.png';
+// import del from '../../assets/images/del.png';
 
-// const Slider = props => ( <View style={[styles.imageContainer, {alignItems:'center', justifyContent:'center', marginTop:10,}]}>
-//         <Image style={{height:hp('14.8%'), width:wp('99%')}} source={props.uri} resizeMode="contain"/>
-//     </View>
-// )
+const Slider = props => ( <View style={[styles.imageContainer, {alignItems:'center', justifyContent:'center', marginTop:10,}]}>
+        <Image style={{height:hp('14.8%'), width:wp('99%')}} source={props.uri} resizeMode="contain"/>
+    </View>
+)
 
 class ClientOrdersFinal extends Component{
 
@@ -120,13 +120,6 @@ class ClientOrdersFinal extends Component{
                 <Text style={{textAlign:'left', color:'#514947', fontWeight:'bold', width:wp('30%'), textAlign:'center', fontSize:wp('5%')}}>25</Text>        
               </View>
               
-              <View style={styles.container}>
-                <MapView
-                  region={this.state.region}
-                  onRegionChange={this.onRegionChange}
-                  style={styles.map}
-                />
-              </View>
 
               <View style={{flexDirection:'row', marginHorizontal:wp('10%'), justifyContent:'space-between', alignItems:'center'}}>
                 <TouchableOpacity style={{backgroundColor:'#ED1B24', width:wp('30%'), alignSelf:'auto', padding:wp('2%'), borderRadius:wp('3%'), justifyContent:'center', alignItems:'center'}}>

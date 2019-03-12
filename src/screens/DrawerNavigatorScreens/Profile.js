@@ -24,9 +24,9 @@ import {
 import localization from '../../localization/localization';
 import Header from '../../components/Header';
 
-import cat1_image from '../../assets/images/product.jpg';
-import plus from '../../assets/images/plus.png';
-import minus from '../../assets/images/minus.png';
+// import cat1_image from '../../assets/images/product.jpg';
+// import plus from '../../assets/images/plus.png';
+// import minus from '../../assets/images/minus.png';
 
 // const Slider = props => ( <View style={[styles.imageContainer, {alignItems:'center', justifyContent:'center', marginTop:10,}]}>
 //         <Image style={{height:hp('14.8%'), width:wp('99%')}} source={props.uri} resizeMode="contain"/>
