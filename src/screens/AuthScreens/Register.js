@@ -6,9 +6,7 @@ import {
     Image,
     TextInput,
     TouchableOpacity,
-    StyleSheet,
-    I18nManager,
-    Picker,
+    StyleSheet
 } from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -17,276 +15,177 @@ import {
     removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-// import PhotoUpload from 'react-native-photo-upload'
 
 import Header from '../../components/Header';
+import localization from '../../localization/localization';
 
-// import BG from '../../assets/images/bg.png';
-// import BGM from '../../assets/images/bg1.png';
+import BG from '../../assets/images/bg.png';
+import Logo from '../../assets/images/registerLogo.png';
+import Name from '../../assets/images/user.png';
+import Email from '../../assets/images/email.png';
+import Country from '../../assets/images/country.png';
+import City from '../../assets/images/city.png';
+import Phone from '../../assets/images/phone.png';
+import Lock from '../../assets/images/lock.png';
+import ButtonBG from '../../assets/images/buttonBG.png';
 
-class Register extends Component{
+class Artboard2 extends Component{
 
     constructor(props) {
-        super()    
-
-        this.state={
-            userType:'customer',
-        }
+         super()
     }
     render () {
-        if(this.state.userType==='customer'){
-        return (
-            <View style={{backgroundColor:'white'}}>
-                <Image source={BG}  style={{width:wp('100'), height:hp('75%'), zIndex:-1, position:'absolute' }}/>
+         return (
+            <ImageBackground source={BG}  style={styles.pageBG}>
                 {/* HEADER */}
-                <Header/>
+                <Header title={localization.signIn} backScreen="SignIn"/>
                 
                 
-                <View style={{backgroundColor:'#3FA9FD', flexDirection:'row', justifyContent:'flex-start', paddingHorizontal:wp('5%'), height:hp('4.5%'), alignItems:'center'}}>
-                    <TouchableOpacity onPress={()=>this.props.navigation.goBack()}>
-                    <Icon name={I18nManager.isRTL?'arrow-right':'arrow-left'} size={wp('5%')} color="white"/>
-                    </TouchableOpacity>
-                    <Text style={{color:'white', fontSize:wp('4.5%'), marginHorizontal:wp('1%')}}> {localization.RegisterClient} </Text>
+                <View style={{justifyContent:'center', alignItems:'center'}}>
+                    <Image source={Logo} style={styles.logo}/>
                 </View>
 
-                <View style={{margin:wp('18%')}}>
+                <View style={{marginHorizontal:wp('10%')}}>
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
-                            placeholder={localization.registerUsername}
+                            placeholder={localization.userName}
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="username"
-                            placeholderTextColor="#87CBFC"
+                            placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                         />
-                        <Icon name="user" size={wp('5%')} color="#87CBFC"/>
+                        <Image source={Name} style={styles.image4_5}/>
                     </View>
-
-                    
 
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
-                            placeholder={localization.registerPhone}
+                            placeholder={localization.email}
+                            autoCorrect={false}
+                            returnKeyType="next"
+                            ref="email"
+                            placeholderTextColor="#A3A3A3"
+                            underlineColorAndroid="transparent"
+                        />
+                        <Image source={Email} style={styles.image4_5}/>
+                    </View>
+                    
+                    <View style={styles.inputBorder} >
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={localization.country}
+                            autoCorrect={false}
+                            returnKeyType="next"
+                            ref="country"
+                            placeholderTextColor="#A3A3A3"
+                            underlineColorAndroid="transparent"
+                        />
+                        <Image source={Country} style={styles.image4_5}/>
+                    </View>
+
+                    <View style={styles.inputBorder} >
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={localization.city}
+                            autoCorrect={false}
+                            returnKeyType="next"
+                            ref="city"
+                            placeholderTextColor="#A3A3A3"
+                            underlineColorAndroid="transparent"
+                        />
+                        <Image source={City} style={styles.image4_5}/>
+                    </View>
+
+                    <View style={styles.inputBorder} >
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={localization.address}
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="phone"
-                            placeholderTextColor="#87CBFC"
+                            placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                         />
-                        <Icon name="phone" size={wp('5%')} color="#87CBFC"/>
+                        <Image source={Phone} style={styles.image4_5}/>
                     </View>
 
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
-                            placeholder={localization.registerPassword}
+                            placeholder={localization.phoneNumber}
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="password"
-                            placeholderTextColor="#87CBFC"
+                            placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                         />
-                        <Icon name="lock" size={wp('5%')} color="#87CBFC"/>
+                        <Image source={Lock} style={styles.image4_5}/>
                     </View>
 
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
-                            placeholder={localization.registerReEnterPassword}
+                            placeholder={localization.password}
                             autoCorrect={false}
                             returnKeyType="next"
-                            ref="password-confirmation"
-                            placeholderTextColor="#87CBFC"
+                            ref="passwordConfirm"
+                            placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                         />
-                        <Icon name="lock" size={wp('5%')} color="#87CBFC"/>
+                        <Image source={Lock} style={styles.image4_5}/>
                     </View>
 
-                    <View style={styles.inputBorder} >
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder={localization.registerAddress}
-                            autoCorrect={false}
-                            returnKeyType="next"
-                            ref="address"
-                            placeholderTextColor="#87CBFC"
-                            underlineColorAndroid="transparent"
-                        />
-                        <Icon name="globe" size={wp('5%')} color="#87CBFC"/>
-                    </View>
-
-                    <View style={{justifyContent:'center', alignItems:'center', marginTop:hp('15%')}}>
-                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('Signin')} style={{justifyContent:'center', alignItems:'center', width:wp('30%'), height:hp('5%'), backgroundColor:'#2196F3', borderRadius:wp('5%'), borderColor:'rgba(255,255,255,0.4)', borderWidth:wp('0.2%')}}>
-                            <Text style={styles.buttonText}> {localization.signup} </Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
-
-            </View>
-        )
-        }else if(this.state.userType==='merchent'){
-            return (
-                <View style={{backgroundColor:'white'}}>
-                    <Image source={BGM}  style={{width:wp('100'), height:hp('75%'), zIndex:-1, position:'absolute' }}/>
-                    {/* HEADER */}
-                    <Header/>
-                    
-                    
-                    <View style={{backgroundColor:'#3FA9FD', flexDirection:'row', justifyContent:'flex-start', paddingHorizontal:wp('5%'), height:hp('4.5%'), alignItems:'center'}}>
-                        <TouchableOpacity onPress={()=>this.props.navigation.goBack()}>
-                        <Icon name={I18nManager.isRTL?'arrow-right':'arrow-left'} size={wp('5%')} color="white"/>
-                        </TouchableOpacity>
-                        <Text style={{color:'white', fontSize:wp('4.5%'), marginHorizontal:wp('1%')}}> {localization.RegisterMerchent} </Text>
-                    </View>
-    
-                    <View style={{margin:wp('18%')}}>
-                        <View style={styles.inputBorderMerchent} >
-                            <TextInput
-                                style={styles.textInputMerchent}
-                                placeholder={localization.registerMerchentname}
-                                autoCorrect={false}
-                                returnKeyType="next"
-                                ref="username"
-                                placeholderTextColor="#87CBFC"
-                                underlineColorAndroid="transparent"
-                            />
-                            <Icon name="user" size={wp('5%')} color="#87CBFC"/>
-                        </View>
-    
-                        {/* image upload */}
-                        {/* <View style={[styles.inputBorderMerchent, {backgroundColor:'#3FA9FD'}]} >
-                            <PhotoUpload    
-                            onPhotoSelect={avatar => {
-                                if (avatar) {
-                                console.log('Image base64 string: ', avatar)
-                                }
-                            }}
-                            >
-                            <View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}>
-                                <Text style={[styles.textInput, {textAlignVertical:'center', color:'white'}]}> {localization.registerMerchentPhoto} </Text>
-                                <Icon name="camera" size={wp('5%')} color="white"/>
+                    <View style={{justifyContent:'flex-start', alignItems:'center'}}>
+                        <TouchableOpacity style={{justifyContent:'center', alignItems:'center', width:wp('40%'), height:hp('7%')}}>
+                            <Image source={ButtonBG} style={{width:wp('40%'), height:hp('7%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>
+                            <View>
+                                <Text style={styles.buttonText}> {localization.next} </Text>
                             </View>
-                            </PhotoUpload>
-                        </View> */}
-
-                        <View style={styles.inputBorderMerchent} >
-                            <TextInput
-                                style={styles.textInputMerchent}
-                                placeholder={localization.registerWorkingHours}
-                                autoCorrect={false}
-                                returnKeyType="next"
-                                ref="WorkingHours"
-                                placeholderTextColor="#87CBFC"
-                                underlineColorAndroid="transparent"
-                            />
-                            <Icon name="alarm-clock" size={wp('5%')} color="#87CBFC"/>
-                        </View>
-
-                        <View style={styles.inputBorderMerchent} >
-                            <TextInput
-                                style={styles.textInputMerchent}
-                                placeholder={localization.registerPhone}
-                                autoCorrect={false}
-                                returnKeyType="next"
-                                ref="phone"
-                                placeholderTextColor="#87CBFC"
-                                underlineColorAndroid="transparent"
-                            />
-                            <Icon name="phone" size={wp('5%')} color="#87CBFC"/>
-                        </View>
-    
-                        <View style={styles.inputBorderMerchent} >
-                            <TextInput
-                                style={styles.textInputMerchent}
-                                placeholder={localization.registerPassword}
-                                autoCorrect={false}
-                                returnKeyType="next"
-                                ref="password"
-                                placeholderTextColor="#87CBFC"
-                                underlineColorAndroid="transparent"
-                            />
-                            <Icon name="lock" size={wp('5%')} color="#87CBFC"/>
-                        </View>
-    
-                        <View style={styles.inputBorderMerchent} >
-                            <TextInput
-                                style={styles.textInputMerchent}
-                                placeholder={localization.registerReEnterPassword}
-                                autoCorrect={false}
-                                returnKeyType="next"
-                                ref="password-confirmation"
-                                placeholderTextColor="#87CBFC"
-                                underlineColorAndroid="transparent"
-                            />
-                            <Icon name="lock" size={wp('5%')} color="#87CBFC"/>
-                        </View>
-    
-                        <View style={styles.inputBorderMerchent} >
-                            <TextInput
-                                style={styles.textInputMerchent}
-                                placeholder={localization.registerAddress}
-                                autoCorrect={false}
-                                returnKeyType="next"
-                                ref="address"
-                                placeholderTextColor="#87CBFC"
-                                underlineColorAndroid="transparent"
-                            />
-                            <Icon name="globe" size={wp('5%')} color="#87CBFC"/>
-                        </View>
-    
-                        <View style={{justifyContent:'center', alignItems:'center', marginTop:hp('4%')}}>
-                            <TouchableOpacity onPress={()=>this.props.navigation.navigate('Signin')} style={{justifyContent:'center', alignItems:'center', alignSelf:'auto', height:hp('5%'), backgroundColor:'#2196F3', borderRadius:wp('5%'), borderColor:'rgba(255,255,255,0.4)', borderWidth:wp('0.2%'), paddingHorizontal:wp('2%')}}>
-                                <Text style={styles.buttonText}> {localization.agreeToConds} </Text>
-                            </TouchableOpacity>
-                        </View>
+                        </TouchableOpacity>
                     </View>
-    
                 </View>
-            )
-            }
+
+            </ImageBackground>
+         )
     }
 }
 
-export default Register
+export default Artboard2
 
 const styles = StyleSheet.create({
+    
+    image4_5:{
+        width:wp('4.5%'), 
+        height:wp('4.5%'), 
+        resizeMode:'contain'
+    },
+    logo:{
+        width:wp('25%'), 
+        height:hp('15%'), 
+        margin:wp('3%'),
+        resizeMode:'contain'
+    },
     inputBorder:{
-        backgroundColor:'#D3E9FE', 
+        backgroundColor:'rgba(255, 255, 255, 0.8)', 
         flexDirection:'row', 
         justifyContent:'center', 
         alignItems:'center', 
+        borderWidth:wp('0.2%'), 
         borderRadius:wp('4%'), 
+        borderColor:'#538805', 
         marginBottom:hp('1.5%'), 
+        paddingHorizontal:wp('2%')
     },
     textInput:{
-        width:wp('55%'), 
+        width:wp('70%'), 
         padding:0, 
-        height:hp('5.5%'), 
+        height:hp('5.8%'), 
         paddingHorizontal:wp('2%'), 
         fontSize:wp('4%'), 
         fontWeight:'600', 
-        color:'#87CBFC',
-        textAlign:'center',
-    },
-    inputBorderMerchent:{
-        backgroundColor:'#EAF4FD', 
-        flexDirection:'row', 
-        justifyContent:'center', 
-        alignItems:'center', 
-        borderRadius:wp('4%'), 
-        marginBottom:hp('1.5%'), 
-    },
-    textInputMerchent:{
-        width:wp('55%'), 
-        padding:0, 
-        height:hp('5%'), 
-        paddingHorizontal:wp('2%'), 
-        fontSize:wp('4%'), 
-        fontWeight:'600', 
-        color:'#87CBFC',
-        textAlign:'center',
+        color:'#A3A3A3'
     },
     buttonText:{
         color:'white', 
@@ -294,4 +193,8 @@ const styles = StyleSheet.create({
         fontSize:wp('4.5%'), 
         fontWeight:'600'
     },
+    pageBG:{
+        flex: 1,
+        resizeMode: 'stretch',
+    }
 });

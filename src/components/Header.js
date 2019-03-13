@@ -23,11 +23,11 @@ class Header extends React.Component {
         return (
             <View style={styles.header}>
                 <TouchableOpacity style={{position:'absolute', left:wp('4%')}} onPress={()=>this.props.navigation.dispatch(NavigationActions.back())}>
-                    <Icon name={!I18nManager.isRTL?"arrow-left":"arrow-right"} color="white" size={wp('7%')}/>
+                    <Icon name={!I18nManager.isRTL?"arrow-left":"arrow-right"} color="#538805" size={wp('7%')}/>
                 </TouchableOpacity>
-                <Text style={{fontSize:wp('5%'), fontWeight:'bold', textAlign:'right', color:'#47196B'}}> {this.props.headerTitle} </Text>
+                <Text style={{fontSize:wp('5%'), fontWeight:'bold', textAlign:'right', color:'#538805', paddingRight:wp('2%')}}> {this.props.title} </Text>
                 <TouchableOpacity  style={{position:'relative', right:wp('0%')}} onPress={()=>this.props.navigation.toggleDrawer()}>
-                    <Icon name="bars" color="white" size={wp('7%')}/>
+                    <Icon name="bars" color="#538805" size={wp('7%')}/>
                 </TouchableOpacity>
             </View>
         )
@@ -41,7 +41,7 @@ export default withNavigation(Header);
 const styles = StyleSheet.create({
     header:{
         height:hp('7%'),
-        backgroundColor:"#F89526",
+        backgroundColor:"#B7E212",
         justifyContent:'flex-end',
         alignItems:'center',
         padding:wp('5%'),

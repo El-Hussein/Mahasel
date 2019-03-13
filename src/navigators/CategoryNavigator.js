@@ -16,16 +16,16 @@ export default CategoryNavigator = createStackNavigator(
                 title:"Home", 
             }
         },
-        Product: {
-            screen: Product,
-            navigationOption:{
-                title:"Product", 
-            }
-        },
         Products: {
             screen: Products,
             navigationOption:{
                 title:"Products", 
+            }
+        },
+        Product: {
+            screen: Product,
+            navigationOption:{
+                title:"Product", 
             }
         },
     },

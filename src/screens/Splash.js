@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {
     ImageBackground,
-    Text,
+    Image,
 } from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -10,7 +10,8 @@ import {
     removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 
-import Splash from '../assets/images/splash.png';
+import Splash from '../assets/images/splashBG.png';
+import logo from '../assets/images/splashLogo.png';
 
 class SplashScreen1 extends Component{
 
@@ -25,6 +26,7 @@ class SplashScreen1 extends Component{
                 height: null,
                 resizeMode: 'contain',
               }}>
+              <Image source={logo} style={{width:wp('100%'), height:hp('100%')}}/>
             </ImageBackground>
          )
     }
