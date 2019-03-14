@@ -20,6 +20,10 @@ import Splash from './src/screens/Splash';
 import Register from './src/screens/AuthScreens/Register';
 import Signin from './src/screens/AuthScreens/Signin';
 
+import Home from './src/screens/CategoryNavigatorScreens/Home';
+import Products from './src/screens/CategoryNavigatorScreens/Products';
+import Product from './src/screens/CategoryNavigatorScreens/Product';
+
 const NavigationApp = StackNavigator({
     HomeScreen: { screen: HomeScreen }
 })
@@ -51,8 +55,13 @@ export default class App extends Component {
       <Provider store={store}>
           {this.state.rootPage}
       </Provider>
+
       // <Signin />
-      // // <Register />
+      // <Register />
+
+      // <Product />
+      // <Products />
+      // <Home />
     );
   }
 }

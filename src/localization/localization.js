@@ -59,7 +59,11 @@ export default localization = new LocalizedStrings({
         books:'Books',
         settings:'Settings',
         exit:'Exit',
-
+        fruits:'Fruits',
+        call:'Call',
+        share:'Share',
+        favourit:'Favourit',
+        orders:'orders'
 
     },
     ar: {
@@ -121,7 +125,11 @@ export default localization = new LocalizedStrings({
         books:'الحجوزات',
         settings:'الأعدادت',
         exit:'خروج',
-
+        fruits:'فواكه',
+        call:'اتصال',
+        share:'مشاركة',
+        favourit:'مفضلة',
+        orders:'الطلبات'
 
     }
 })
