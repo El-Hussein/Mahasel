@@ -81,6 +81,7 @@ export default class App extends Component {
     return (
       <Provider store={store}>
           {this.state.rootPage}
+          {/* <HomeScreen /> */}
       </Provider>
 
       // <Signin />
