@@ -16,12 +16,12 @@ import {
 } from 'react-native-responsive-screen';
 import Header from '../../components/Header';
 
-// import BG from '../../Imag/Artboard3/BG.png';
-// import Logo from '../../Imag/Artboard3/Logo.png';
-// import Name from '../../Imag/Artboard2/Name.png';
-// import Email from '../../Imag/Artboard2/Email.png';
-// import Phone from '../../Imag/Artboard2/Phone.png';
-// import ButtonBG from '../../Imag/Artboard1/ButtonBG.png';
+import BG from '../../assets/images/Artboard3/bg.png';
+import Logo from '../../assets/images/Artboard3/logo.png';
+import Name from '../../assets/images/Artboard3/profile.png';
+import Email from '../../assets/images/Artboard3/email.png';
+import Phone from '../../assets/images/Artboard3/phone.png';
+import ButtonBG from '../../assets/images/Artboard3/ButtonBG.png';
 
 class Artboard3 extends Component{
 
@@ -35,9 +35,9 @@ class Artboard3 extends Component{
                 {/* HEADER */}
                 <Header title="أتصل بنا" backScreen="Home" drawer={true}/>
                 
-                
+                <Image source={Logo} style={{position:'absolute', width:wp('100%'), height:hp('100%')}}/>
 
-                <View style={{marginHorizontal:wp('10%')}}>
+                <View style={{marginHorizontal:wp('10%'), marginTop:hp('24%')}}>
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
@@ -48,7 +48,7 @@ class Artboard3 extends Component{
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                         />
-                        {/* <Image source={Name} style={styles.image4_5}/> */}
+                        <Image source={Name} style={styles.image4_5}/>
                     </View>
 
                     <View style={styles.inputBorder} >
@@ -61,7 +61,7 @@ class Artboard3 extends Component{
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                         />
-                        {/* <Image source={Phone} style={styles.image4_5}/> */}
+                        <Image source={Phone} style={styles.image4_5}/>
                     </View>
 
                     <View style={[styles.inputBorder, {alignItems: "flex-start"}]} >
@@ -76,12 +76,12 @@ class Artboard3 extends Component{
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                         />
-                        {/* <Image source={Email} style={[styles.image4_5, {marginTop:wp('2%')}]}/> */}
+                        <Image source={Email} style={[styles.image4_5, {marginTop:wp('2%')}]}/>
                     </View>
 
                     <View style={{justifyContent:'center', alignItems:'center'}}>
-                        <TouchableOpacity style={{justifyContent:'center', alignItems:'center', width:wp('30%'), height:hp('10%')}}>
-                            <Image source={ButtonBG} style={{width:wp('30%'), height:hp('10%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>
+                        <TouchableOpacity style={{justifyContent:'center', alignItems:'center', width:wp('38%'), height:hp('10%')}}>
+                            <Image source={ButtonBG} style={{width:wp('38%'), height:hp('10%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>
                             <View>
                                 <Text style={styles.buttonText}> ارسال </Text>
                             </View>
@@ -136,9 +136,9 @@ const styles = StyleSheet.create({
         flexDirection:'row', 
         justifyContent:'center', 
         alignItems:'center', 
-        borderWidth:wp('0.3%'), 
+        borderWidth:wp('0.2%'), 
         borderRadius:wp('4%'), 
-        borderColor:'#C8AF88', 
+        borderColor:'green', 
         marginBottom:hp('1%'), 
         paddingHorizontal:wp('2%')
     },

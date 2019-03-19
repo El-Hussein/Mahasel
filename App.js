@@ -24,6 +24,10 @@ import Home from './src/screens/CategoryNavigatorScreens/Home';
 import Products from './src/screens/CategoryNavigatorScreens/Products';
 import Product from './src/screens/CategoryNavigatorScreens/Product';
 
+import AddNewAds from './src/screens/AdvertiserNavigatorScreens/AddNewAds';
+import AdvertiserAds from './src/screens/AdvertiserNavigatorScreens/AdvertiserAds';
+
+
 const NavigationApp = StackNavigator({
     HomeScreen: { screen: HomeScreen }
 })
@@ -49,7 +53,30 @@ export default class App extends Component {
     }else if(this.state.language=='en'){
       I18nManager.forceRTL(false);
     }
+    
   }
+
+  async setData(){
+    return await AsyncStorage.setItem('user', JSON.stringify({name:'hussein', age:23})).then((data)=>{
+      console.warn('inserted successfully, ' + data)
+      // async storage should take strings not objects as a paramaters
+    }).catch((error)=>{
+      console.warn('ERROR SET: ' + error)
+    });
+  }
+
+  async getData(){
+    return await AsyncStorage.getItem('usern').then((data)=>{
+      if(data)
+        console.warn('retrieved successfully, ' + JSON.parse(data).name)
+        // update state and use JSON.parse to convert string to object
+      else 
+        console.warn('ERROR: not found')
+    }).catch((error)=>{
+      console.warn('ERROR GET: ' + error)
+    });
+  }
+
   render() {
     return (
       <Provider store={store}>
@@ -62,6 +89,9 @@ export default class App extends Component {
       // <Product />
       // <Products />
       // <Home />
+
+      // <AddNewAds />
+      // <AdvertiserAds />
     );
   }
 }

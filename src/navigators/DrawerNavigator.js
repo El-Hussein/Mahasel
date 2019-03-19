@@ -9,9 +9,9 @@ import {
 import {I18nManager} from 'react-native';
 
 import CategoryNavigator from './CategoryNavigator';
+import AdsNavigator from './AdsNavigator';
 import Profile from '../screens/DrawerNavigatorScreens/Profile';
 import Orders from '../screens/DrawerNavigatorScreens/Orders';
-import Settings from '../screens/DrawerNavigatorScreens/Settings';
 import Conditions from '../screens/DrawerNavigatorScreens/Conditions';
 import Call_Us from '../screens/DrawerNavigatorScreens/Call_Us';
 
@@ -37,10 +37,10 @@ export default RootNavigator = createDrawerNavigator(
                 title:"Orders", 
             }
         },
-        Settings: {
-            screen: Settings,
+        myAds: {
+            screen: AdsNavigator,
             navigationOption:{
-                title:"Settings", 
+                title:"myAds", 
             }
         },
         Call_Us: {

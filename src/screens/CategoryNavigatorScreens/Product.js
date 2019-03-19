@@ -30,6 +30,7 @@ class ListItemScreen extends Component {
     render() {
         const item = { image: require('../../assets/images/item1.png'), cat: 'مانجو', qun: '3 كيلو', price: '35.00 ريال', date: '15 يناير 2019', discription: ' مانجو انتاج مزارعنا تم زراعته طبقا لشروط و المواصفات العالميه ' };
         return (
+            <View style={{backgroundColor:'white', flex:1}}>
             <View>
                 {/* HEADER */}
                 <Header title={localization.fruits} backScreen="SignIn"/>
@@ -63,6 +64,7 @@ class ListItemScreen extends Component {
                     </TouchableOpacity>
 
                 </View>
+            </View>
             </View>
         )
     }
@@ -119,7 +121,7 @@ const styles = StyleSheet.create({
       flexDirection:'row',
       justifyContent:'center', 
       alignItems:'center',
-      width:wp('24%'),
+      width:wp('25%'),
       backgroundColor:'#EC4100',
       padding:wp('1.5%'),
       borderRadius:wp('3%')

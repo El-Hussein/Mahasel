@@ -8,6 +8,7 @@ import {
     TouchableOpacity,
     StyleSheet,
     TextInput,
+    I18nManager,
 } from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -36,10 +37,10 @@ class Artboard3 extends Component{
             list:[
                 {name:localization.home, icon:home, active:true, link:'Home'},
                 {name:localization.profile, icon:profile, active:false, link:'Profile'},
-                {name:localization.orders, icon:orders, active:false, link:'MyCart'},
+                {name:localization.orders, icon:orders, active:false, link:'Orders'},
                 {name:localization.callUs, icon:callus, active:false, link:'Call_Us'},
                 {name:localization.termsConditions, icon:terms, active:false, link:'Conditions'},
-                {name:localization.settings, icon:settings, active:false, link:'Signin'},
+                {name:localization.myAds, icon:callus, active:false, link:'myAds'},
                 {name:localization.exit, icon:logout, active:false, link:'Exit'},
             ],
             userType:'customer',
@@ -48,8 +49,8 @@ class Artboard3 extends Component{
 
     render () {
          return (
-            <ImageBackground source={DrawerBG}  style={{height:hp('100%'), width:wp('100%'), backgroundColor:'red'}}>
-            
+            <View>
+                <Image source={DrawerBG}  style={[{height:hp('100%'), width:wp('100%'), backgroundColor:'red', position:'absolute', zIndex:-1}, I18nManager.isRTL? {left:0}:{right:0} ]}/>
                 <View style={{height:hp('34.5%'), width:wp('85%'), justifyContent:'center', alignItems:'center'}}>
                     <Image source={ProfileDefault} style={{width:wp('18%'), borderWidth:wp('0.8%'), borderColor:'white', height:wp('18%'), borderRadius:wp('9%'), backgroundColor:'red', marginBottom:wp('1%')}}/>
                     <Text style={{fontWeight:'bold', fontSize:wp('4.2%'), color:'white'}}> محمد عبدالله إبراهيم </Text>
@@ -77,8 +78,8 @@ class Artboard3 extends Component{
                                 this.props.navigation.navigate(item.link)
                             }
                         }} style={[{justifyContent:'center', flexDirection:'row', alignItems:'center', height:hp('7.5%'), width:wp('85%')}, activeStyle.AC]}>
+                            <Text style={{fontWeight:'bold', fontSize:wp('4.5%'), color:'black', textAlign:'right', width:wp('70%')}}> {item.name} </Text>
                             <Image source={item.icon} style={{marginRight:wp('2%'), width:wp('5%'), resizeMode:'contain', height:wp('5%')}}/>
-                            <Text style={{fontWeight:'bold', fontSize:wp('4.5%'), color:'black', textAlign:'left', width:wp('70%')}}> {item.name} </Text>
                         </TouchableOpacity>
                         )
                     }
@@ -87,7 +88,7 @@ class Artboard3 extends Component{
                     />
                 </View>
 
-            </ImageBackground>
+            </View>
          )
     }
 }

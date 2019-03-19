@@ -63,7 +63,14 @@ export default localization = new LocalizedStrings({
         call:'Call',
         share:'Share',
         favourit:'Favourit',
-        orders:'orders'
+        orders:'orders',
+        description:'description',
+        category:'category',
+        addImage:'Add Image',
+        delete:'delete',
+        myAds:'My Ads',
+        addNewAds:'New Ads'
+
 
     },
     ar: {
@@ -129,7 +136,14 @@ export default localization = new LocalizedStrings({
         call:'اتصال',
         share:'مشاركة',
         favourit:'مفضلة',
-        orders:'الطلبات'
+        orders:'الطلبات',
+        description:'الوصف',
+        category:'الفئة',
+        addImage:'اضف صوره',
+        delete:'مسح',
+        myAds:'اعلاناتي',
+        addNewAds:'أضف اعلان'
+
 
     }
 })

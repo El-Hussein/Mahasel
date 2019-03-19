@@ -16,8 +16,9 @@ import {
 } from 'react-native-responsive-screen';
 import Header from '../../components/Header';
 
-// import BG from '../../Imag/Artboard4/BG.png';
-// import ButtonBG from '../../Imag/Artboard1/ButtonBG.png';
+import BG from '../../assets/images/Artboard4/bg.png';
+import Logo from '../../assets/images/Artboard4/logo.png';
+import ButtonBG from '../../assets/images/Artboard3/ButtonBG.png';
 
 class Artboard4 extends Component{
 
@@ -32,17 +33,20 @@ class Artboard4 extends Component{
                 {/* HEADER */}
                 <Header title="الشروط والأحكام" backScreen="Home" drawer={true}/>
                 
+                <View style={{justifyContent:'center', alignItems:'center', marginVertical:hp('1%')}}>
+                    <Image source={Logo} style={{width:wp('25%'), height:hp('16%'), resizeMode:'contain'}}/>
+                </View>
 
-                <View style={{marginHorizontal:wp('10%'), marginVertical:wp('15%')}}>
+                <View style={{marginHorizontal:wp('10%')}}>
 
                     <View style={[styles.inputBorder, {height:hp('55%')}]} >
                         
                     </View>
 
-                    <View style={{justifyContent:'center', alignItems:'center', marginTop:hp('8%')}}>
-                    <TouchableOpacity style={{justifyContent:'center', alignItems:'center', width:wp('30%'), height:hp('10%')}}>
-                            {/* <Image source={ButtonBG} style={{width:wp('30%'), height:hp('10%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/> */}
-                                <View>
+                    <View style={{justifyContent:'center', alignItems:'center'}}>
+                    <TouchableOpacity style={{justifyContent:'center', alignItems:'center', width:wp('38%'), height:hp('10%')}}>
+                            <Image source={ButtonBG} style={{width:wp('38%'), height:hp('10%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>
+                            <View>
                                 <Text style={styles.buttonText}> موافق </Text>
                             </View>
                         </TouchableOpacity>

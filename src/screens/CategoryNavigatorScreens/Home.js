@@ -8,6 +8,7 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
+  I18nManager
 } from 'react-native'
 import {
   widthPercentageToDP as wp,
@@ -53,7 +54,7 @@ class MainScreen extends Component {
                 <Header title={localization.home} backScreen="SignIn"/>
                 
                 <ScrollView>
-                    <Image source={headImage} style={{ width: wp('100%'), height: hp('40%')}} />
+                    <Image source={headImage} style={{ width: wp('100%'), height: hp('42%')}} />
 
                     <FlatList 
                         data={this.state.data}
@@ -65,7 +66,7 @@ class MainScreen extends Component {
                                       <Image source={item.image} style={{ width: wp('84%'), height:hp('22%'), }}/>
 
                                       <View style={styles.catView}>
-                                          <Text style={styles.catTextStyle}>{item.cat}</Text>
+                                          <Text style={[styles.catTextStyle, !I18nManager.isRTL?{borderTopLeftRadius: wp('1%'), borderBottomLeftRadius: wp('1%') }:{borderTopRightRadius: wp('1%'), borderBottomRightRadius: wp('1%') }]}>{item.cat}</Text>
                                       </View>
                                     </TouchableOpacity>
                                 </View>
@@ -86,9 +87,9 @@ const styles = StyleSheet.create({
     catView: {
         flex: 1,
         top: hp('5%'),
+        right: 0,
         position:'absolute',
         width:null,
-        alignSelf:'flex-end',
     },
     catTextStyle: {
         fontWeight: 'bold',
@@ -96,8 +97,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: wp('5%'),
         color: '#fff',
         backgroundColor: '#f24f09',
-        borderBottomLeftRadius: wp('1%'),
-        borderTopLeftRadius: wp('1%'),
+        
     }
 })
 

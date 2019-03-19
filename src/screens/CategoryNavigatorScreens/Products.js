@@ -52,7 +52,7 @@ class FruitListScreen extends Component {
     }
     render() {
         return (
-            <View>
+            <View style={{backgroundColor:'white'}}>
                 {/* HEADER */}
                 <Header title={localization.fruits} backScreen="SignIn"/>
                 
