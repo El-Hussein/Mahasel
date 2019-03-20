@@ -10,8 +10,15 @@ import {
 import localization from '../../localization/localization';
 import Header from '../../components/Header';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import {fetchProducts} from '../../actions/productsActions'
+
 
 class FruitListScreen extends Component {
+    componentDidMount(){
+        this.props.fetchProducts(this.props.navigation.category_id,)
+    }
     
     state = {
         data: [
@@ -26,7 +33,7 @@ class FruitListScreen extends Component {
 
     renderItem = ({ item }) => {
         return (
-            <TouchableOpacity style={{ marginVertical: hp('2%')}} onPress={() => this.props.navigation.navigate('Product', {'id':item.id})}>
+            <TouchableOpacity style={{ marginVertical: hp('2%')}} onPress={() => this.props.navigation.navigate('Products', {'category_id':item.id})}>
                 <View
                     style={{ flex: 1, borderWidth: wp('0.2%'), height: hp('20%'), marginHorizontal: 15, borderColor: 'red', borderRadius: 10 }}>
                     <View style={{ flexDirection: 'row' }}>
@@ -75,4 +82,17 @@ const styles = StyleSheet.create({
 
     }
 })
-export default FruitListScreen;
+
+function mapStateToProps(state) {
+    return {
+        products: state.products
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ...bindActionCreators({ fetchProducts }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(FruitListScreen);

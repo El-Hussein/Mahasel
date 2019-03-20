@@ -8,7 +8,8 @@ import {
   FlatList,
   ScrollView,
   TouchableOpacity,
-  I18nManager
+  I18nManager,
+  ActivityIndicator
 } from 'react-native'
 import {
   widthPercentageToDP as wp,
@@ -52,8 +53,8 @@ class Home extends Component {
 
     render(){
         const { categories, isFetching } = this.props.categories
-        alert(JSON.stringify(categories));
-        alert(isFetching);
+        // alert(JSON.stringify(categories));
+        // alert(isFetching);
         return(
             <ImageBackground
              source={main_background}
@@ -65,9 +66,11 @@ class Home extends Component {
                 <ScrollView>
                     <Image source={headImage} style={{ width: wp('100%'), height: hp('42%')}} />
 
+                    {isFetching? <ActivityIndicator size={50} color="green" /> 
+                        :
                     <FlatList 
-                        // data={this.state.data}
-                        data={categories}
+                         data={this.state.data}
+                        //data={categories}
                         renderItem={({item}) =>{
                             return(
 
@@ -86,7 +89,8 @@ class Home extends Component {
                         keyExtractor={item => toString(item.cat)}
                         // style={{height:hp('66%')}}
                         numColumns={1}
-                        /> 
+                    />
+                     }
                 </ScrollView>
             </ImageBackground>
         )

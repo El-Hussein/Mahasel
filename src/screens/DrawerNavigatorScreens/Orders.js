@@ -10,9 +10,20 @@ import {
 import localization from '../../localization/localization';
 import Header from '../../components/Header';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import {fetchOrders} from '../../actions/OrdersActions'
+
 import bg from '../../assets/images/bg2.png';
 
-class FruitListScreen extends Component {
+
+
+
+class Orders extends Component {
+
+    componentDidMount(){
+        this.props.fetchOrders()
+    }
     
     state = {
         data: [
@@ -74,4 +85,17 @@ const styles = StyleSheet.create({
 
     }
 })
-export default FruitListScreen;
+
+function mapStateToProps(state) {
+    return {
+        orders: state.orders
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ...bindActionCreators({ fetchOrders }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Orders);
