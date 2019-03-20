@@ -33,7 +33,7 @@ class FruitListScreen extends Component {
 
     renderItem = ({ item }) => {
         return (
-            <TouchableOpacity style={{ marginVertical: hp('2%')}} onPress={() => this.props.navigation.navigate('Products', {'category_id':item.id})}>
+            <TouchableOpacity style={{ marginVertical: hp('2%')}} onPress={() => this.props.navigation.navigate('Product', {item})}>
                 <View
                     style={{ flex: 1, borderWidth: wp('0.2%'), height: hp('20%'), marginHorizontal: 15, borderColor: 'red', borderRadius: 10 }}>
                     <View style={{ flexDirection: 'row' }}>
