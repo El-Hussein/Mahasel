@@ -17,6 +17,7 @@ import {
     removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import ImageResizer from 'react-native-image-resizer';
 import ImagePicker from 'react-native-image-picker'
 import PhotoUpload from 'react-native-photo-upload'
 import { bindActionCreators } from 'redux';
@@ -51,11 +52,11 @@ class Register extends Component{
             password:'',
             passwordConfirm:'',
             photo:null,
+            photoUpload:null,
             passwordConfirmError:null,
         }
         this.handleRegister = this.handleRegister.bind(this)
     }
-    
     handleRegister(){
         if(this.state.password !== this.state.passwordConfirm){
             this.setState({
@@ -73,9 +74,9 @@ class Register extends Component{
                 country:this.state.country,
                 adddress:this.state.adddress,
                 city:this.state.city,
-                photo:'data:image/png;base64,' + this.state.photo,
+                photo:this.state.photoUpload,
             }
-            // console.warn(data);
+            console.warn(this.state.photoUpload);
             this.props.register(data);
         }
     }
@@ -230,6 +231,18 @@ class Register extends Component{
                      <View style={{justifyContent:'center', alignItems:'center'}} >
                             <PhotoUpload    
                             onPhotoSelect={avatar => {
+                                ImageResizer.createResizedImage('data:image/png;base64,' + photo, 600, 400, "PNG", 100, 0, null).then((response) => {
+                                    console.warn(response)
+                                    this.setState({
+                                        photoUpload:response.uri
+                                    })
+                                    // response.uri is the URI of the new image that can now be displayed, uploaded...
+                                    // response.path is the path of the new image
+                                    // response.name is the name of the new image with the extension
+                                    // response.size is the size of the new image
+                                }).catch((err) => {
+                                    console.log(err)
+                                });
                                 if (avatar) {
                                     this.setState({
                                         photo:avatar
@@ -247,6 +260,7 @@ class Register extends Component{
                             </PhotoUpload>
                             <View style={{ alignItems: 'center', justifyContent: 'center'}}>
                                 {photo ? <Image
+                                    ref='photoUpload'
                                     source={{ uri: 'data:image/png;base64,' + photo }}
                                     style={{ width: wp('20%'), height: wp('20%'), marginBottom:hp('1%'), borderRadius:wp('10%'), borderWidth:wp('0.5%'), borderColor:'white' }}
                                 /> : null}
