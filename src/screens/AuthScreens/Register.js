@@ -55,6 +55,8 @@ class Register extends Component{
         }
         this.handleRegister = this.handleRegister.bind(this)
     }
+
+
     
     handleRegister(){
         if(this.state.password !== this.state.passwordConfirm){
@@ -65,6 +67,7 @@ class Register extends Component{
             this.setState({
                 passwordConfirmError:null
             })
+            
             data = {
                 name:this.state.username,
                 email:this.state.email,
@@ -73,12 +76,18 @@ class Register extends Component{
                 country:this.state.country,
                 adddress:this.state.adddress,
                 city:this.state.city,
-                photo:'data:image/png;base64,' + this.state.photo,
+                image:this.state.photo,
             }
+
+
             // console.warn(data);
             this.props.register(data);
+            console.log('did it arrived?')
         }
     }
+
+    
+    
 
     render () {
         const { photo } = this.state
@@ -228,7 +237,8 @@ class Register extends Component{
 
                      {/* image upload */}
                      <View style={{justifyContent:'center', alignItems:'center'}} >
-                            <PhotoUpload    
+                            <PhotoUpload  
+                            format="PNG"  
                             onPhotoSelect={avatar => {
                                 if (avatar) {
                                     this.setState({

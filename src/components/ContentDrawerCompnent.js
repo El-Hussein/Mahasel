@@ -41,17 +41,23 @@ class ContentDrawerComponent extends Component{
         super();
         this.state= {
             list:[
-                {name:localization.home, icon:home, active:true, link:'Home'},
-                {name:localization.profile, icon:profile, active:false, link:'Profile'},
-                {name:localization.orders, icon:orders, active:false, link:'Orders'},
-                {name:localization.callUs, icon:callus, active:false, link:'Call_Us'},
-                {name:localization.termsConditions, icon:terms, active:false, link:'Conditions'},
-                {name:localization.myAds, icon:callus, active:false, link:'myAds'},
-                {name:localization.exit, icon:logoutImage, active:false, link:'logout'},
+                {id:0,name:localization.home, icon:home, active:true, link:'Home'},
+                {id:1,name:localization.profile, icon:profile, active:false, link:'Profile'},
+                {id:2,name:localization.orders, icon:orders, active:false, link:'Orders'},
+                {id:3,name:localization.callUs, icon:callus, active:false, link:'Call_Us'},
+                {id:4,name:localization.termsConditions, icon:terms, active:false, link:'Conditions'},
+                {id:5,name:localization.myAds, icon:callus, active:false, link:'myAds'},
+                {id:6,name:localization.exit, icon:logoutImage, active:false, link:'logout'},
             ],
             userType:'customer',
             refresh:true,
         }
+    }
+
+    componentWillReceiveProps(){
+        this.setState({ 
+            refresh: this.props.auth.isLogingOut
+        })
     }
 
     render () {
@@ -89,6 +95,7 @@ class ContentDrawerComponent extends Component{
                     data={this.state.list}
                     extraData = {this.state}
                     renderItem={({item}) =>{
+                        console.log('updated?')
                         if(item.active){
                             activeStyle=StyleSheet.create({
                                 AC:{backgroundColor:'rgba(170,170,170,0.8)', borderTopWidth:wp('0.3%'), borderTopColor:'rgba(255,255,255,0.5)'}
@@ -98,26 +105,29 @@ class ContentDrawerComponent extends Component{
                                 AC:{}
                             });
                         }
-                        if(!user.token && item.link === 'logout') return;
+                        if(!this.props.auth.user.name && item.id === 6){
+                            console.log('shuold disappear')
+                            return;
+                        } 
                         return (
                         <TouchableOpacity disabled={item.active} onPress={()=>{
-                            if(item.link === 'logout'){
+                            if(item.id === 6){
                                 this.props.logout();
                                 this.setState({ 
-                                    refresh: !this.state.refresh
+                                    refresh: this.props.auth.isLogingOut
                                 })
                             }else {
                                 this.props.navigation.navigate(item.link);
                             }
                         }} style={[{justifyContent:'center', flexDirection:'row', alignItems:'center', height:hp('7.5%'), width:wp('85%')}, activeStyle.AC]}>
+                            {this.props.auth.isLogingOut && item.id==6?<ActivityIndicator style={{position:'absolute', left:0}}/>:null} 
                             <Text style={{fontWeight:'bold', fontSize:wp('4.5%'), color:'black', textAlign:'right', width:wp('70%')}}> {item.name} </Text>
-                            {/* {this.props.auth.logout?<ActivityIndicator/>:null}  */}
                             <Image source={item.icon} style={{marginRight:wp('2%'), width:wp('5%'), resizeMode:'contain', height:wp('5%')}}/>
                         </TouchableOpacity>
                         )
                     }
                     }
-                    keyExtractor={item => toString(item.name)}
+                    keyExtractor={item => toString(item.id)}
                     />
                 </View>
 

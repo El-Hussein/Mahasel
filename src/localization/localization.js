@@ -72,7 +72,8 @@ export default localization = new LocalizedStrings({
         addNewAds:'New Ads',
         confirmPassword:'confirm password',
         confirmPasswordError:'confirm password should match the password',
-        register:'Register'
+        register:'Register',
+        selectImage:'please select an Image'
 
 
 
@@ -149,7 +150,8 @@ export default localization = new LocalizedStrings({
         addNewAds:'أضف اعلان',
         confirmPassword:'تأكيد كلمة المرور',
         confirmPasswordError:"كلمة المرور غير متطابقة",
-        register:'تسجيل'
+        register:'تسجيل',
+        selectImage:'اختر صورة من فضلك'
 
 
 

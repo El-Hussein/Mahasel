@@ -12,9 +12,7 @@ import {
     LOGOUT_FAILED, 
 } from './constants';
 import axios from 'axios';
-import RNFetchBlob from 'rn-fetch-blob';
 import {AsyncStorage} from 'react-native';
-import localization from '../localization/localization';
 
 // register process
 export function register(data) {
@@ -22,33 +20,46 @@ export function register(data) {
     return (dispatch) => {
         dispatch(registerAttempt())
         var qs = require('qs');
-        console.log(data)
-        if(!data.image) return dispatch(registerFailure(localization.selectImage))
-        RNFetchBlob.fetch('POST', 'http://mahasel.feckrah.com/public/api/auth/register', 
-            {
-                // 'X-localization':'ar',
+        console.log(qs.stringify(data))
+        fetch('http://mahasel.feckrah.com/public/api/auth/register', {
+            method:'POST',
+            headers:{
                 'Content-Type': 'multipart/form-data',
-                'RNFB-Response':'utf8'
-            }, [
-                { name: 'name', data: data.name },
-                { name: 'email', data: data.email },
-                { name: 'phone', data: data.phone },
-                { name: 'password', data: data.password },
-                { name: 'image', filename: 'image.png', type: 'image/png', data: data.image },
-                ]).then((response) => response.json())
-        .then(function (response) {
-            if(response.value){
-                user = response.data;
-                saveUser(user)
-                return(dispatch(registerSuccess(user)))
-            }
-            else{
-                return(dispatch(registerFailure(response.msg)))
-            } 
-    
-            console.log(tempMSG);
-        })
-        .catch(err => console.log(err))
+                Accept: 'application/json',
+            },
+            // body:qs.stringify(data),
+            body:'name=hussein',
+        }).then((response) => response.json())
+            .then(function (response) {
+                console.log('Register API response: ' + JSON.stringify(response))
+                // console.log(response)
+                if(response.value){
+                    user = response.data;
+                    saveUser(user)
+                    return(dispatch(registerSuccess(user)))
+                }
+                else{
+                    console.log('data error')
+                    return(dispatch(registerFailure(response.msg)))
+                } 
+            })
+            .catch(err => {
+                console.log('Exception ERROR: ' + err)
+                dispatch(registerFailure(err))
+            })
+        // axios.post('http://mahasel.feckrah.com/public/api/auth/register', qs.stringify(data))
+        //     .then(function (response) {
+        //         console.log('Register API response: ' + JSON.stringify(response.data))
+        //         if(response.data.value){
+        //             user = response.data.data;
+        //             saveUser(user)
+        //             return(dispatch(registerSuccess(user)))
+        //         }
+        //         else{
+        //             return(dispatch(registerFailure(response.data.msg)))
+        //         } 
+        //     })
+        //     .catch(err => dispatch(registerFailure(err)))
     }
 }
 
@@ -136,12 +147,12 @@ export function logout() {
     
     return (dispatch) => {
         dispatch(logoutAttempt());
-        deleteUser(dispatch);
+        deleteUser();
     }
 }
 
-async function deleteUser(dispatch){
-    return await AsyncStorage.removeItem('user').then((data)=>{
+async function deleteUser(){
+    return await AsyncStorage.deleteItem('user').then((data)=>{
       console.log('user deleted successfully, ' + data)
       dispatch(logoutSuccess());
     }).catch((error)=>{
@@ -161,6 +172,7 @@ function logoutSuccess() {
 
     return {
         type: LOGOUT_SUCCESFULLY,
+        data
     }
 }
 

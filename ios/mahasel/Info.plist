@@ -75,8 +75,8 @@
 		<string>Zocial.ttf</string>
 	</array>
 	<key>NSPhotoLibraryUsageDescription</key>
-    <string>uploading and saving user images</string>
-    <key>NSCameraUsageDescription</key>
-    <string>uploading and saving user images</string>
+	<string>uploading and saving user images</string>
+	<key>NSCameraUsageDescription</key>
+	<string>uploading and saving user images</string>
 </dict>
 </plist>
