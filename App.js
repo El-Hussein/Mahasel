@@ -50,9 +50,9 @@ export default class App extends Component {
     )
     localization.setLanguage(this.state.language);
     if(this.state.language=='ar'){
-      I18nManager.forceRTL(true);
-    }else if(this.state.language=='en'){
       I18nManager.forceRTL(false);
+    }else if(this.state.language=='en'){
+      I18nManager.forceRTL(true);
     }
     
   }

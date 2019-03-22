@@ -7,7 +7,8 @@ import {
     TextInput,
     TouchableOpacity,
     StyleSheet,
-    PixelRatio
+    PixelRatio,
+    ActivityIndicator
 } from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -18,6 +19,10 @@ import {
 import Header from '../../components/Header';
 import localization from '../../localization/localization';
 
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { login } from '../../actions/authinticationActions';
+
 import BG from '../../assets/images/bg1.png';
 import Logo from '../../assets/images/logo.png';
 import Call from '../../assets/images/phone.png';
@@ -27,23 +32,41 @@ import ButtonBGS from '../../assets/images/buttonBGSolid.png';
 import Facebook from '../../assets/images/Facebook.png';
 import Twitter from '../../assets/images/Twitter.png';
 
-class Artboard1 extends Component{
-
+class Signin extends Component{
+ 
     constructor(props) {
-         super()
+        super()
+        this.handleSignIN = this.handleSignIN.bind(this);
+        this.state = {
+            phone:'',
+            password:'',
+        }
     }
-    render () {
-         return (
+
+    handleSignIN(){
+        data = {
+            email:this.state.phone,
+            password:this.state.password,
+        }
+        this.props.login(data);
+    }
+
+    render () {   
+        if(this.props.auth.user.token){
+            console.log('logged in successfully');
+            this.props.navigation.navigate('Home');
+        }   
+        return (
             <ImageBackground source={BG}  style={styles.pageBG}>
                 {/* HEADER */}
                 <Header title={localization.login}/>
-                
                 
                 <View style={{justifyContent:'center', alignItems:'center', padding:hp('2%')}}>
                     <Image source={Logo} style={styles.logo}/>
                 </View>
 
                 <View style={{marginHorizontal:wp('10%')}}>
+                    {this.props.auth.error?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{this.props.auth.error}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
@@ -53,6 +76,7 @@ class Artboard1 extends Component{
                             ref="phone"
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
+                            onChangeText={(phone) => this.setState({phone})}
                         />
                         <Image source={Call} style={styles.image4_5}/>
                     </View>
@@ -66,6 +90,7 @@ class Artboard1 extends Component{
                             ref="password"
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
+                            onChangeText={(password) => this.setState({password})}
                         />
                         <Image source={Lock} style={styles.image4_5}/>
                     </View>
@@ -74,10 +99,12 @@ class Artboard1 extends Component{
                     </TouchableOpacity>
 
                     <View style={{justifyContent:'center', alignItems:'center'}}>
-                        <TouchableOpacity style={{justifyContent:'center', alignItems:'center', width:wp('35%'), height:hp('10%')}}>
+                        <TouchableOpacity onPress={()=>{
+                            this.handleSignIN();
+                        }} style={{justifyContent:'center', alignItems:'center', width:wp('35%'), height:hp('10%')}}>
                             <Image source={ButtonBG} style={{width:wp('35%'), height:hp('10%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>
                             <View>
-                                <Text style={styles.buttonText}> {localization.signIn} </Text>
+                            {this.props.auth.isLoging?<View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}><ActivityIndicator/><Text style={styles.buttonText}> {localization.signIn} </Text></View>:<Text style={styles.buttonText}> {localization.signIn} </Text>}
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -112,7 +139,19 @@ class Artboard1 extends Component{
     }
 }
 
-export default Artboard1
+function mapStateToProps(state) {
+    return {
+        auth: state.auth
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ...bindActionCreators({ login }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Signin)
 var FONT_BACK_LABEL   = 16;
 if (PixelRatio.get() <= 2) {
     FONT_BACK_LABEL = 14;

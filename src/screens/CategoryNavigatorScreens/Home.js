@@ -46,9 +46,7 @@ class Home extends Component {
     }
 
     componentDidMount() {
-
         this.props.fetchCategories()
-
     }
 
     render(){
@@ -61,7 +59,7 @@ class Home extends Component {
              style={{flex: 1}}
             >
                 {/* HEADER */}
-                <Header title={localization.home} backScreen="SignIn"/>
+                <Header title={localization.home}/>
                 
                 <ScrollView>
                     <Image source={headImage} style={{ width: wp('100%'), height: hp('42%')}} />
