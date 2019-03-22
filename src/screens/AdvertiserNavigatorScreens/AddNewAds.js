@@ -28,7 +28,7 @@ class AddAds extends Component {
     }
     handleImagePicker = () => {
         const options = {}
-        ImagePicker.launchImageLibrary(options, response => {
+        ImagePicker.showImagePicker(options, response => {
             console.log('response', response)
             if (response.uri) {
                 this.setState({

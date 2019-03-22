@@ -69,9 +69,9 @@ export default localization = new LocalizedStrings({
         addImage:'Add Image',
         delete:'delete',
         myAds:'My Ads',
-        addNewAds:'New Ads'
-
-
+        addNewAds:'New Ads',
+        language: 'Language',
+        save: 'Save'
     },
     ar: {
         travelDate:'تاريخ الذهاب',
@@ -142,8 +142,8 @@ export default localization = new LocalizedStrings({
         addImage:'اضف صوره',
         delete:'مسح',
         myAds:'اعلاناتي',
-        addNewAds:'أضف اعلان'
-
-
+        addNewAds:'أضف اعلان',
+        language: 'اللغه',
+        save: 'حفظ'
     }
 })

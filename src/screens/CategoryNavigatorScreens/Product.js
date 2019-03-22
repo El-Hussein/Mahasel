@@ -30,6 +30,7 @@ class ListItemScreen extends Component {
     render() {
         const { item } = this.props.navigation.state.params
         console.log(item)
+        //const item = { image: require('../../assets/images/item1.png'), cat: 'مانجو', qun: '3 كيلو', price: '35.00 ريال', date: '15 يناير 2019', discription: ' مانجو انتاج مزارعنا تم زراعته طبقا لشروط و المواصفات العالميه ' };
         return (
             <View style={{backgroundColor:'white', flex:1}}>
             <View>
