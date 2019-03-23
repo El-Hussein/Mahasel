@@ -27,8 +27,6 @@ import Product from './src/screens/CategoryNavigatorScreens/Product';
 import AddNewAds from './src/screens/AdvertiserNavigatorScreens/AddNewAds';
 import AdvertiserAds from './src/screens/AdvertiserNavigatorScreens/AdvertiserAds';
 
-import PersonalScreen from './src/components/PersonalScreen'
-
 const NavigationApp = StackNavigator({
     HomeScreen: { screen: HomeScreen }
 })
@@ -81,8 +79,7 @@ export default class App extends Component {
   render() {
     return (
       <Provider store={store}>
-          {/* {this.state.rootPage} */}
-          <PersonalScreen/>
+          {this.state.rootPage}
           {/* <HomeScreen /> */}
       </Provider>
 
