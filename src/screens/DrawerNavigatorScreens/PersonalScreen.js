@@ -8,13 +8,15 @@ import {
     removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 import PhotoUpload from 'react-native-photo-upload'
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { register } from '../../actions/authinticationActions'
 
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import localization from '../../localization/localization'
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Name from '../../assets/images/user.png'
-import PRImage from '../../assets/images/defaultProfileImage.png'
 import ED from '../../assets/images/editPhoto.png'
 import cat from '../../assets/images/cat.png';
 import LAN from '../../assets/images/country.png'
@@ -26,6 +28,7 @@ import ProfileDefault from '../../assets/images/profile_pic.png';
 
 
 class PersonalScreen extends Component {
+       
     static navigationOptions = () => ({
         title: 'الشخصيه',
         headerStyle: {
@@ -34,11 +37,28 @@ class PersonalScreen extends Component {
         headerTintColor: 'white',
     })
 
-    state = {
-        photo: null,
-        editable: false
+
+    constructor(props) {
+        super()
+        this.state = {
+            username:'',
+            email:'',
+            phone:'',
+            country:'',
+            city:'',
+            address:'',
+            photo: null,
+            editable: false
+        }
     }
 
+
+    
+    handleSave(){
+        alert('Save Button')
+    }
+
+ 
     handleImagePicker = () => {
         const options = {}
         ImagePicker.showImagePicker(options, response => {
@@ -58,11 +78,7 @@ class PersonalScreen extends Component {
                 <Header title={localization.profile} backScreen="SignIn" />
                 <View style={{ alignItems: 'center' }}>
                     {/* {photo ?   */}
-                    <View style={{ height: hp('24.5%'), width: wp('85%'), justifyContent: 'center', alignItems: 'center' }}>
-                        <Image source={ProfileDefault} style={{ width: wp('24%'), borderWidth: wp('0.8%'), borderColor: 'white', height: wp('24%'), borderRadius: wp('9%'), backgroundColor: 'red', marginBottom: wp('1%') }} />
-                        <Text style={{ fontWeight: 'bold', fontSize: wp('4.2%'), color: '#242424' }}> محمد عبدالله إبراهيم </Text>
-                        <Text style={{ fontWeight: 'bold', fontSize: wp('4.2%'), color: '#242424' }}> شارع الرياض في وسط المدينه </Text>
-                    </View>
+                    
                     {/* :
                             <Avatar
                                 source={PRImage}
@@ -75,6 +91,11 @@ class PersonalScreen extends Component {
 
 
                 <ScrollView style={{ marginHorizontal: wp('10%') }}>
+                <View style={{ height: hp('24.5%'), width: wp('85%'), justifyContent: 'center', alignItems: 'center' }}>
+                        <Image source={ProfileDefault} style={{ width: wp('24%'), borderWidth: wp('0.8%'), borderColor: 'white', height: wp('24%'), borderRadius: wp('9%'), backgroundColor: 'red', marginBottom: wp('1%') }} />
+                        <Text style={{ fontWeight: 'bold', fontSize: wp('4.2%'), color: '#242424' }}> محمد عبدالله إبراهيم </Text>
+                        <Text style={{ fontWeight: 'bold', fontSize: wp('4.2%'), color: '#242424' }}> شارع الرياض في وسط المدينه </Text>
+                    </View>
                     <View style={styles.inputBorder} >
                         <Image source={Name} style={[styles.image4_5, { marginLeft: wp('4%') }]} />
                         <TextInput
@@ -86,6 +107,7 @@ class PersonalScreen extends Component {
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             editable={this.state.editable}
+                            onChangeText={(username) => this.setState({username})}
                         />
                         <TouchableOpacity onPress={() => this.setState({
                             editable: !this.state.editable
@@ -124,6 +146,7 @@ class PersonalScreen extends Component {
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             editable={this.state.editable}
+                            onChangeText={(email) => this.setState({email})}
                         />
                         <TouchableOpacity onPress={() => this.setState({
                             editable: !this.state.editable
@@ -148,6 +171,7 @@ class PersonalScreen extends Component {
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             editable={this.state.editable}
+                            onChangeText={(address) => this.setState({address})}
                         />
                         <TouchableOpacity onPress={() => this.setState({
                             editable: !this.state.editable
@@ -172,6 +196,7 @@ class PersonalScreen extends Component {
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             editable={this.state.editable}
+                            onChangeText={(phone) => this.setState({phone})}
                         />
                         <TouchableOpacity onPress={() => this.setState({
                             editable: !this.state.editable
@@ -196,6 +221,7 @@ class PersonalScreen extends Component {
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             editable={this.state.editable}
+                            onChangeText={(city) => this.setState({city})}
                         />
                         <TouchableOpacity onPress={() => this.setState({
                             editable: !this.state.editable
@@ -236,16 +262,20 @@ class PersonalScreen extends Component {
                             /> : null}
                         </View>
                     </View>
-                </ScrollView>
 
-                <View style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', width: wp('40%'), height: hp('7%') }}>
+                    <View style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
+                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', width: wp('40%'), height: hp('7%') }}
+                        onPress={this.handleSave}
+                    >
                         <Image source={ButtonBG} style={{ width: wp('40%'), height: hp('7%'), right: wp('0%'), top: hp('0%'), resizeMode: 'contain', justifyContent: 'center', position: 'absolute' }} />
                         <View>
                             <Text style={styles.buttonText}> {localization.save} </Text>
                         </View>
                     </TouchableOpacity>
                 </View>
+                </ScrollView>
+
+                
             </View>
         )
     }
@@ -285,4 +315,16 @@ const styles = StyleSheet.create({
         fontWeight: '600'
     },
 });
-export default PersonalScreen;
+
+function mapStateToProps(state) {
+    return {
+        auth: state.auth
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ...bindActionCreators({ register }, dispatch)
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(PersonalScreen);
