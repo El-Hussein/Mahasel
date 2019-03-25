@@ -10,10 +10,10 @@ import {I18nManager} from 'react-native';
 
 import CategoryNavigator from './CategoryNavigator';
 import AdsNavigator from './AdsNavigator';
-import Profile from '../screens/DrawerNavigatorScreens/Profile';
 import Orders from '../screens/DrawerNavigatorScreens/Orders';
 import Conditions from '../screens/DrawerNavigatorScreens/Conditions';
 import Call_Us from '../screens/DrawerNavigatorScreens/Call_Us';
+import PersonalScreen from '../screens/DrawerNavigatorScreens/PersonalScreen';
 
 import ContentDrawerComponent from '../components/ContentDrawerCompnent';
 
@@ -25,12 +25,18 @@ export default RootNavigator = createDrawerNavigator(
                 title:'Home'
             }
         },
-        Profile: {
-            screen: Profile,
+        Profile:{
+            screen: PersonalScreen,
             navigationOption:{
                 title:"Profile", 
             }
         },
+        // Profile: {
+        //     screen: Profile,
+        //     navigationOption:{
+        //         title:"Profile", 
+        //     }
+        // },
         Orders: {
             screen: Orders,
             navigationOption:{

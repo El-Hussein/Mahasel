@@ -70,6 +70,8 @@ export default localization = new LocalizedStrings({
         delete:'delete',
         myAds:'My Ads',
         addNewAds:'New Ads',
+        language: 'Language',
+        save: 'Save',
         confirmPassword:'confirm password',
         confirmPasswordError:'confirm password should match the password',
         register:'Register',
@@ -82,6 +84,7 @@ export default localization = new LocalizedStrings({
 
 
 
+        selectImage:'please select an Image'
     },
     ar: {
         travelDate:'تاريخ الذهاب',
@@ -153,6 +156,8 @@ export default localization = new LocalizedStrings({
         delete:'مسح',
         myAds:'اعلاناتي',
         addNewAds:'أضف اعلان',
+        language: 'اللغه',
+        save: 'حفظ',
         confirmPassword:'تأكيد كلمة المرور',
         confirmPasswordError:"كلمة المرور غير متطابقة",
         register:'تسجيل',
@@ -165,5 +170,6 @@ export default localization = new LocalizedStrings({
 
 
 
+        selectImage:'اختر صورة من فضلك'
     }
 })

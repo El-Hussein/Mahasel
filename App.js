@@ -16,7 +16,19 @@ import { connect } from 'react-redux';
 import { fetchCategories } from './src/actions/categoryActions';
 import { loginPass } from './src/actions/authinticationActions';
 
+<<<<<<< HEAD
 class App extends Component {
+=======
+import AddNewAds from './src/screens/AdvertiserNavigatorScreens/AddNewAds';
+import AdvertiserAds from './src/screens/AdvertiserNavigatorScreens/AdvertiserAds';
+
+const NavigationApp = StackNavigator({
+    HomeScreen: { screen: HomeScreen }
+})
+  
+const store = configureStore()
+export default class App extends Component {
+>>>>>>> 7c897666edee7751932bd489eba38ccfaeb056b5
   constructor(props){
     super(props);
     this.state = {
@@ -103,4 +115,7 @@ function mapDispatchToProps(dispatch) {
   }
 }
 
+<<<<<<< HEAD
 export default connect(mapStateToProps, mapDispatchToProps)(App)
+=======
+>>>>>>> 7c897666edee7751932bd489eba38ccfaeb056b5

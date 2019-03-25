@@ -49,25 +49,14 @@ class AddAds extends Component {
         }
 
 
-        console.warn(JSON.stringify([
-            { name: 'title', data: data.name },
-            { name: 'description', data: data.des },
-            { name: 'content', data: 'content' },
-            { name: 'region_id', data: 1 },
-            { name: 'category_id', data: data.cat_id },
-            { name: 'sub_category_id', data: data.cat_id },
-            { name: 'price', data: ''+data.price },
-            { name: 'quantity', data: ''+data.quantity },
-            { name: 'phone', data: ''+data.phone },
-            { name: 'image', filename: 'image.png', type: 'image/png', data: data.image },
-            ]))
+        console.warn('heeeey')
         RNFetchBlob.fetch('POST', 'http://mahasel.feckrah.com/public/api/profile/add_new_ad', 
         {
             // 'X-localization':'ar',
             'Content-Type': 'multipart/form-data',
             'RNFB-Response':'utf8',
             Authorization :'Bearer '+data.token
-        }, JSON.stringify([
+        }, [
             { name: 'title', data: data.name },
             { name: 'description', data: data.des },
             { name: 'content', data: 'content' },
@@ -78,7 +67,7 @@ class AddAds extends Component {
             { name: 'quantity', data: ''+data.quantity },
             { name: 'phone', data: ''+data.phone },
             { name: 'image', filename: 'image.png', type: 'image/png', data: data.image },
-            ])).then((response) =>response.json())
+            ]).then((response) =>response.json())
         .then(function (response) {
             console.warn(response)
             if(response.value){

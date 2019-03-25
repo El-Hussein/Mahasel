@@ -55,7 +55,6 @@ export function register(data) {
 }
 
 function registerAttempt() {
-
     return {
         type: REGISTER_ATTEMPT
     }
