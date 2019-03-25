@@ -4,9 +4,10 @@ import {
     Text,
     ImageBackground,
     Image,
-    TextInput,
+    AsyncStorage,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    I18nManager
 } from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -24,6 +25,23 @@ class Artboard4 extends Component{
 
     constructor(props) {
          super()
+         this.setLang().then(()=>{
+             console.warn('done');
+         });
+    }
+    async setLang(){
+        lang = 'ar';
+        return await AsyncStorage.setItem('language', lang).then((data)=>{
+            if(lang=='ar'){
+                I18nManager.forceRTL(false);
+            }else if(lang=='en'){
+                I18nManager.forceRTL(true);
+            }        
+            console.log('language changed successfully: ' + data)
+          // async storage should take strings not objects as a paramaters
+        }).catch((error)=>{
+          console.warn('ERROR SET: ' + error)
+        });
     }
 
     render () {
@@ -31,7 +49,7 @@ class Artboard4 extends Component{
             <ImageBackground source={BG}  style={styles.pageBG}>
 
                 {/* HEADER */}
-                <Header title="الشروط والأحكام" backScreen="Home" drawer={true}/>
+                <Header title="الشروط والأحكام"/>
                 
                 <View style={{justifyContent:'center', alignItems:'center', marginVertical:hp('1%')}}>
                     <Image source={Logo} style={{width:wp('25%'), height:hp('16%'), resizeMode:'contain'}}/>

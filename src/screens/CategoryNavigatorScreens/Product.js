@@ -3,16 +3,19 @@ import {
   View,
   Text,
   StyleSheet,
-  ImageBackground,
+  ActivityIndicator,
   Image,
   TouchableOpacity,
-  FlatList,
-  ScrollView,
-  TextInput,
   I18nManager,  
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dimensions from 'Dimensions';
+
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import {fetchProduct} from '../../actions/productsActions'
+
 
 import {
   widthPercentageToDP as wp,
@@ -25,47 +28,56 @@ import Header from '../../components/Header';
 import {  Title, Left, Button, Body, Right } from 'native-base'
 
 
-class ListItemScreen extends Component {
+class Product extends Component {
+    constructor(props){
+        super();
+        // props.fetchProduct(props.navigation.getParam('product_id'))
+        // console.log(props.navigation.getParam('product_id'))
+        console.log(props.products.isFetching)
+    }
 
     render() {
-        const { item } = this.props.navigation.state.params
-        console.log(item)
+        const { product, isFetching } = this.props.products
+        console.log(isFetching)
         return (
             <View style={{backgroundColor:'white', flex:1}}>
-            <View>
                 {/* HEADER */}
                 <Header title={localization.fruits} backScreen="SignIn"/>
-               
-                <Image
-                    source={item.image}
-                    style={styles.imageStyle}
-                />
-                <View style={styles.catView}>
-                    <Text style={[styles.catTextStyle, !I18nManager.isRTL?{borderTopLeftRadius: wp('2%'), borderBottomLeftRadius: wp('2%') }:{borderTopRightRadius: wp('2%'), borderBottomRightRadius: wp('2%') }]}>{item.cat}</Text>
-                </View>
-                <View style={styles.priceView}>
-                    <Text style={styles.priceText}>{item.price}</Text>
-                </View>
-                <View style={styles.discriptionView}>
-                    <Text style={[styles.discriptionText, {overflow:'scroll'}]}>{item.discription}</Text>
-                </View>
+                {isFetching? 
+                <ActivityIndicator size={50} color="green" /> :
+                <View>
+                
+                    <Image
+                        source={{uri:product.image}}
+                        style={styles.imageStyle}
+                    />
+                    <View style={styles.catView}>
+                        <Text style={[styles.catTextStyle, !I18nManager.isRTL?{borderTopLeftRadius: wp('2%'), borderBottomLeftRadius: wp('2%') }:{borderTopRightRadius: wp('2%'), borderBottomRightRadius: wp('2%') }]}>{product.title}</Text>
+                    </View>
+                    <View style={styles.priceView}>
+                        <Text style={styles.priceText}>{product.price} {localization.rial}</Text>
+                    </View>
+                    <View style={styles.discriptionView}>
+                        <Text style={[styles.discriptionText, {overflow:'scroll'}]}>{product.description}</Text>
+                    </View>
 
-                <View style={styles.buttonsViewStyle}>
-                    <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('callUs')}>
-                        <Text style={styles.buttonTextStyle}>{localization.call}</Text>
-                        <Icon color="white" name="phone" size={wp('5%')} style={{marginLeft:wp('1%')}}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonStyle}>
-                        <Text style={styles.buttonTextStyle}>{localization.favourit}</Text>
-                        <Icon color="white" name="heart" size={wp('5%')} style={{marginLeft:wp('1%')}}/>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonStyle}>
-                        <Text style={styles.buttonTextStyle}>{localization.share}</Text>
-                        <Icon color="white" name="share" size={wp('5%')} style={{marginLeft:wp('1%')}}/>
-                    </TouchableOpacity>
+                    <View style={styles.buttonsViewStyle}>
+                        <TouchableOpacity style={styles.buttonStyle} onPress={() => this.props.navigation.navigate('callUs')}>
+                            <Text style={styles.buttonTextStyle}>{localization.call}</Text>
+                            <Icon color="white" name="phone" size={wp('5%')} style={{marginLeft:wp('1%')}}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonStyle}>
+                            <Text style={styles.buttonTextStyle}>{localization.favourit}</Text>
+                            <Icon color="white" name="heart" size={wp('5%')} style={{marginLeft:wp('1%')}}/>
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.buttonStyle}>
+                            <Text style={styles.buttonTextStyle}>{localization.share}</Text>
+                            <Icon color="white" name="share" size={wp('5%')} style={{marginLeft:wp('1%')}}/>
+                        </TouchableOpacity>
+                    </View>
 
                 </View>
-            </View>
+                }
             </View>
         )
     }
@@ -144,4 +156,16 @@ const styles = StyleSheet.create({
 
 })
 
-export default ListItemScreen
+function mapStateToProps(state) {
+    return {
+        products: state.products
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ...bindActionCreators({ fetchProduct }, dispatch)
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps) (Product);

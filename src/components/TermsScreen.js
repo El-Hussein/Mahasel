@@ -2,22 +2,18 @@ import React , { Component } from 'react'
 import { View, Image, TextInput, ImageBackground, StyleSheet, StatusBar, Text } from 'react-native'
 import { Header, Title, Left, Button, Body, Right } from 'native-base'
 import { Icon } from 'react-native-elements';
+import Header from '../../components/Header';
 
 
 class TermsScreen extends Component{
-    static navigationOptions = () => ({
-        title: 'الشروط و الاحكام',
-        headerStyle: {
-            backgroundColor: '#74b245'
-        },
-        headerTintColor: 'white',
-    })
+
     render(){
         return(
             <ImageBackground
                 source={require('../images/termsBackground.png')}
                 style={styles.backgroundImageStyle}
             >
+                <Header title={localization.fruits} backScreen="SignIn"/>
                 <View style={styles.container}>
                 {/* <View>
                     <Header style={styles.header}>

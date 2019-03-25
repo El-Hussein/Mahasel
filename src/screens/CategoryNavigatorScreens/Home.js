@@ -45,14 +45,9 @@ class Home extends Component {
         }
     }
 
-    componentDidMount() {
-        this.props.fetchCategories()
-    }
-
     render(){
         const { categories, isFetching } = this.props.categories
-        // alert(JSON.stringify(categories));
-        // alert(isFetching);
+        console.log(this.props.categories)
         return(
             <ImageBackground
              source={main_background}
@@ -67,7 +62,6 @@ class Home extends Component {
                     {isFetching? <ActivityIndicator size={50} color="green" /> 
                         :
                     <FlatList 
-                        //  data={this.state.data}
                         data={categories}
                         renderItem={({item}) =>{
                             return(

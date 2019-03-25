@@ -10,6 +10,8 @@ import {
     LOGOUT_ATTEMPT, 
     LOGOUT_SUCCESFULLY, 
     LOGOUT_FAILED, 
+
+    LOGIN_PASS,
 } from '../actions/constants';
 
 const initialState = {
@@ -83,6 +85,14 @@ export default function AuthenticationReducer(state = initialState, action) {
                 ...state,
                 isLogingOut: false,
                 error: action.msg
+            }
+
+        case LOGIN_PASS:
+            return {
+                ...state,
+                isLoging: false,
+                user: action.data,
+                error:null,
             }
         default:
             return state

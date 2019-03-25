@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, Text, FlatList, StyleSheet, TouchableOpacity, I18nManager } from 'react-native'
+import { View, Image, Text, FlatList, StyleSheet, TouchableOpacity, I18nManager, ActivityIndicator } from 'react-native'
 import { Icon } from 'react-native-elements';
 import {
   widthPercentageToDP as wp,
@@ -12,7 +12,7 @@ import Header from '../../components/Header';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import {fetchProducts} from '../../actions/productsActions'
+import {fetchProducts, fetchProduct} from '../../actions/productsActions'
 
 
 class FruitListScreen extends Component {
@@ -33,12 +33,15 @@ class FruitListScreen extends Component {
 
     renderItem = ({ item }) => {
         return (
-            <TouchableOpacity style={{ marginVertical: hp('2%')}} onPress={() => this.props.navigation.navigate('Product', {item})}>
+            <TouchableOpacity style={{ marginVertical: hp('2%')}} onPress={() => {
+                this.props.fetchProduct(item.id)
+                this.props.navigation.navigate('Product');
+            }}>
                 <View
                     style={{ flex: 1, borderWidth: wp('0.2%'), height: hp('20%'), marginHorizontal: 15, borderColor: 'red', borderRadius: 10 }}>
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ flexDirection: 'column', flex: 1, marginRight: 30, marginTop: 6 }}>
-                            <Text style={styles.text}>{item.cat}</Text>
+                            <Text style={styles.text}>{item.title}</Text>
                             <Text style={styles.text}>{item.qun}</Text>
                             <Text style={styles.text}>{item.price}</Text>
                             <View style={{ justifyContent: 'flex-end', flex: 1, marginRight: 65, marginBottom: 5 }}>
@@ -48,7 +51,7 @@ class FruitListScreen extends Component {
                         </View>
                         <View style={{ alignItems: 'flex-end', flex: 1 }}>
                             <Image
-                                source={item.image}
+                                source={{uri:item.image}}
                                 style={[{ width: 170, height: hp('19.8%')}, I18nManager.isRTL?{borderTopLeftRadius: 10, borderBottomLeftRadius: 10 }:{borderTopRightRadius: 10, borderBottomRightRadius: 10 }]}
                                 />
                         </View>
@@ -59,19 +62,20 @@ class FruitListScreen extends Component {
     }
     render() {
         const { products, isFetching } = this.props.products
-        alert(JSON.stringify(products))
+        // alert(JSON.stringify(products))
         return (
             <View style={{backgroundColor:'white'}}>
                 {/* HEADER */}
                 <Header title={localization.fruits} backScreen="SignIn"/>
-                
+                {isFetching? <ActivityIndicator size={50} color="green" /> :
                 <FlatList
                     data={products}
                     // data={this.state.data}
                     renderItem={this.renderItem}
-                    keyExtractor={(item, index) => index.toString()}
+                    keyExtractor={(item) => item.name}
                     style={{height:hp('89%')}}
                 />
+                }
             </View>
         )
     }
@@ -94,7 +98,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators({ fetchProducts }, dispatch)
+        ...bindActionCreators({ fetchProducts, fetchProduct }, dispatch)
     }
 }
 

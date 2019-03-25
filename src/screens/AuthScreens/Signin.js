@@ -45,13 +45,14 @@ class Signin extends Component{
 
     handleSignIN(){
         data = {
-            email:this.state.phone,
+            phone:this.state.phone,
             password:this.state.password,
         }
         this.props.login(data);
     }
 
     render () {   
+        console.log(this.props.categories);
         if(this.props.auth.user.token){
             console.log('logged in successfully');
             this.props.navigation.navigate('Home');
@@ -59,7 +60,7 @@ class Signin extends Component{
         return (
             <ImageBackground source={BG}  style={styles.pageBG}>
                 {/* HEADER */}
-                <Header title={localization.login}/>
+                <Header title={localization.login} drawer={false}/>
                 
                 <View style={{justifyContent:'center', alignItems:'center', padding:hp('2%')}}>
                     <Image source={Logo} style={styles.logo}/>
@@ -141,7 +142,7 @@ class Signin extends Component{
 
 function mapStateToProps(state) {
     return {
-        auth: state.auth
+        auth: state.auth,
     }
 }
 

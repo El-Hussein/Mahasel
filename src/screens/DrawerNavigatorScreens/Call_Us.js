@@ -33,7 +33,7 @@ class Artboard3 extends Component{
          return (
             <ImageBackground source={BG}  style={styles.pageBG}>
                 {/* HEADER */}
-                <Header title="أتصل بنا" backScreen="Home" drawer={true}/>
+                <Header title="أتصل بنا"/>
                 
                 <Image source={Logo} style={{position:'absolute', width:wp('100%'), height:hp('100%')}}/>
 

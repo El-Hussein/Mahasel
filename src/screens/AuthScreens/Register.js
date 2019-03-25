@@ -235,33 +235,33 @@ class Register extends Component{
                         </TouchableOpacity>
                     </View> */}
 
-                     {/* image upload */}
-                     <View style={{justifyContent:'center', alignItems:'center'}} >
-                            <PhotoUpload  
-                            format="PNG"  
-                            onPhotoSelect={avatar => {
-                                if (avatar) {
-                                    this.setState({
-                                        photo:avatar
-                                    })
-                                console.log('Image base64 string: ', avatar)
-                                }
-                            }}
-                            >
-                                <View style={{ flexDirection: 'row', width: wp('30%'), height: hp('6%'), backgroundColor: '#538805', borderRadius: wp('3%'), marginVertical: hp('2%'), alignItems: 'center', justifyContent: 'center' }}>
-                                    <Text style={{ textAlign: 'center', color: 'white', fontSize: wp('4%'), fontWeight: 'bold', marginRight: wp('2%') }}>
-                                        {localization.addImage}
-                                    </Text>
-                                    <Icon name="image" size={wp('4%')} color="white" />
-                                </View>
-                            </PhotoUpload>
-                            <View style={{ alignItems: 'center', justifyContent: 'center'}}>
-                                {photo ? <Image
-                                    source={{ uri: 'data:image/png;base64,' + photo }}
-                                    style={{ width: wp('20%'), height: wp('20%'), marginBottom:hp('1%'), borderRadius:wp('10%'), borderWidth:wp('0.5%'), borderColor:'white' }}
-                                /> : null}
+                    {/* image upload */}
+                    <View style={{justifyContent:'center', alignItems:'center'}} >
+                        <PhotoUpload  
+                        format="PNG"  
+                        onPhotoSelect={avatar => {
+                            if (avatar) {
+                                this.setState({
+                                    photo:avatar
+                                })
+                            console.log('Image base64 string: ', avatar)
+                            }
+                        }}
+                        >
+                            <View style={{ flexDirection: 'row', width: wp('30%'), height: hp('6%'), backgroundColor: '#538805', borderRadius: wp('3%'), marginVertical: hp('2%'), alignItems: 'center', justifyContent: 'center' }}>
+                                <Text style={{ textAlign: 'center', color: 'white', fontSize: wp('4%'), fontWeight: 'bold', marginRight: wp('2%') }}>
+                                    {localization.addImage}
+                                </Text>
+                                <Icon name="image" size={wp('4%')} color="white" />
                             </View>
+                        </PhotoUpload>
+                        <View style={{ alignItems: 'center', justifyContent: 'center'}}>
+                            {photo ? <Image
+                                source={{ uri: 'data:image/png;base64,' + photo }}
+                                style={{ width: wp('20%'), height: wp('20%'), marginBottom:hp('1%'), borderRadius:wp('10%'), borderWidth:wp('0.5%'), borderColor:'white' }}
+                            /> : null}
                         </View>
+                    </View>
 
                     <View style={{justifyContent:'flex-start', alignItems:'center'}}>
                         <TouchableOpacity onPress={()=>this.handleRegister()} style={{justifyContent:'center', alignItems:'center', width:wp('40%'), height:hp('7%')}}>

@@ -41,15 +41,15 @@ class ContentDrawerComponent extends Component{
         super();
         this.state= {
             list:[
-                {id:0,name:localization.home, icon:home, active:true, link:'Home'},
-                {id:1,name:localization.profile, icon:profile, active:false, link:'Profile'},
-                {id:2,name:localization.orders, icon:orders, active:false, link:'Orders'},
-                {id:3,name:localization.callUs, icon:callus, active:false, link:'Call_Us'},
-                {id:4,name:localization.termsConditions, icon:terms, active:false, link:'Conditions'},
-                {id:5,name:localization.myAds, icon:callus, active:false, link:'myAds'},
-                {id:6,name:localization.exit, icon:logoutImage, active:false, link:'logout'},
+                {id:0,name:localization.home, icon:home, link:'Home'},
+                {id:1,name:localization.profile, icon:profile, link:'Profile'},
+                // {id:2,name:localization.orders, icon:orders, link:'Orders'},
+                {id:3,name:localization.callUs, icon:callus, link:'Call_Us'},
+                {id:4,name:localization.termsConditions, icon:terms, link:'Conditions'},
+                {id:5,name:localization.myAds, icon:callus, link:'myAds'},
+                {id:6,name:localization.exit, icon:logoutImage, link:'logout'},
             ],
-            userType:'customer',
+            activePage:0,
             refresh:true,
         }
     }
@@ -96,7 +96,7 @@ class ContentDrawerComponent extends Component{
                     extraData = {this.state}
                     renderItem={({item}) =>{
                         console.log('updated?')
-                        if(item.active){
+                        if(item.id==this.state.activePage){
                             activeStyle=StyleSheet.create({
                                 AC:{backgroundColor:'rgba(170,170,170,0.8)', borderTopWidth:wp('0.3%'), borderTopColor:'rgba(255,255,255,0.5)'}
                             });
@@ -111,6 +111,9 @@ class ContentDrawerComponent extends Component{
                         } 
                         return (
                         <TouchableOpacity disabled={item.active} onPress={()=>{
+                            this.setState({
+                                activePage:item.id
+                            })
                             if(item.id === 6){
                                 this.props.logout();
                                 this.setState({ 

@@ -10,6 +10,8 @@ import {
     LOGOUT_ATTEMPT, 
     LOGOUT_SUCCESFULLY, 
     LOGOUT_FAILED, 
+
+    LOGIN_PASS,
 } from './constants';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -168,5 +170,19 @@ function logoutFailure(msg) {
     return {
         type: LOGOUT_FAILED,
         msg
+    }
+}
+
+// login pass 
+export function loginPass(data) {
+    return (dispatch) => {
+        dispatch(loginPassSuccess(data))
+    }
+}
+
+function loginPassSuccess(data){
+    return {
+        type: LOGIN_PASS,
+        data
     }
 }

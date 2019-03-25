@@ -7,96 +7,100 @@
  */
 
 import React, {Component} from 'react';
-import { Provider } from 'react-redux';
 import { I18nManager, AsyncStorage } from 'react-native';
 import localization from './src/localization/localization';
-
-import { StackNavigator } from 'react-navigation';
-import configureStore from './configureReducer';
 import RootNavigator from './src/navigators/RootNavigator';
-
-import HomeScreen from './src/test/HomeScreen';
 import Splash from './src/screens/Splash';
-import Register from './src/screens/AuthScreens/Register';
-import Signin from './src/screens/AuthScreens/Signin';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { fetchCategories } from './src/actions/categoryActions';
+import { loginPass } from './src/actions/authinticationActions';
 
-import Home from './src/screens/CategoryNavigatorScreens/Home';
-import Products from './src/screens/CategoryNavigatorScreens/Products';
-import Product from './src/screens/CategoryNavigatorScreens/Product';
-
-import AddNewAds from './src/screens/AdvertiserNavigatorScreens/AddNewAds';
-import AdvertiserAds from './src/screens/AdvertiserNavigatorScreens/AdvertiserAds';
-
-
-const NavigationApp = StackNavigator({
-    HomeScreen: { screen: HomeScreen }
-})
-  
-const store = configureStore()
-export default class App extends Component {
+class App extends Component {
   constructor(props){
     super(props);
     this.state = {
       rootPage: <Splash />,
-      language:'ar'
+      language:'ar',
+      user:null,
     }
     setTimeout(
       ()=>{
         this.setState({
           rootPage: <RootNavigator />
         });
-      },4000
+      },5000
     )
-    localization.setLanguage(this.state.language);
-    if(this.state.language=='ar'){
-      I18nManager.forceRTL(false);
-    }else if(this.state.language=='en'){
-      I18nManager.forceRTL(true);
-    }
-    
+    this.checkUser = this.checkUser.bind(this);
+
   }
 
-  async setData(){
-    return await AsyncStorage.setItem('user', JSON.stringify({name:'hussein', age:23})).then((data)=>{
-      console.warn('inserted successfully, ' + data)
-      // async storage should take strings not objects as a paramaters
+  componentWillMount(){
+    this.props.fetchCategories();
+    this.checkLang();
+    this.checkUser();
+  }
+
+  
+  async checkLang(){
+    return await AsyncStorage.getItem('language').then((data)=>{
+      if(data){
+        console.log('lang'+data)
+        // update state and use JSON.parse to convert string to object
+        localization.setLanguage(data);
+        if(data=='ar'){
+          I18nManager.forceRTL(false);
+        }else if(data=='en'){
+          I18nManager.forceRTL(true);
+        }
+      }
+      else {
+        console.log('ERROR: not found')
+        return null;
+      }
     }).catch((error)=>{
-      console.warn('ERROR SET: ' + error)
+      console.log('ERROR GET Lang: ' + error)
     });
   }
 
-  async getData(){
-    return await AsyncStorage.getItem('usern').then((data)=>{
-      if(data)
-        console.warn('retrieved successfully, ' + JSON.parse(data).name)
+  async checkUser(){
+    return await AsyncStorage.getItem('user').then(data=>JSON.parse(data)).then((data)=>{
+      if(data){
         // update state and use JSON.parse to convert string to object
-      else 
-        console.warn('ERROR: not found')
+        console.log(data)
+        this.props.loginPass(data);
+        this.setState({
+          rootPage: <RootNavigator />
+        });
+      }
+      else {
+        console.log('ERROR: not found')
+        return null;
+      }
     }).catch((error)=>{
-      console.warn('ERROR GET: ' + error)
+      console.log('ERROR GET: ' + error)
     });
   }
 
   render() {
     return (
-      <Provider store={store}>
-          {this.state.rootPage}
-          {/* <HomeScreen /> */}
-      </Provider>
-
-      // <Signin />
-      // <Register />
-
-      // <Product />
-      // <Products />
-      // <Home />
-
-      // <AddNewAds />
-      // <AdvertiserAds />
+      this.state.rootPage   
     );
   }
 }
 
+function mapStateToProps(state) {
+  return {
+      ads: state.ads,
+      auth: state.auth,
+      categories: state.categories,
+  }
+}
 
+function mapDispatchToProps(dispatch) {
+  return {
+      ...bindActionCreators({ fetchCategories, loginPass }, dispatch)
+  }
+}
 
-// Finally Mohamed is here!!!
+export default connect(mapStateToProps, mapDispatchToProps)(App)
