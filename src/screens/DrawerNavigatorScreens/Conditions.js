@@ -4,10 +4,8 @@ import {
     Text,
     ImageBackground,
     Image,
-    AsyncStorage,
     TouchableOpacity,
     StyleSheet,
-    I18nManager
 } from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -25,23 +23,6 @@ class Artboard4 extends Component{
 
     constructor(props) {
          super()
-         this.setLang().then(()=>{
-             console.warn('done');
-         });
-    }
-    async setLang(){
-        lang = 'ar';
-        return await AsyncStorage.setItem('language', lang).then((data)=>{
-            if(lang=='ar'){
-                I18nManager.forceRTL(false);
-            }else if(lang=='en'){
-                I18nManager.forceRTL(true);
-            }        
-            console.log('language changed successfully: ' + data)
-          // async storage should take strings not objects as a paramaters
-        }).catch((error)=>{
-          console.warn('ERROR SET: ' + error)
-        });
     }
 
     render () {

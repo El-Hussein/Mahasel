@@ -42,12 +42,12 @@ class ContentDrawerComponent extends Component{
         this.state= {
             list:[
                 {id:0,name:localization.home, icon:home, link:'Home'},
-                {id:1,name:localization.profile, icon:profile, link:'Profile'},
                 // {id:2,name:localization.orders, icon:orders, link:'Orders'},
-                {id:3,name:localization.callUs, icon:callus, link:'Call_Us'},
-                {id:4,name:localization.termsConditions, icon:terms, link:'Conditions'},
-                {id:5,name:localization.myAds, icon:callus, link:'myAds'},
-                {id:6,name:localization.exit, icon:logoutImage, link:'logout'},
+                {id:1,name:localization.callUs, icon:callus, link:'Call_Us'},
+                {id:2,name:localization.termsConditions, icon:terms, link:'Conditions'},
+                {id:3,name:localization.myAds, icon:callus, link:'myAds'},
+                {id:4,name:localization.settings, icon:settings, link:'Profile'},
+                {id:5,name:localization.exit, icon:logoutImage, link:'logout'},
             ],
             activePage:0,
             refresh:true,
@@ -114,7 +114,7 @@ class ContentDrawerComponent extends Component{
                             this.setState({
                                 activePage:item.id
                             })
-                            if(item.id === 6){
+                            if(item.id === 5){
                                 this.props.logout();
                                 this.setState({ 
                                     refresh: this.props.auth.isLogingOut

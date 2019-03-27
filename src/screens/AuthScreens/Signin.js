@@ -40,27 +40,53 @@ class Signin extends Component{
         this.state = {
             phone:'',
             password:'',
-        }
+            phoneError:false,
+            passwordErrophoneError:false,
+        } 
     }
-
+    validate(){
+        error = false;
+        if(!this.state.password){
+            this.setState({
+                passwordError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                passwordError:false
+            })
+        }
+        if(!this.state.phone){
+            this.setState({
+                phoneError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                phoneError:false
+            })
+        }
+        return error;
+    }
     handleSignIN(){
+        if(this.validate()) return;
         data = {
             phone:this.state.phone,
             password:this.state.password,
         }
         this.props.login(data);
+        if(this.props.auth.user.token){
+            console.log('logged in successfully');
+            this.props.navigation.navigate('Home');
+        }  
     }
 
     render () {   
         console.log(this.props.categories);
-        if(this.props.auth.user.token){
-            console.log('logged in successfully');
-            this.props.navigation.navigate('Home');
-        }   
         return (
             <ImageBackground source={BG}  style={styles.pageBG}>
                 {/* HEADER */}
-                <Header title={localization.login} drawer={false}/>
+                <Header title={localization.login} drawer='stop'/>
                 
                 <View style={{justifyContent:'center', alignItems:'center', padding:hp('2%')}}>
                     <Image source={Logo} style={styles.logo}/>
@@ -68,6 +94,7 @@ class Signin extends Component{
 
                 <View style={{marginHorizontal:wp('10%')}}>
                     {this.props.auth.error?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{this.props.auth.error}</Text>:null}
+                    {this.state.phoneError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.phoneError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
@@ -82,6 +109,7 @@ class Signin extends Component{
                         <Image source={Call} style={styles.image4_5}/>
                     </View>
 
+                    {this.state.passwordError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.passwordError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}

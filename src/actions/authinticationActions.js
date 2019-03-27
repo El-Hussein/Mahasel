@@ -11,6 +11,10 @@ import {
     LOGOUT_SUCCESFULLY, 
     LOGOUT_FAILED, 
 
+    UPDATE_PROFILE_ATTEMPT,
+    UPDATE_PROFILE_SUCCESFULLY,
+    UPDATE_PROFILE_FAILED,
+    
     LOGIN_PASS,
 } from './constants';
 import axios from 'axios';
@@ -25,7 +29,7 @@ export function register(data) {
         dispatch(registerAttempt())
         var qs = require('qs');
         console.log(data)
-        if(!data.image) return dispatch(registerFailure(localization.selectImage))
+        // if(!data.image) return dispatch(registerFailure(localization.selectImage))
         RNFetchBlob.fetch('POST', 'http://mahasel.feckrah.com/public/api/auth/register', 
             {
                 // 'X-localization':'ar',
@@ -183,5 +187,69 @@ function loginPassSuccess(data){
     return {
         type: LOGIN_PASS,
         data
+    }
+}
+
+
+// update profile process
+export function updateProfile(data) {
+    console.log('did it reached here?')
+    return (dispatch) => {
+        dispatch(updateProfileAttempt())
+        var qs = require('qs');
+        console.log('from api: '+JSON.stringify(data))
+        if(!data.image) return dispatch(updateProfileFailure(localization.selectImage))
+        formData = new FormData();
+        formData.append('name', data.name)
+        formData.append('email', data.email)
+        formData.append('phone', data.phone)
+        formData.append('password', data.password)
+        formData.append('image', {uri:data.image, name:'profile.png', type:'image/png'})
+        fetch( 'http://mahasel.feckrah.com/public/user/update/profile', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + data.token
+            },
+            body: formData
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            // Perform success response.
+            console.log('respones: ' + JSON.stringify(responseJson));
+            if(responseJson.value){
+                console.warn('added successfully');
+                return(dispatch(updateProfileSuccess(responseJson.data)))
+            }
+            else{
+                console.warn('error');
+                return(dispatch(updateProfileFailure(responseJson.msg)))
+            } 
+        })
+        .catch((error) => {
+            console.log('error: ' + error)
+        });
+    }
+}
+
+function updateProfileAttempt() {
+    return {
+        type: UPDATE_PROFILE_ATTEMPT
+    }
+}
+
+function updateProfileSuccess(data) {
+
+    return {
+        type: UPDATE_PROFILE_SUCCESFULLY,
+        data
+    }
+}
+
+function updateProfileFailure(msg) {
+    return {
+        type: UPDATE_PROFILE_FAILED,
+        msg
     }
 }

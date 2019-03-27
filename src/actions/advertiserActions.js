@@ -73,38 +73,41 @@ export function addingAdvertiser(data) {
     return (dispatch) => {
         dispatch(addingAdvertiserAttempt())
         var qs = require('qs');
-        console.warn('from api'+data)
         if(!data.image) return dispatch(addingAdvertiserFailure(localization.selectImage))
-        RNFetchBlob.fetch('POST', 'http://mahasel.feckrah.com/public/api/profile/add_new_ad', 
-            {
-                // 'X-localization':'ar',
-                'Content-Type': 'multipart/form-data',
-                'RNFB-Response':'utf8',
-                Authorization :'Bearer '+data.token
-            }, [
-                { name: 'title', data: data.name },
-                { name: 'description', data: data.des },
-                { name: 'content', data: 'content' },
-                { name: 'region_id', data: 'region_id' },
-                { name: 'category_id', data: ''+data.cat_id },
-                { name: 'sub_category_id', data: ''+data.cat_id },
-                { name: 'price', data: ''+data.price },
-                { name: 'quantity', data: ''+data.quantity },
-                { name: 'phone', data: ''+data.phone },
-                { name: 'image', filename: 'image.png', type: 'image/png', data: data.image },
-                ]).then((response) => response.json())
-        .then(function (response) {
-            console.warn(response)
-            if(response.value){
-                console.warn('added successfully');
-                return(dispatch(addingAdvertiserSuccess(response.data)))
+        formData = new FormData();
+        formData.append('title', data.name)
+        formData.append('des', data.des)
+        formData.append('content', data.des)
+        formData.append('category_id', data.cat_id)
+        formData.append('sub_category_id', data.cat_id)
+        formData.append('region_id', data.cat_id)
+        formData.append('price', data.price)
+        formData.append('phone', data.phone)
+        formData.append('quantity', data.quantity)
+        formData.append('image', {uri:data.image, name:'profile.png', type:'image/png'})
+        fetch( 'http://mahasel.feckrah.com/public/api/profile/add_new_ad', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            'Authorization': 'Bearer ' + data.token
+            },
+            body: formData
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            // Perform success response.
+            console.log('respones' + JSON.stringify(responseJson));
+            if(responseJson.value){
+                return(dispatch(addingAdvertiserSuccess(responseJson.data)))
             }
             else{
-                console.warn('error');
-                return(dispatch(addingAdvertiserFailure(response.msg)))
+                return(dispatch(addingAdvertiserFailure(responseJson.msg)))
             } 
         })
-        .catch(err => console.log(err))
+        .catch((error) => {
+            console.log('error: ' + error)
+        });
     }
 }
 

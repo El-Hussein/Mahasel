@@ -1,6 +1,5 @@
 import React, { Component } from 'react'
-import { View, ScrollView ,Text, Image, Picker, TouchableOpacity, StyleSheet, TextInput } from 'react-native'
-import { Avatar } from 'react-native-elements'
+import { View, ActivityIndicator, AsyncStorage, I18nManager, ScrollView ,Text, Image, Picker, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import {
     widthPercentageToDP as wp,
     heightPercentageToDP as hp,
@@ -10,13 +9,12 @@ import {
 import PhotoUpload from 'react-native-photo-upload'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { register } from '../../actions/authinticationActions'
+import { updateProfile } from '../../actions/authinticationActions'
 
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import localization from '../../localization/localization'
 import Icon from 'react-native-vector-icons/FontAwesome';
-import Name from '../../assets/images/user.png'
 import ED from '../../assets/images/editPhoto.png'
 import cat from '../../assets/images/cat.png';
 import LAN from '../../assets/images/country.png'
@@ -25,79 +23,147 @@ import PH from '../../assets/images/phone.png'
 import ButtonBG from '../../assets/images/buttonBG.png'
 import ProfileDefault from '../../assets/images/profile_pic.png';
 
-
+import BG from '../../assets/images/bg.png';
+// import Logo from '../../assets/images/registerLogo.png';
+import Name from '../../assets/images/user.png';
+import Email from '../../assets/images/email.png';
+import Country from '../../assets/images/country.png';
+import City from '../../assets/images/city.png';
+import Phone from '../../assets/images/phone.png';
+import Lock from '../../assets/images/lock.png';
 
 class PersonalScreen extends Component {
        
-    static navigationOptions = () => ({
-        title: 'الشخصيه',
-        headerStyle: {
-            backgroundColor: '#74b245'
-        },
-        headerTintColor: 'white',
-    })
-
-
     constructor(props) {
         super()
+        user = props.auth.user;
         this.state = {
-            username:'',
-            email:'',
-            phone:'',
-            country:'',
-            city:'',
-            address:'',
-            photo: null,
-            editable: false
+            username:user.name,
+            email:user.email,
+            phone:user.phone,
+            country:user.country,
+            city:user.city,
+            address:user.address,
+            password:user.password,
+            passwordConfirm:user.passwordConfirm,
+            photo:user.image,
+            ImageSource: null,
+            data: null,
         }
+        this.updateProfileHandle = this.updateProfileHandle.bind(this)
+        // console.warn(user)
     }
 
+    async setLang(lang){
+        return await AsyncStorage.setItem('language', lang).then((data)=>{
+            if(lang=='ar'){
+                I18nManager.forceRTL(false);
+            }else if(lang=='en'){
+                I18nManager.forceRTL(true);
+            }        
+            console.log('language changed successfully: ' + data)
+          // async storage should take strings not objects as a paramaters
+        }).catch((error)=>{
+          console.log('ERROR SET: ' + error)
+        });
+    }
+    
+    updateProfileHandle(){
+            
+            data = {
+                name:this.state.username,
+                email:this.state.email,
+                phone:this.state.phone,
+                password:this.state.password,
+                country:this.state.country,
+                adddress:this.state.adddress,
+                city:this.state.city,
+                image:this.state.photo,
+                token:this.props.auth.user.token
+            }
+            // console.warn(data);
+            this.props.updateProfile(data);
+            console.log('did it arrived?')
+        
+    }
 
     
-    handleSave(){
-        alert('Save Button')
-    }
-
- 
-    handleImagePicker = () => {
-        const options = {}
-        ImagePicker.showImagePicker(options, response => {
-            console.log('response', response)
-            if (response.uri) {
-                this.setState({
-                    photo: response
-                })
+    selectPhotoTapped() {
+        const options = {
+            quality: 1.0,
+            maxWidth: 500,
+            maxHeight: 500,
+            storageOptions: {
+                skipBackup: true
             }
-
-        })
+        };
+    
+        ImagePicker.showImagePicker(options, (response) => {
+        console.log('Response = ', response);
+    
+        if (response.didCancel) {
+            console.log('User cancelled photo picker');
+        }
+        else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+        }
+        else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+        }
+        else {
+            let source = { uri: response.uri };
+    
+            this.setState({
+    
+            ImageSource: source,
+            data: response.data
+    
+            });
+        }
+        });
     }
+
     render() {
         const { photo } = this.state
         return (
-            <View style={{ flex: 1 }}>
+            <View style={{ flex: 1, backgroundColor:'white' }}>
                 <Header title={localization.profile} backScreen="SignIn" />
-                <View style={{ alignItems: 'center' }}>
-                    {/* {photo ?   */}
-                    
-                    {/* :
-                            <Avatar
-                                source={PRImage}
-                                xlarge
-                                onPress={this.handleImagePicker}
-                                rounded
-                            />} */}
-
-                </View>
 
 
-                <ScrollView style={{ marginHorizontal: wp('10%') }}>
-                <View style={{ height: hp('24.5%'), width: wp('85%'), justifyContent: 'center', alignItems: 'center' }}>
-                        <Image source={ProfileDefault} style={{ width: wp('24%'), borderWidth: wp('0.8%'), borderColor: 'white', height: wp('24%'), borderRadius: wp('9%'), backgroundColor: 'red', marginBottom: wp('1%') }} />
-                        <Text style={{ fontWeight: 'bold', fontSize: wp('4.2%'), color: '#242424' }}> محمد عبدالله إبراهيم </Text>
-                        <Text style={{ fontWeight: 'bold', fontSize: wp('4.2%'), color: '#242424' }}> شارع الرياض في وسط المدينه </Text>
+                <Image source={BG} style={{width:wp('100%'), height:hp('100%'), zIndex:-1, position:'absolute'}}/>
+                <ScrollView style={{height:hp('90%')}}>
+                
+                
+                
+
+                <View style={{marginHorizontal:wp('10%')}}>
+                    <Text style={[{backgroundColor:'#B7E212', fontSize:wp('5%'), fontWeight:'bold', padding:wp('2%'), width:'auto', alignSelf:'flex-end', marginVertical:hp('2%')}, !I18nManager.isRTL?{borderTopLeftRadius: wp('2%'), borderBottomLeftRadius: wp('2%') }:{borderTopRightRadius: wp('2%'), borderBottomRightRadius: wp('2%') }]}> {localization.changeLang} </Text>
+                    <View style={{backgroundColor:'#538805', marginBottom:hp('2%'), width:wp('80%'), justifyContent:'center', alignItems:'center', height:hp('6%'), borderRadius:wp('3.5%')}}>
+                        <Icon name="arrow-down" color="white" size={wp('3%')} style={{position:'absolute', left:wp('3%')}}/>
+                        <Picker
+                        selectedValue={this.state.cat_id}
+                        style={{color:'white', width:wp('50%'), marginRight:wp('0%')}}
+                        onValueChange={(itemValue, itemIndex) =>
+                            this.setLang(itemValue).then(()=>{
+                                console.warn('done');
+                            })
+                        }>
+                            <Picker.Item label={localization.language} value="0" />
+                            <Picker.Item label={localization.arabic} value="ar" />
+                            <Picker.Item label={localization.english} value="en" />
+                        </Picker>
+                        <Image source={cat} style={[styles.image4_5, {position:'absolute', right:wp('3%')}]}/>
                     </View>
+                    
+
+
+                    {this.props.auth.user.token?
+
+                    <View>
+                    <Text style={[{backgroundColor:'#B7E212', fontSize:wp('5%'), fontWeight:'bold', padding:wp('2%'), width:'auto', alignSelf:'flex-end', marginVertical:hp('2%')}, !I18nManager.isRTL?{borderTopLeftRadius: wp('2%'), borderBottomLeftRadius: wp('2%') }:{borderTopRightRadius: wp('2%'), borderBottomRightRadius: wp('2%') }]}> {localization.personalSettings} </Text>
+
+                     {this.props.auth.error?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{this.props.auth.error}</Text>:null}
                     <View style={styles.inputBorder} >
-                        <Image source={Name} style={[styles.image4_5, { marginLeft: wp('4%') }]} />
                         <TextInput
                             style={styles.textInput}
                             placeholder={localization.userName}
@@ -106,37 +172,13 @@ class PersonalScreen extends Component {
                             ref="username"
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
-                            editable={this.state.editable}
+                            value={this.state.username}
                             onChangeText={(username) => this.setState({username})}
                         />
-                        <TouchableOpacity onPress={() => this.setState({
-                            editable: !this.state.editable
-                        })}
-                            style={{ marginLeft: -30 }}
-                        >
-                            <Image
-                                source={ED}
-                                style={{ width: wp('4%'), height: hp('2%') }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={[styles.inputBorder, { backgroundColor: '#538805' }]}>
-                        <Icon name="arrow-down" color="white" size={wp('3%')} style={{ position: 'absolute', left: wp('3%') }} />
-                        <Picker
-                            selectedValue={this.state.language}
-                            style={{ color: 'white', width: wp('50%'), marginRight: wp('0%') }}
-                            onValueChange={(itemValue, itemIndex) =>
-                                this.setState({ language: itemValue })
-                            }>
-                            <Picker.Item label={localization.language} value="choose_language" />
-                            <Picker.Item label="العربيه" value="arabic" />
-                        </Picker>
-                        <Image source={cat} style={[styles.image4_5, { position: 'absolute', right: wp('3%') }]} />
+                        <Image source={Name} style={styles.image4_5}/>
                     </View>
 
                     <View style={styles.inputBorder} >
-                        <Image source={EMAIL} style={[styles.image4_5, { marginLeft: wp('4%') }]} />
                         <TextInput
                             style={styles.textInput}
                             placeholder={localization.email}
@@ -145,73 +187,28 @@ class PersonalScreen extends Component {
                             ref="email"
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
-                            editable={this.state.editable}
+                            value={this.state.email}
                             onChangeText={(email) => this.setState({email})}
                         />
-                        <TouchableOpacity onPress={() => this.setState({
-                            editable: !this.state.editable
-                        })}
-                            style={{ marginLeft: -30 }}
-                        >
-                            <Image
-                                source={ED}
-                                style={{ width: wp('4%'), height: hp('2%') }}
-                            />
-                        </TouchableOpacity>
+                        <Image source={Email} style={styles.image4_5}/>
                     </View>
-
-                    <View style={styles.inputBorder} >
-                        <Image source={EMAIL} style={[styles.image4_5, { marginLeft: wp('4%') }]} />
+                    
+                    {/* <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
-                            placeholder={localization.address}
+                            placeholder={localization.country}
                             autoCorrect={false}
                             returnKeyType="next"
-                            ref="address"
+                            ref="country"
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
-                            editable={this.state.editable}
-                            onChangeText={(address) => this.setState({address})}
+                            value={this.state.user}
+                            onChangeText={(country) => this.setState({country})}
                         />
-                        <TouchableOpacity onPress={() => this.setState({
-                            editable: !this.state.editable
-                        })}
-                            style={{ marginLeft: -30 }}
-                        >
-                            <Image
-                                source={ED}
-                                style={{ width: wp('4%'), height: hp('2%') }}
-                            />
-                        </TouchableOpacity>
+                        <Image source={Country} style={styles.image4_5}/>
                     </View>
 
                     <View style={styles.inputBorder} >
-                        <Image source={PH} style={[styles.image4_5, { marginLeft: wp('4%') }]} />
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder={localization.phoneNumber}
-                            autoCorrect={false}
-                            returnKeyType="next"
-                            ref="phoneNumber"
-                            placeholderTextColor="#A3A3A3"
-                            underlineColorAndroid="transparent"
-                            editable={this.state.editable}
-                            onChangeText={(phone) => this.setState({phone})}
-                        />
-                        <TouchableOpacity onPress={() => this.setState({
-                            editable: !this.state.editable
-                        })}
-                            style={{ marginLeft: -30 }}
-                        >
-                            <Image
-                                source={ED}
-                                style={{ width: wp('4%'), height: hp('2%') }}
-                            />
-                        </TouchableOpacity>
-                    </View>
-
-                    <View style={styles.inputBorder} >
-                        <Image source={EMAIL} style={[styles.image4_5, { marginLeft: wp('4%') }]} />
                         <TextInput
                             style={styles.textInput}
                             placeholder={localization.city}
@@ -220,58 +217,104 @@ class PersonalScreen extends Component {
                             ref="city"
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
-                            editable={this.state.editable}
+                            value={this.state.user}
                             onChangeText={(city) => this.setState({city})}
                         />
-                        <TouchableOpacity onPress={() => this.setState({
-                            editable: !this.state.editable
-                        })}
-                            style={{ marginLeft: -30 }}
-                        >
-                            <Image
-                                source={ED}
-                                style={{ width: wp('4%'), height: hp('2%') }}
-                            />
-                        </TouchableOpacity>
+                        <Image source={City} style={styles.image4_5}/>
                     </View>
 
+                    <View style={styles.inputBorder} >
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={localization.address}
+                            autoCorrect={false}
+                            returnKeyType="next"
+                            ref="address"
+                            placeholderTextColor="#A3A3A3"
+                            underlineColorAndroid="transparent"
+                            value={this.state.user}
+                            onChangeText={(address) => this.setState({address})}
+                        />
+                        <Image source={address} style={styles.image4_5}/>
+                    </View> */}
+
+                    <View style={styles.inputBorder} >
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={localization.phoneNumber}
+                            autoCorrect={false}
+                            returnKeyType="next"
+                            ref="phone"
+                            placeholderTextColor="#A3A3A3"
+                            underlineColorAndroid="transparent"
+                            value={this.state.phone}
+                            onChangeText={(phone) => this.setState({phone})}
+                        />
+                        <Image source={Phone} style={styles.image4_5}/>
+                    </View>
+                    
                     {/* image upload */}
-                    <View style={{ justifyContent: 'center', alignItems: 'center' }} >
-                        <PhotoUpload
-                            format="PNG"
-                            onPhotoSelect={avatar => {
-                                if (avatar) {
-                                    this.setState({
-                                        photo: avatar
-                                    })
-                                    console.log('Image base64 string: ', avatar)
-                                }
-                            }}
-                        >
+                    <View style={{justifyContent:'center', alignItems:'center'}}>
+                        <View style={{ alignItems: 'center', justifyContent: 'center'}}>
+                            {photo ? <Image
+                                source={!this.state.ImageSource?{uri:photo}:this.state.ImageSource}
+                                style={{ width: wp('20%'), height: wp('20%'), marginBottom:hp('1%'), borderRadius:wp('2%'), borderWidth:wp('0.5%'), borderColor:'white' }}
+                                /> : null}
+                        </View>
+                        <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} onPress={this.selectPhotoTapped.bind(this)}>
                             <View style={{ flexDirection: 'row', width: wp('30%'), height: hp('6%'), backgroundColor: '#538805', borderRadius: wp('3%'), marginVertical: hp('2%'), alignItems: 'center', justifyContent: 'center' }}>
                                 <Text style={{ textAlign: 'center', color: 'white', fontSize: wp('4%'), fontWeight: 'bold', marginRight: wp('2%') }}>
                                     {localization.addImage}
                                 </Text>
                                 <Icon name="image" size={wp('4%')} color="white" />
                             </View>
-                        </PhotoUpload>
-                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            {photo ? <Image
-                                source={{ uri: 'data:image/png;base64,' + photo }}
-                                style={{ width: wp('20%'), height: wp('20%'), marginBottom: hp('1%'), borderRadius: wp('10%'), borderWidth: wp('0.5%'), borderColor: 'white' }}
-                            /> : null}
-                        </View>
+                    
+                        </TouchableOpacity>
+                    </View>  
+                    
+                    <Text style={[{backgroundColor:'#B7E212', fontSize:wp('5%'), fontWeight:'bold', padding:wp('2%'), width:'auto', alignSelf:'flex-end', marginVertical:hp('2%')}, !I18nManager.isRTL?{borderTopLeftRadius: wp('2%'), borderBottomLeftRadius: wp('2%') }:{borderTopRightRadius: wp('2%'), borderBottomRightRadius: wp('2%') }]}> {localization.updatePassword} </Text>
+                    <View style={styles.inputBorder} >
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={localization.password}
+                            autoCorrect={false}
+                            returnKeyType="next"
+                            ref="password"
+                            placeholderTextColor="#A3A3A3"
+                            underlineColorAndroid="transparent"
+                            value={this.state.password}
+                            onChangeText={(password) => this.setState({password})}
+                        />
+                        <Image source={Lock} style={styles.image4_5}/>
                     </View>
+                    
+                    <View style={styles.inputBorder} >
+                        <TextInput
+                            style={styles.textInput}
+                            placeholder={localization.confirmPassword}
+                            autoCorrect={false}
+                            returnKeyType="next"
+                            ref="passwordConfirmation"
+                            placeholderTextColor="#A3A3A3"
+                            underlineColorAndroid="transparent"
+                            value={this.state.passwordConfirm}
+                            onChangeText={(passwordConfirm) => this.setState({passwordConfirm})}
+                        />
+                        <Image source={Lock} style={styles.image4_5}/>
+                    </View>
+                    
 
-                    <View style={{ justifyContent: 'flex-start', alignItems: 'center' }}>
-                    <TouchableOpacity style={{ justifyContent: 'center', alignItems: 'center', width: wp('40%'), height: hp('7%') }}
-                        onPress={this.handleSave}
-                    >
-                        <Image source={ButtonBG} style={{ width: wp('40%'), height: hp('7%'), right: wp('0%'), top: hp('0%'), resizeMode: 'contain', justifyContent: 'center', position: 'absolute' }} />
-                        <View>
-                            <Text style={styles.buttonText}> {localization.save} </Text>
-                        </View>
-                    </TouchableOpacity>
+                    <View style={{justifyContent:'flex-start', alignItems:'center'}}>
+                        <TouchableOpacity onPress={()=>this.updateProfileHandle()} style={{justifyContent:'center', alignItems:'center', width:wp('40%'), height:hp('7%')}}>
+                            <Image source={ButtonBG} style={{width:wp('40%'), height:hp('7%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>
+                            <View>
+                            {this.props.auth.isRegistring?<View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}><ActivityIndicator/><Text style={styles.buttonText}> {localization.register} </Text></View>:<Text style={styles.buttonText}> {localization.register} </Text>}
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                    </View>:
+                        null
+                    }
                 </View>
                 </ScrollView>
 
@@ -324,7 +367,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators({ register }, dispatch)
+        ...bindActionCreators({ updateProfile }, dispatch)
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(PersonalScreen);

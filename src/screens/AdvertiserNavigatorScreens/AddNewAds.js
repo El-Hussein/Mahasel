@@ -6,7 +6,8 @@ import {
     listenOrientationChange as lor,
     removeOrientationListener as rol
 } from 'react-native-responsive-screen';
-import PhotoUpload from 'react-native-photo-upload'
+import PhotoUpload from 'react-native-photo-upload';
+import ImagePicker from 'react-native-image-picker';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { bindActionCreators } from 'redux';
@@ -32,6 +33,9 @@ class AddAds extends Component {
         super()
         this.state = {
             photo: null,
+            ImageSource: null,
+            data: null,
+        
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -44,49 +48,48 @@ class AddAds extends Component {
             price:this.state.price,
             quantity:this.state.quantity,
             phone:this.state.phone,
-            image:this.state.photo,
+            image:this.state.ImageSource.uri,
             token:this.props.auth.user.token
-        }
-
-
-        console.warn('heeeey')
-        RNFetchBlob.fetch('POST', 'http://mahasel.feckrah.com/public/api/profile/add_new_ad', 
-        {
-            // 'X-localization':'ar',
-            'Content-Type': 'multipart/form-data',
-            'RNFB-Response':'utf8',
-            Authorization :'Bearer '+data.token
-        }, [
-            { name: 'title', data: data.name },
-            { name: 'description', data: data.des },
-            { name: 'content', data: 'content' },
-            { name: 'region_id', data: 1 },
-            { name: 'category_id', data: data.cat_id },
-            { name: 'sub_category_id', data: data.cat_id },
-            { name: 'price', data: ''+data.price },
-            { name: 'quantity', data: ''+data.quantity },
-            { name: 'phone', data: ''+data.phone },
-            { name: 'image', filename: 'image.png', type: 'image/png', data: data.image },
-            ]).then((response) =>response.json())
-        .then(function (response) {
-            console.warn(response)
-            if(response.value){
-                console.warn('added successfully');
-                // return(dispatch(addingAdvertiserSuccess(response.data)))
-            }
-            else{
-                console.warn('error data ' + response.msg);
-                // return(dispatch(addingAdvertiserFailure(response.msg)))
-            } 
-        })
-        .catch(err => console.warn('error '+err))
-        console.warn('heeey')
-
-
+        }        
 
         console.warn(data);
-        // this.props.addingAdvertiser(data);
-        console.log('did it arrived?')
+        this.props.addingAdvertiser(data);
+        console.warn('did it arrived?')
+    }
+
+    selectPhotoTapped() {
+        const options = {
+            quality: 1.0,
+            maxWidth: 500,
+            maxHeight: 500,
+            storageOptions: {
+                skipBackup: true
+            }
+        };
+    
+        ImagePicker.showImagePicker(options, (response) => {
+        console.log('Response = ', response);
+    
+        if (response.didCancel) {
+            console.log('User cancelled photo picker');
+        }
+        else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+        }
+        else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+        }
+        else {
+            let source = { uri: response.uri };
+    
+            this.setState({
+    
+            ImageSource: source,
+            data: response.data
+    
+            });
+        }
+        });
     }
 
     renderPickerItem(){
@@ -97,11 +100,6 @@ class AddAds extends Component {
 
     render() {
         const { photo } = this.state
-        console.warn(this.props.ads)
-        // let pickerCategories = categories.map( (category, i) => {
-        //     return <Picker.Item key={i} value={category.id} label={category.name} />
-        // });
-        // console.warn(pickerCategories)
         return (
             <View style={{ flex: 1 }}>
                 <Image
@@ -201,32 +199,22 @@ class AddAds extends Component {
                     </View>
 
                     {/* image upload */}
-                    <View style={{justifyContent:'center', alignItems:'center'}} >
-                        <PhotoUpload  
-                        format="PNG"  
-                        onPhotoSelect={avatar => {
-                            if (avatar) {
-                                this.setState({
-                                    photo:avatar
-                                })
-                            console.log('Image base64 string: ', avatar)
-                            }
-                        }}
-                        >
-                            <View style={{ flexDirection: 'row', width: wp('30%'), height: hp('6%'), backgroundColor: '#538805', borderRadius: wp('3%'), marginVertical: hp('2%'), alignItems: 'center', justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', color: 'white', fontSize: wp('4%'), fontWeight: 'bold', marginRight: wp('2%') }}>
-                                    {localization.addImage}
-                                </Text>
-                                <Icon name="image" size={wp('4%')} color="white" />
-                            </View>
-                        </PhotoUpload>
+                    <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} onPress={this.selectPhotoTapped.bind(this)}>
+ 
                         <View style={{ alignItems: 'center', justifyContent: 'center'}}>
                             {photo ? <Image
-                                source={{ uri: 'data:image/png;base64,' + photo }}
+                                source={this.state.ImageSource}
                                 style={{ width: wp('20%'), height: wp('20%'), marginBottom:hp('1%'), borderRadius:wp('10%'), borderWidth:wp('0.5%'), borderColor:'white' }}
                             /> : null}
                         </View>
-                    </View>
+                        <View style={{ flexDirection: 'row', width: wp('30%'), height: hp('6%'), backgroundColor: '#538805', borderRadius: wp('3%'), marginVertical: hp('2%'), alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ textAlign: 'center', color: 'white', fontSize: wp('4%'), fontWeight: 'bold', marginRight: wp('2%') }}>
+                                {localization.addImage}
+                            </Text>
+                            <Icon name="image" size={wp('4%')} color="white" />
+                        </View>
+                
+                    </TouchableOpacity>
 
                     </ScrollView>
                     <View style={{justifyContent:'flex-start', alignItems:'center', marginTop:hp('2%')}}>

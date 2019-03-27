@@ -26,7 +26,7 @@ class Header extends React.Component {
                     <Icon name={!I18nManager.isRTL?"arrow-left":"arrow-right"} color="#538805" size={wp('7%')}/>
                 </TouchableOpacity>
                 <Text style={{fontSize:wp('5%'), fontWeight:'bold', textAlign:'right', color:'#538805', paddingRight:wp('2%')}}> {this.props.title} </Text>
-                <TouchableOpacity  style={{position:'relative', right:wp('0%')}} onPress={()=>this.props.navigation.toggleDrawer()}>
+                <TouchableOpacity  style={{position:'relative', right:wp('0%')}} onPress={()=>this.props.drawer=='stop'?null:this.props.navigation.toggleDrawer()}>
                     <Icon name="bars" color="#538805" size={wp('7%')}/>
                 </TouchableOpacity>
             </View>

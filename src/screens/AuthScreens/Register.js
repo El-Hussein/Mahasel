@@ -43,58 +43,158 @@ class Register extends Component{
         this.handleRegister = this.handleRegister.bind(this);
         this.state = {
             username:'',
+            usernameError:false,
             email:'',
+            emailError:false,
             phone:'',
+            phoneError:false,
             country:'',
+            countryError:false,
             city:'',
+            cityError:false,
             address:'',
+            addressError:false,
             password:'',
+            passwordError:false,
             passwordConfirm:'',
+            passwordConfirmError:false,
             photo:null,
-            passwordConfirmError:null,
+            photoError:false,
+            passwordMatch:null,
         }
         this.handleRegister = this.handleRegister.bind(this)
     }
 
-
-    
-    handleRegister(){
-        if(this.state.password !== this.state.passwordConfirm){
+    validate(){
+        error = false;
+        if(!this.state.username){
             this.setState({
-                passwordConfirmError:localization.confirmPasswordError
+                usernameError:true
             })
+            error = true;
         }else{
             this.setState({
-                passwordConfirmError:null
+                usernameError:false
             })
-            
-            data = {
-                name:this.state.username,
-                email:this.state.email,
-                phone:this.state.phone,
-                password:this.state.password,
-                country:this.state.country,
-                adddress:this.state.adddress,
-                city:this.state.city,
-                image:this.state.photo,
-            }
-
-
-            // console.warn(data);
-            this.props.register(data);
-            console.log('did it arrived?')
+        }
+        if(!this.state.email){
+            this.setState({
+                emailError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                emailError:false
+            })
+        }
+        if(!this.state.phone){
+            this.setState({
+                phoneError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                phoneError:false
+            })
+        }
+        /*if(!this.state.country){
+            this.setState({
+                countryError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                countryError:false
+            })
+        }
+        if(!this.state.city){
+            this.setState({
+                cityError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                cityError:false
+            })
+        }
+        if(!this.state.address){
+            this.setState({
+                addressError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                addressError:false
+            })
+        }*/
+        if(!this.state.password){
+            this.setState({
+                passwordError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                passwordError:false
+            })
+        }
+        if(!this.state.passwordConfirm){
+            this.setState({
+                passwordConfirmError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                passwordConfirmError:false
+            })
+        }
+        if(!this.state.photo){
+            this.setState({
+                photoError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                photoError:false
+            })
+        }
+        if(this.state.password !== this.state.passwordConfirm){
+            this.setState({
+                passwordMatch:localization.confirmPasswordError
+            })
+            error = true;
+        }else{
+            this.setState({
+                passwordMatch:null
+            })
+        }
+        return error;
+    }
+    
+    handleRegister(){
+        if(this.validate()) return;
+        data = {
+            name:this.state.username,
+            email:this.state.email,
+            phone:this.state.phone,
+            password:this.state.password,
+            country:this.state.country,
+            adddress:this.state.adddress,
+            city:this.state.city,
+            image:this.state.photo,
+        }
+        this.props.register(data);        
+        if(!this.props.auth.error){
+            alert('Registered Successfully');
+            this.props.navigation.navigate('Home');
         }
     }
-
-    
-    
 
     render () {
         const { photo } = this.state
          return (
             <ImageBackground source={BG}  style={styles.pageBG}>
                 {/* HEADER */}
-                <Header title={localization.signIn} backScreen="SignIn"/>
+                <Header title={localization.signIn} drawer="stop"/>
                 <ScrollView style={{height:hp('90%')}}>
                 
                 
@@ -104,6 +204,7 @@ class Register extends Component{
 
                 <View style={{marginHorizontal:wp('10%')}}>
                     {this.props.auth.error?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{this.props.auth.error}</Text>:null}
+                    {this.state.usernameError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.usernameError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
@@ -117,7 +218,7 @@ class Register extends Component{
                         />
                         <Image source={Name} style={styles.image4_5}/>
                     </View>
-
+                    {this.state.emailError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.emailError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
@@ -173,7 +274,7 @@ class Register extends Component{
                         />
                         <Image source={address} style={styles.image4_5}/>
                     </View> */}
-
+                    {this.state.phoneError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.phoneError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
@@ -187,7 +288,7 @@ class Register extends Component{
                         />
                         <Image source={Phone} style={styles.image4_5}/>
                     </View>
-                    
+                    {this.state.passwordError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.passwordError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
@@ -201,7 +302,7 @@ class Register extends Component{
                         />
                         <Image source={Lock} style={styles.image4_5}/>
                     </View>
-
+                    {this.state.passwordConfirmError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.passwordConfirmError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
@@ -234,7 +335,7 @@ class Register extends Component{
                             <Icon name="image" size={wp('4%')} color="white" />
                         </TouchableOpacity>
                     </View> */}
-
+                    {this.state.photoError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.selectImage}</Text>:null}
                     {/* image upload */}
                     <View style={{justifyContent:'center', alignItems:'center'}} >
                         <PhotoUpload  
