@@ -43,6 +43,11 @@ class Signin extends Component{
             phoneError:false,
             passwordErrophoneError:false,
         } 
+        // console.log(props.auth)
+        if(props.auth.userToken){
+            // console.log('logged in successfully');
+            props.navigation.navigate('Home');
+        }
     }
     validate(){
         error = false;
@@ -74,15 +79,16 @@ class Signin extends Component{
             phone:this.state.phone,
             password:this.state.password,
         }
-        this.props.login(data);
-        if(this.props.auth.user.token){
-            console.log('logged in successfully');
-            this.props.navigation.navigate('Home');
-        }  
+        this.props.login(data);  
     }
 
     render () {   
-        console.log(this.props.categories);
+        // console.log(this.props.categories);
+        // console.log(this.props.auth)
+        if(this.props.auth.userToken != null){
+            // this.refs.toast.show(localization.signed);
+            this.props.navigation.navigate('Home');
+        }
         return (
             <ImageBackground source={BG}  style={styles.pageBG}>
                 {/* HEADER */}
@@ -117,6 +123,7 @@ class Signin extends Component{
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="password"
+                            secureTextEntry={true}
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             onChangeText={(password) => this.setState({password})}

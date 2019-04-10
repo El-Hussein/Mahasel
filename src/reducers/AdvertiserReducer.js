@@ -98,7 +98,6 @@ export default function AdvertiserReducer(state = initialState, action) {
             return {
                 ...state,
                 isDeleting: false,
-                ads: {},
                 error:null,
             }
         case DELETING_FAILED:

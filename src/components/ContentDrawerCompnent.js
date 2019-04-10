@@ -105,7 +105,7 @@ class ContentDrawerComponent extends Component{
                                 AC:{}
                             });
                         }
-                        if(!this.props.auth.user.name && item.id === 6){
+                        if(!this.props.auth.userToken && item.id === 5){
                             console.log('shuold disappear')
                             return;
                         } 

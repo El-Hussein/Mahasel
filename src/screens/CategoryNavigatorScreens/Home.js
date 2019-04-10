@@ -45,6 +45,11 @@ class Home extends Component {
         }
     }
 
+    // componentWillMount(){
+    //     if(!this.props.categories.categories)
+    //         this.props.fetchCategories();
+    // }
+
     render(){
         const { categories, isFetching } = this.props.categories
         console.log(this.props.categories)

@@ -96,6 +96,22 @@ export default localization = new LocalizedStrings({
         passwordError:'you have to enter password',
         passwordConfirmError:'you have to enter passwordConfirm',
         photoError:'you have to enter photo',
+        priceError:'you have to enter price',
+        catError:'you have to enter category',
+        desError:'you have to enter description',
+        quantityError:'you have to enter quantity',
+        nameError:'you have to enter name',
+        addressError:'you have to enter address',
+        cityError:'you have to choose city',
+        CountryError:'you have to choose country',
+        addAds:"Add Advertisment",
+        kilo:'kilo',
+        update:'update',
+        updated:'updated successfully',
+        deleted:'Advertiser deleted successfully',
+        added:' advertisment added succfully',
+        languageUpdated:'please refresh app to apply changes',
+
 
 
 
@@ -198,7 +214,22 @@ export default localization = new LocalizedStrings({
         passwordConfirmError:'هذا الحقل مطلوب',
         photoError:'هذا الحقل مطلوب',
         passwordConfirmErrorError:'هذا الحقل مطلوب',
+        priceError:'هذا الحقل مطلوب',
+        catError:'هذا الحقل مطلوب',
+        desError:'هذا الحقل مطلوب',
+        quantityError:'هذا الحقل مطلوب',
+        nameError:'هذا الحقل مطلوب',
+        addressError:'هذا الحقل مطلوب',
+        cityError:'هذا الحقل مطلوب',
+        CountryError:'هذا الحقل مطلوب',
+        addAds:"اضف اعلان",
+        kilo:'كيلو',
 
+        update:'تحديث',
+        updated:'تم التحديث بنجاح',
+        deleted:'تم حذف الاعلان بنجاح ',
+        added:'تم اضافة الاعلان بنجاح',
+        languageUpdated:'من فضلك اعد فتح التطبيق حتي يتم تحديث التغيرات',
 
 
         selectImage:'اختر صورة من فضلك'

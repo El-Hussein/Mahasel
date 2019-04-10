@@ -11,7 +11,7 @@ import {
     EDITTED_SUCCESFULLY, 
     EDITING_FAILED, 
 
-    DELETEING_ATTEMPT, 
+    DELETING_ATTEMPT, 
     DELETED_SUCCESFULLY, 
     DELETEING_FAILED, 
 } from './constants';
@@ -19,6 +19,7 @@ import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
 import {AsyncStorage} from 'react-native';
 import localization from '../localization/localization';
+import { LocalStorage } from '../localStorage/LocalStorage';
 
 // fetching ads
 export function fetchAds(token) {
@@ -69,14 +70,13 @@ function getAdsFailure() {
 
 // addingAdvertiser process
 export function addingAdvertiser(data) {
-
+    // langauge().then((respone)=>{console.warn('res ' + respone)});
     return (dispatch) => {
         dispatch(addingAdvertiserAttempt())
-        var qs = require('qs');
         if(!data.image) return dispatch(addingAdvertiserFailure(localization.selectImage))
         formData = new FormData();
         formData.append('title', data.name)
-        formData.append('des', data.des)
+        formData.append('description', data.des)
         formData.append('content', data.des)
         formData.append('category_id', data.cat_id)
         formData.append('sub_category_id', data.cat_id)
@@ -90,7 +90,8 @@ export function addingAdvertiser(data) {
             headers: {
             'Accept': 'application/json',
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + data.token
+            'Authorization': 'Bearer ' + data.token,
+            'X-localization' : LocalStorage.lang
             },
             body: formData
         })
@@ -191,28 +192,33 @@ function editingAdvertiserFailure(msg) {
 
 
 // deletingAdvertiser process
-export function deletingAdvertiser() {
-    
+export function deleteAds(token, id) {
+    console.warn('entered')
     return (dispatch) => {
-        dispatch(deletingAdvertiserAttempt());
-        deleteUser(dispatch);
+        // dispatch(deletingAdvertiserAttempt());
+        axios('http://mahasel.feckrah.com/public/api/profile/delete_ad/' + id,{
+            method:'DELETE',
+            headers:{
+                'Authorization':'Bearer ' + token
+            }
+        })
+            .then(function (response) {
+                console.warn('Ads API response: ' + (response.data))
+                if(response.data.value){
+                    return(dispatch(deletingAdvertiserSuccess()))
+                }
+                else{
+                    return(dispatch(deletingAdvertiserFailure(response.data)))
+                } 
+            })
+            .catch(err => {dispatch(deletingAdvertiserFailure(err));console.warn(err)})
     }
-}
-
-async function deleteUser(dispatch){
-    return await AsyncStorage.removeItem('user').then((data)=>{
-      console.log('user deleted successfully, ' + data)
-      dispatch(deletingAdvertiserSuccess());
-    }).catch((error)=>{
-      console.log('ERROR deleting user: ' + error)
-      dispatch(deletingAdvertiserFailure());
-    });
 }
 
 function deletingAdvertiserAttempt() {
 
     return {
-        type: DELETEING_ATTEMPT
+        type: DELETING_ATTEMPT,
     }
 }
 

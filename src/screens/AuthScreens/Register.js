@@ -8,7 +8,8 @@ import {
     TouchableOpacity,
     StyleSheet,
     ScrollView,
-    ActivityIndicator
+    ActivityIndicator,
+    Picker
 } from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -17,14 +18,16 @@ import {
     removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import ImagePicker from 'react-native-image-picker'
-import PhotoUpload from 'react-native-photo-upload'
+import ImagePicker from 'react-native-image-picker';
+import PhotoUpload from 'react-native-photo-upload';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { fetchCities } from '../../actions/locationActions';
 
 import Header from '../../components/Header';
 import localization from '../../localization/localization';
 import { register } from '../../actions/authinticationActions';
+import Toast, {DURATION} from 'react-native-easy-toast'
 
 import BG from '../../assets/images/bg.png';
 import Logo from '../../assets/images/registerLogo.png';
@@ -62,7 +65,6 @@ class Register extends Component{
             photoError:false,
             passwordMatch:null,
         }
-        this.handleRegister = this.handleRegister.bind(this)
     }
 
     validate(){
@@ -97,7 +99,7 @@ class Register extends Component{
                 phoneError:false
             })
         }
-        /*if(!this.state.country){
+        if(!this.state.country){
             this.setState({
                 countryError:true
             })
@@ -126,7 +128,7 @@ class Register extends Component{
             this.setState({
                 addressError:false
             })
-        }*/
+        }
         if(!this.state.password){
             this.setState({
                 passwordError:true
@@ -147,7 +149,7 @@ class Register extends Component{
                 passwordConfirmError:false
             })
         }
-        if(!this.state.photo){
+        if(!this.state.ImageSource){
             this.setState({
                 photoError:true
             })
@@ -169,6 +171,55 @@ class Register extends Component{
         }
         return error;
     }
+
+    clearAdsForm(){
+        this.setState({
+            username:null,
+            email:null,
+            phone:null,
+            country:'0',
+            cities:'0',
+            address:null,
+            password:null,
+            passwordConfirm:null,
+            photo:null,
+        })
+    }
+
+    selectPhotoTapped() {
+        const options = {
+            quality: 1.0,
+            maxWidth: 500,
+            maxHeight: 500,
+            storageOptions: {
+                skipBackup: true
+            }
+        };
+    
+        ImagePicker.showImagePicker(options, (response) => {
+        console.log('Response = ', response);
+    
+        if (response.didCancel) {
+            console.log('User cancelled photo picker');
+        }
+        else if (response.error) {
+            console.log('ImagePicker Error: ', response.error);
+        }
+        else if (response.customButton) {
+            console.log('User tapped custom button: ', response.customButton);
+        }
+        else {
+            let source = { uri: response.uri };
+    
+            this.setState({
+    
+            ImageSource: source,
+            data: response.data
+    
+            });
+        }
+        });
+    }
     
     handleRegister(){
         if(this.validate()) return;
@@ -178,23 +229,35 @@ class Register extends Component{
             phone:this.state.phone,
             password:this.state.password,
             country:this.state.country,
-            adddress:this.state.adddress,
-            city:this.state.city,
-            image:this.state.photo,
+            city:this.state.city+'kkkkkk',
+            address:this.state.address,
+            image:this.state.ImageSource.uri,
         }
-        this.props.register(data);        
-        if(!this.props.auth.error){
-            alert('Registered Successfully');
-            this.props.navigation.navigate('Home');
-        }
+        this.props.register(data);  
+        console.warn(this.props.auth)      
+    }
+
+    renderPickerCountryItem(){
+        return this.props.location.countries.map( (country, i) => {
+            return <Picker.Item key={i} value={country.id} label={country.name} />
+        });
+    }
+    renderPickerCityItem(){
+        return this.props.location.cities.map( (city, i) => {
+            return <Picker.Item key={i} value={city.id} label={city.name} />
+        });
     }
 
     render () {
-        const { photo } = this.state
-         return (
+        const { ImageSource } = this.state
+        if(this.props.auth.userToken != null){
+            this.refs.toast.show(localization.registered);
+            this.props.navigation.navigate('Home');
+        }
+        return (
             <ImageBackground source={BG}  style={styles.pageBG}>
                 {/* HEADER */}
-                <Header title={localization.signIn} drawer="stop"/>
+                <Header title={localization.register} drawer="stop"/>
                 <ScrollView style={{height:hp('90%')}}>
                 
                 
@@ -233,34 +296,39 @@ class Register extends Component{
                         <Image source={Email} style={styles.image4_5}/>
                     </View>
                     
-                    {/* <View style={styles.inputBorder} >
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder={localization.country}
-                            autoCorrect={false}
-                            returnKeyType="next"
-                            ref="country"
-                            placeholderTextColor="#A3A3A3"
-                            underlineColorAndroid="transparent"
-                            onChangeText={(country) => this.setState({country})}
-                        />
-                        <Image source={Country} style={styles.image4_5}/>
+                    {this.state.countryError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.countryError}</Text>:null}
+                    <View style={{backgroundColor:'#538805', marginBottom:hp('2%'), width:wp('80%'), justifyContent:'center', alignItems:'center', height:hp('6%'), borderRadius:wp('3.5%')}}>
+                        <Icon name="arrow-down" color="white" size={wp('3%')} style={{position:'absolute', left:wp('3%')}}/>
+                        <Picker
+                        selectedValue={this.state.country}
+                        style={{color:'white', width:wp('50%'), marginRight:wp('0%')}}
+                        onValueChange={(itemValue, itemIndex) =>{
+                            console.warn(itemValue)
+                            this.props.fetchCities(itemValue);
+                            this.setState({country: itemValue})
+                        }}>
+                            <Picker.Item label={localization.country} value="0" />
+                            {this.props.location.countries?this.renderPickerCountryItem():<Picker.Item label=" "/>}
+                        </Picker>
+                        <Image source={Country} style={[styles.image4_5, {position:'absolute', right:wp('3%')}]}/>
                     </View>
 
-                    <View style={styles.inputBorder} >
-                        <TextInput
-                            style={styles.textInput}
-                            placeholder={localization.city}
-                            autoCorrect={false}
-                            returnKeyType="next"
-                            ref="city"
-                            placeholderTextColor="#A3A3A3"
-                            underlineColorAndroid="transparent"
-                            onChangeText={(city) => this.setState({city})}
-                        />
-                        <Image source={City} style={styles.image4_5}/>
+                    {this.state.cityError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.cityError}</Text>:null}
+                    <View style={{backgroundColor:'#538805', marginBottom:hp('2%'), width:wp('80%'), justifyContent:'center', alignItems:'center', height:hp('6%'), borderRadius:wp('3.5%')}}>
+                        <Icon name="arrow-down" color="white" size={wp('3%')} style={{position:'absolute', left:wp('3%')}}/>
+                        <Picker
+                        selectedValue={this.state.city}
+                        style={{color:'white', width:wp('50%'), marginRight:wp('0%')}}
+                        onValueChange={(itemValue, itemIndex) =>
+                            this.setState({city: itemValue})
+                        }>
+                            <Picker.Item label={localization.city} value="0" />
+                            {this.props.location.cities?this.renderPickerCityItem():<Picker.Item label=" "/>}
+                        </Picker>
+                        <Image source={City} style={[styles.image4_5, {position:'absolute', right:wp('3%')}]}/>
                     </View>
 
+                    {this.state.addressError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.addressError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
@@ -272,8 +340,8 @@ class Register extends Component{
                             underlineColorAndroid="transparent"
                             onChangeText={(address) => this.setState({address})}
                         />
-                        <Image source={address} style={styles.image4_5}/>
-                    </View> */}
+                        <Image source={City} style={styles.image4_5}/>
+                    </View>
                     {this.state.phoneError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.phoneError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
@@ -296,6 +364,7 @@ class Register extends Component{
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="password"
+                            secureTextEntry={true}
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             onChangeText={(password) => this.setState({password})}
@@ -310,6 +379,7 @@ class Register extends Component{
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="passwordConfirm"
+                            secureTextEntry={true}
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             onChangeText={(passwordConfirm) => this.setState({passwordConfirm})}
@@ -337,32 +407,22 @@ class Register extends Component{
                     </View> */}
                     {this.state.photoError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.selectImage}</Text>:null}
                     {/* image upload */}
-                    <View style={{justifyContent:'center', alignItems:'center'}} >
-                        <PhotoUpload  
-                        format="PNG"  
-                        onPhotoSelect={avatar => {
-                            if (avatar) {
-                                this.setState({
-                                    photo:avatar
-                                })
-                            console.log('Image base64 string: ', avatar)
-                            }
-                        }}
-                        >
-                            <View style={{ flexDirection: 'row', width: wp('30%'), height: hp('6%'), backgroundColor: '#538805', borderRadius: wp('3%'), marginVertical: hp('2%'), alignItems: 'center', justifyContent: 'center' }}>
-                                <Text style={{ textAlign: 'center', color: 'white', fontSize: wp('4%'), fontWeight: 'bold', marginRight: wp('2%') }}>
-                                    {localization.addImage}
-                                </Text>
-                                <Icon name="image" size={wp('4%')} color="white" />
-                            </View>
-                        </PhotoUpload>
+                    <TouchableOpacity style={{justifyContent:'center', alignItems:'center'}} onPress={this.selectPhotoTapped.bind(this)}>
+ 
                         <View style={{ alignItems: 'center', justifyContent: 'center'}}>
-                            {photo ? <Image
-                                source={{ uri: 'data:image/png;base64,' + photo }}
+                            {ImageSource ? <Image
+                                source={this.state.ImageSource}
                                 style={{ width: wp('20%'), height: wp('20%'), marginBottom:hp('1%'), borderRadius:wp('10%'), borderWidth:wp('0.5%'), borderColor:'white' }}
                             /> : null}
                         </View>
-                    </View>
+                        <View style={{ flexDirection: 'row', width: wp('30%'), height: hp('6%'), backgroundColor: '#538805', borderRadius: wp('3%'), marginVertical: hp('2%'), alignItems: 'center', justifyContent: 'center' }}>
+                            <Text style={{ textAlign: 'center', color: 'white', fontSize: wp('4%'), fontWeight: 'bold', marginRight: wp('2%') }}>
+                                {localization.addImage}
+                            </Text>
+                            <Icon name="image" size={wp('4%')} color="white" />
+                        </View>
+                
+                    </TouchableOpacity>
 
                     <View style={{justifyContent:'flex-start', alignItems:'center'}}>
                         <TouchableOpacity onPress={()=>this.handleRegister()} style={{justifyContent:'center', alignItems:'center', width:wp('40%'), height:hp('7%')}}>
@@ -374,6 +434,7 @@ class Register extends Component{
                     </View>
                 </View>
                 </ScrollView>
+                <Toast ref="toast"/>
             </ImageBackground>
          )
     }
@@ -381,13 +442,14 @@ class Register extends Component{
 
 function mapStateToProps(state) {
     return {
-        auth: state.auth
+        auth: state.auth,
+        location: state.location,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators({ register }, dispatch)
+        ...bindActionCreators({ register, fetchCities }, dispatch)
     }
 }
 

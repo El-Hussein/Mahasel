@@ -18,6 +18,7 @@ import Header from '../../components/Header';
 import BG from '../../assets/images/Artboard4/bg.png';
 import Logo from '../../assets/images/Artboard4/logo.png';
 import ButtonBG from '../../assets/images/Artboard3/ButtonBG.png';
+import localization from '../../localization/localization';
 
 class Artboard4 extends Component{
 
@@ -30,7 +31,7 @@ class Artboard4 extends Component{
             <ImageBackground source={BG}  style={styles.pageBG}>
 
                 {/* HEADER */}
-                <Header title="الشروط والأحكام"/>
+                <Header title={localization.termsConditions}/>
                 
                 <View style={{justifyContent:'center', alignItems:'center', marginVertical:hp('1%')}}>
                     <Image source={Logo} style={{width:wp('25%'), height:hp('16%'), resizeMode:'contain'}}/>
@@ -46,7 +47,7 @@ class Artboard4 extends Component{
                     <TouchableOpacity style={{justifyContent:'center', alignItems:'center', width:wp('38%'), height:hp('10%')}}>
                             <Image source={ButtonBG} style={{width:wp('38%'), height:hp('10%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>
                             <View>
-                                <Text style={styles.buttonText}> موافق </Text>
+                                <Text style={styles.buttonText}> {localization.agree} </Text>
                             </View>
                         </TouchableOpacity>
                     </View>

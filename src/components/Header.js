@@ -6,6 +6,7 @@ import {
     View,
     Text,
     TouchableOpacity,
+    StatusBar
 } from 'react-native'
 import {
     widthPercentageToDP as wp,
@@ -22,6 +23,7 @@ class Header extends React.Component {
     render() {
         return (
             <View style={styles.header}>
+                <StatusBar backgroundColor="#90C002" barStyle="dark-content" />
                 <TouchableOpacity style={{position:'absolute', left:wp('4%')}} onPress={()=>this.props.navigation.dispatch(NavigationActions.back())}>
                     <Icon name={!I18nManager.isRTL?"arrow-left":"arrow-right"} color="#538805" size={wp('7%')}/>
                 </TouchableOpacity>

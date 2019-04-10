@@ -10,10 +10,12 @@ import PhotoUpload from 'react-native-photo-upload'
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { updateProfile } from '../../actions/authinticationActions'
+import Toast, {DURATION} from 'react-native-easy-toast'
 
 import ImagePicker from 'react-native-image-picker'
 import Header from '../../components/Header'
 import localization from '../../localization/localization'
+import {LocalStorage} from '../../localStorage/LocalStorage';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import ED from '../../assets/images/editPhoto.png'
 import cat from '../../assets/images/cat.png';
@@ -47,6 +49,7 @@ class PersonalScreen extends Component {
             password:user.password,
             passwordConfirm:user.passwordConfirm,
             photo:user.image,
+            lang:LocalStorage.lang,
             ImageSource: null,
             data: null,
         }
@@ -62,6 +65,7 @@ class PersonalScreen extends Component {
                 I18nManager.forceRTL(true);
             }        
             console.log('language changed successfully: ' + data)
+            this.refs.toast.show(localization.languageUpdated);
           // async storage should take strings not objects as a paramaters
         }).catch((error)=>{
           console.log('ERROR SET: ' + error)
@@ -79,11 +83,10 @@ class PersonalScreen extends Component {
                 adddress:this.state.adddress,
                 city:this.state.city,
                 image:this.state.photo,
-                token:this.props.auth.user.token
+                token:this.props.auth.userToken
             }
-            // console.warn(data);
             this.props.updateProfile(data);
-            console.log('did it arrived?')
+            this.refs.toast.show(localization.updated);
         
     }
 
@@ -127,7 +130,7 @@ class PersonalScreen extends Component {
         const { photo } = this.state
         return (
             <View style={{ flex: 1, backgroundColor:'white' }}>
-                <Header title={localization.profile} backScreen="SignIn" />
+                <Header title={localization.settings} backScreen="SignIn" />
 
 
                 <Image source={BG} style={{width:wp('100%'), height:hp('100%'), zIndex:-1, position:'absolute'}}/>
@@ -141,13 +144,16 @@ class PersonalScreen extends Component {
                     <View style={{backgroundColor:'#538805', marginBottom:hp('2%'), width:wp('80%'), justifyContent:'center', alignItems:'center', height:hp('6%'), borderRadius:wp('3.5%')}}>
                         <Icon name="arrow-down" color="white" size={wp('3%')} style={{position:'absolute', left:wp('3%')}}/>
                         <Picker
-                        selectedValue={this.state.cat_id}
+                        selectedValue={this.state.lang}
                         style={{color:'white', width:wp('50%'), marginRight:wp('0%')}}
-                        onValueChange={(itemValue, itemIndex) =>
+                        onValueChange={(itemValue, itemIndex) =>{
+                            this.setState({
+                                lang:itemValue
+                            })
                             this.setLang(itemValue).then(()=>{
                                 console.warn('done');
                             })
-                        }>
+                        }}>
                             <Picker.Item label={localization.language} value="0" />
                             <Picker.Item label={localization.arabic} value="ar" />
                             <Picker.Item label={localization.english} value="en" />
@@ -157,7 +163,7 @@ class PersonalScreen extends Component {
                     
 
 
-                    {this.props.auth.user.token?
+                    {this.props.auth.userToken?
 
                     <View>
                     <Text style={[{backgroundColor:'#B7E212', fontSize:wp('5%'), fontWeight:'bold', padding:wp('2%'), width:'auto', alignSelf:'flex-end', marginVertical:hp('2%')}, !I18nManager.isRTL?{borderTopLeftRadius: wp('2%'), borderBottomLeftRadius: wp('2%') }:{borderTopRightRadius: wp('2%'), borderBottomRightRadius: wp('2%') }]}> {localization.personalSettings} </Text>
@@ -308,7 +314,7 @@ class PersonalScreen extends Component {
                         <TouchableOpacity onPress={()=>this.updateProfileHandle()} style={{justifyContent:'center', alignItems:'center', width:wp('40%'), height:hp('7%')}}>
                             <Image source={ButtonBG} style={{width:wp('40%'), height:hp('7%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>
                             <View>
-                            {this.props.auth.isRegistring?<View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}><ActivityIndicator/><Text style={styles.buttonText}> {localization.register} </Text></View>:<Text style={styles.buttonText}> {localization.register} </Text>}
+                            {this.props.auth.isUpdating?<View style={{flexDirection:'row', justifyContent:'center', alignItems:'center'}}><ActivityIndicator/><Text style={styles.buttonText}> {localization.update} </Text></View>:<Text style={styles.buttonText}> {localization.update} </Text>}
                             </View>
                         </TouchableOpacity>
                     </View>
@@ -318,7 +324,7 @@ class PersonalScreen extends Component {
                 </View>
                 </ScrollView>
 
-                
+                 <Toast ref="toast"/>
             </View>
         )
     }

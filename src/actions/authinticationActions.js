@@ -16,45 +16,55 @@ import {
     UPDATE_PROFILE_FAILED,
     
     LOGIN_PASS,
+    LOGIN_PASS_TOKEN,
 } from './constants';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
 import {AsyncStorage} from 'react-native';
 import localization from '../localization/localization';
-
+import { LocalStorage } from '../localStorage/LocalStorage';
 // register process
 export function register(data) {
-
+    // console.log(lang);
     return (dispatch) => {
         dispatch(registerAttempt())
         var qs = require('qs');
-        console.log(data)
-        // if(!data.image) return dispatch(registerFailure(localization.selectImage))
-        RNFetchBlob.fetch('POST', 'http://mahasel.feckrah.com/public/api/auth/register', 
-            {
-                // 'X-localization':'ar',
-                'Content-Type': 'multipart/form-data',
-                'RNFB-Response':'utf8'
-            }, [
-                { name: 'name', data: data.name },
-                { name: 'email', data: data.email },
-                { name: 'phone', data: data.phone },
-                { name: 'password', data: data.password },
-                { name: 'image', filename: 'image.png', type: 'image/png', data: data.image },
-                ]).then((response) => response.json())
-        .then(function (response) {
-            if(response.value){
-                user = response.data;
+        // console.log(data)
+        // if(!data.image) return dispatch(addingAdvertiserFailure(localization.selectImage))
+        formData = new FormData();
+        formData.append('name', data.name)
+        formData.append('email', data.email)
+        formData.append('phone', data.phone)
+        formData.append('password', data.password)
+        formData.append('country', data.country)
+        formData.append('city', data.city)
+        formData.append('address', data.address)
+        formData.append('image', {uri:data.image, name:'profile.png', type:'image/png'})
+        fetch( 'http://mahasel.feckrah.com/public/api/auth/register', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            'X-localization' : LocalStorage.lang
+            },
+            body: formData
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            if(responseJson.value){
+                user = responseJson.data;
+                // console.log(user)
                 saveUser(user)
+                saveUserToken(user.token)
                 return(dispatch(registerSuccess(user)))
             }
             else{
-                return(dispatch(registerFailure(response.msg)))
+                // console.log('errooor: ' + JSON.stringify(responseJson))
+
+                return(dispatch(registerFailure(responseJson.msg)))
             } 
-    
-            console.log(tempMSG);
         })
-        .catch(err => console.log(err))
+        // .catch(err => console.log('error: ' + err))
     }
 }
 
@@ -82,20 +92,21 @@ function registerFailure(msg) {
 
 // login process
 export function login(data) {
-    console.log(data)
+    // console.log(data)
     return (dispatch) => {
         dispatch(loginAttempt())
-        axios.post('http://mahasel.feckrah.com/public/api/auth/login', data)
+        axios.post('http://mahasel.feckrah.com/public/api/auth/login', data, {headers:{'X-localization':LocalStorage.lang}})
             .then(function (response) {
-                console.log('Login API response: ' + JSON.stringify(response.data))
+                // console.log('Login API response: ' + JSON.stringify(response.data))
                 if(response.data.value){
                     user = response.data.data;
                     saveUser(user)
+                    saveUserToken(user.token)
                     return(dispatch(loginSuccess(user)))
                 }
                 else{
                     errorMSG = response.data.msg;
-                    console.log(errorMSG)
+                    // console.log(errorMSG)
                     return(dispatch(loginFailure(errorMSG)))
                 } 
             })
@@ -105,10 +116,19 @@ export function login(data) {
 
 async function saveUser(user){
     return await AsyncStorage.setItem('user', JSON.stringify(user)).then((data)=>{
-      console.log('user saved successfully, ' + data)
+    //   console.log('user saved successfully, ' + data)
       // async storage should take strings not objects as a paramaters
     }).catch((error)=>{
-      console.log('ERROR saving user: ' + error)
+    //   console.log('ERROR saving user: ' + error)
+    });
+}
+
+async function saveUserToken(userToken){
+    return await AsyncStorage.setItem('userToken', JSON.stringify(userToken)).then((data)=>{
+    //   console.log('userToken saved successfully, ' + data)
+      // async storage should take strings not objects as a paramaters
+    }).catch((error)=>{
+    //   console.log('ERROR saving userToken: ' + error)
     });
 }
 
@@ -147,10 +167,10 @@ export function logout() {
 
 async function deleteUser(dispatch){
     return await AsyncStorage.removeItem('user').then((data)=>{
-      console.log('user deleted successfully, ' + data)
+    //   console.log('user deleted successfully, ' + data)
       dispatch(logoutSuccess());
     }).catch((error)=>{
-      console.log('ERROR deleting user: ' + error)
+    //   console.log('ERROR deleting user: ' + error)
       dispatch(logoutFailure());
     });
 }
@@ -190,36 +210,57 @@ function loginPassSuccess(data){
     }
 }
 
+export function loginPassToken(accesToken) {
+    // console.log(accesToken)
+    return (dispatch) => {
+        dispatch(loginPassTokenSuccess(accesToken))
+    }
+}
+
+function loginPassTokenSuccess(accesToken){
+    return {
+        type: LOGIN_PASS_TOKEN,
+        accesToken
+    }
+}
+
 
 // update profile process
 export function updateProfile(data) {
-    console.log('did it reached here?')
+    // console.log('did it reached here?')
     return (dispatch) => {
         dispatch(updateProfileAttempt())
-        var qs = require('qs');
-        console.log('from api: '+JSON.stringify(data))
-        if(!data.image) return dispatch(updateProfileFailure(localization.selectImage))
+        console.warn('from api: '+JSON.stringify(data))
+        // if(!data.image) return dispatch(updateProfileFailure(localization.selectImage))
         formData = new FormData();
-        formData.append('name', data.name)
-        formData.append('email', data.email)
-        formData.append('phone', data.phone)
-        formData.append('password', data.password)
-        formData.append('image', {uri:data.image, name:'profile.png', type:'image/png'})
-        fetch( 'http://mahasel.feckrah.com/public/user/update/profile', {
+        if(data.name)
+            formData.append('name', data.name)
+        if(data.email)
+            formData.append('email', data.email)
+        if(data.phone)
+            formData.append('phone', data.phone)
+        if(data.password)
+            formData.append('password', data.password)
+        if(data.image)
+            formData.append('image', {uri:data.image, name:'profile.png', type:'image/png'})
+        fetch( 'http://mahasel.feckrah.com/public/api/user/update/profile', {
             method: 'POST',
             headers: {
             'Accept': 'application/json',
             'Content-Type': 'multipart/form-data',
-            'Authorization': 'Bearer ' + data.token
+            'Authorization': 'Bearer ' + data.token,
+            'X-localization' : LocalStorage.lang
             },
             body: formData
         })
         .then((response) => response.json())
         .then((responseJson) => {
             // Perform success response.
-            console.log('respones: ' + JSON.stringify(responseJson));
+            console.warn('respones: ' + JSON.stringify(responseJson));
             if(responseJson.value){
-                console.warn('added successfully');
+                user = responseJson.data;
+                saveUser(user)
+                console.warn('added successfully' + responseJson.data);
                 return(dispatch(updateProfileSuccess(responseJson.data)))
             }
             else{
@@ -228,7 +269,7 @@ export function updateProfile(data) {
             } 
         })
         .catch((error) => {
-            console.log('error: ' + error)
+            console.warn('error: ' + error)
         });
     }
 }

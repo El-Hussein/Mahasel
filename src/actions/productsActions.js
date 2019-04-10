@@ -1,11 +1,12 @@
 import { FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_FAILURE, FETCHING_PRODUCTS, FETCH_PRODUCT_SUCCESS, FETCH_PRODUCT_FAILURE, FETCHING_PRODUCT } from './constants';
 import axios from 'axios';
+import { LocalStorage } from '../localStorage/LocalStorage';
 
 export function fetchProducts(id) {
 
     return (dispatch) => {
         dispatch(getProducts())
-        axios.get(`http://mahasel.feckrah.com/public/api/ads/${id}`)
+        axios.get(`http://mahasel.feckrah.com/public/api/ads/${id}`, {headers:{'X-localization':LocalStorage.lang}})
             .then(function (response) {
                 console.log('products API response: ' + JSON.stringify(response.data))
                 if(response.data.value){

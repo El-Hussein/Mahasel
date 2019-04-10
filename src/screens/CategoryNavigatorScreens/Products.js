@@ -42,10 +42,10 @@ class FruitListScreen extends Component {
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ flexDirection: 'column', flex: 1, marginRight: 30, marginTop: 6 }}>
                             <Text style={styles.text}>{item.title}</Text>
-                            <Text style={styles.text}>{item.qun}</Text>
-                            <Text style={styles.text}>{item.price}</Text>
+                            <Text style={styles.text}>{item.quantity} {localization.kilo}</Text>
+                            <Text style={styles.text}>{item.price} {localization.rial}</Text>
                             <View style={{ justifyContent: 'flex-end', flex: 1, marginRight: 65, marginBottom: 5 }}>
-                                <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#000' }}>{item.date}</Text>
+                                <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#000', paddingHorizontal:wp('1%') }}>{item.date.date.substr(0,10)}</Text>
                             </View>
 
                         </View>
@@ -85,8 +85,8 @@ const styles = StyleSheet.create({
     text: {
         fontSize: 18,
         fontWeight: 'bold',
-        color: '#000'
-
+        color: '#000',
+        paddingHorizontal:wp('1%')
     }
 })
 

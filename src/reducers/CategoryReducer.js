@@ -1,7 +1,7 @@
 import { FETCH_CATEGORIES_SUCCESS, FETCH_CATEGORIES_FAILURE, FETCHING_CATEGORIES } from '../actions/constants';
 
 const initialState = {
-    categories: [],
+    categories: null,
     isFetching: false,
     error: false
 }

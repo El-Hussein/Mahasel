@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, Text, FlatList, I18nManager, StyleSheet, TouchableOpacity, ActivityIndititleor } from 'react-native'
+import { View, Image, Text, FlatList, I18nManager, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native'
 import { Icon } from 'react-native-elements';
 import localization from '../../localization/localization';
 import {
@@ -11,8 +11,9 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Header from '../../components/Header';
-import { fetchAds } from '../../actions/advertiserActions';
+import { fetchAds, deleteAds } from '../../actions/advertiserActions';
 import { fetchProduct } from '../../actions/productsActions';
+import Toast, {DURATION} from 'react-native-easy-toast'
 
 import bg from '../../assets/images/bg3.png';
 import ButtonBG from '../../assets/images/buttonBG.png';
@@ -27,8 +28,8 @@ class AdsList extends Component {
     }
 
     componentDidMount() {
-        if(this.props.auth.user.token)
-            this.props.fetchAds(this.props.auth.user.token)
+        if(this.props.auth.userToken)
+            this.props.fetchAds(this.props.auth.userToken)
     }
 
     renderItem = ({ item }) => {
@@ -42,12 +43,17 @@ class AdsList extends Component {
                     <View style={{ flexDirection: 'row' }}>
                         <View style={{ flexDirection: 'column', flex: 1, marginTop:hp('0.5%') }}>
                             <View style={[{justifyContent:'center'}, I18nManager.isRTL?{marginRight: wp('1%'), alignItems:'flex-end'}:{marginLeft: wp('1%'), alignItems:'flex-start'}]}>
-                                <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#000' }}>{item.date}</Text>
+                                <Text style={{ fontSize: 12, fontWeight: 'bold', color: '#000' }}>{item.date.date.substr(0,10)}</Text>
                             </View>
                             <Text style={styles.text}>{item.title}</Text>
-                            <Text style={styles.text}>{item.qun}</Text>
+                            <Text style={styles.text}>{item.quantity}</Text>
                             <View style={{flexDirection: 'row', justifyContent:'space-between', marginTop:hp('0.75%')}}>
                                 <TouchableOpacity
+                                    onPress={()=>{
+                                        this.refs.toast.show(localization.deleted);
+                                        this.props.deleteAds(this.props.auth.userToken, item.id)
+                                        this.props.fetchAds(this.props.auth.userToken)
+                                    }}
                                     style={{ flexDirection: 'row',borderRadius:wp('2%'), marginLeft:wp('1%') ,width: wp('20%'), height:hp('5%'),backgroundColor: 'red', alignItems: 'center', justifyContent: 'center' }}>
 
                                     <Text style={{ textAlign: 'center', color: 'white', fontSize: wp('5%'), fontWeight: 'bold', marginRight: wp('0%') }}>
@@ -72,7 +78,7 @@ class AdsList extends Component {
 
     render() {
         const { ads, isFetching, error } = this.props.ads
-        console.log(ads, isFetching, error)
+        // console.warn(ads, isFetching, error)
         return (
             <View style={{backgroundColor:'white', flex:1}}>
             <View>
@@ -81,15 +87,17 @@ class AdsList extends Component {
                 <View style={{justifyContent:'center', alignItems:'center'}}>
                     <Image source={bg} style={{width:wp('40%'), height:hp('30%'), position:'absolute', zIndex:-1, top:hp('50%'), resizeMode:'contain'}}/>
                 </View>
-                {this.props.auth.user.token?
+                {this.props.auth.userToken?
                 <View>
+                {!isFetching?
                     <FlatList
                         data={ads}
-                        extraData={ads}
+                        // extraData={ads}
                         renderItem={this.renderItem}
                         keyExtractor={(item, index) => index.toString()}
-                    />
-                    <View style={{justifyContent:'flex-start', alignItems:'center', marginTop:hp('10%')}}>
+                        style={{height:hp('80%')}}
+                    />:<ActivityIndicator/>}
+                    <View style={{justifyContent:'flex-start', alignItems:'center', marginTop:hp('1%')}}>
                         <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewAds')}} style={{justifyContent:'center', alignItems:'center', width:wp('40%'), height:hp('7%')}}>
                             <Image source={ButtonBG} style={{width:wp('40%'), height:hp('7%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>
                             <View>
@@ -103,6 +111,7 @@ class AdsList extends Component {
                 </View>
                 }
             </View>
+            <Toast ref="toast"/>
             </View>
         )
     }
@@ -134,7 +143,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators({ fetchAds, fetchProduct }, dispatch)
+        ...bindActionCreators({ fetchAds, fetchProduct, deleteAds }, dispatch)
     }
 }
 

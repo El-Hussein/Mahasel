@@ -16,10 +16,12 @@ import {
     UPDATE_PROFILE_FAILED,
     
     LOGIN_PASS,
+    LOGIN_PASS_TOKEN,
 } from '../actions/constants';
 
 const initialState = {
     user: {},
+    userToken:null,
     isRegistring: false,
     isUpdating: false,
     isLoging: false,
@@ -61,6 +63,7 @@ export default function AuthenticationReducer(state = initialState, action) {
                 ...state,
                 isRegistring: false,
                 user: action.data,
+                userToken:action.data.token,
                 error:null,
             }
         case REGISTER_FAILED:
@@ -68,6 +71,7 @@ export default function AuthenticationReducer(state = initialState, action) {
                 ...state,
                 isRegistring: false,
                 user:{},
+                userToken:null,
                 error: action.msg
             }
             
@@ -82,6 +86,7 @@ export default function AuthenticationReducer(state = initialState, action) {
                 ...state,
                 isLoging: false,
                 user: action.data,
+                userToken:action.data.token,
                 error:null,
             }
         case LOGIN_FAILED:
@@ -89,6 +94,7 @@ export default function AuthenticationReducer(state = initialState, action) {
                 ...state,
                 isLoging: false,
                 user:{},
+                userToken:null,
                 error: action.msg
             }
 
@@ -103,6 +109,7 @@ export default function AuthenticationReducer(state = initialState, action) {
                 ...state,
                 isLogingOut: false,
                 user: {},
+                userToken:null,
                 error:null,
             }
         case LOGOUT_FAILED:
@@ -117,6 +124,14 @@ export default function AuthenticationReducer(state = initialState, action) {
                 ...state,
                 isLoging: false,
                 user: action.data,
+                error:null,
+            }
+        
+        case LOGIN_PASS_TOKEN:
+            return {
+                ...state,
+                isLoging: false,
+                userToken:action.accesToken,
                 error:null,
             }
         default:

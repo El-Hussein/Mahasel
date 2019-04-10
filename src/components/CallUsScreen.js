@@ -5,13 +5,7 @@ import { Icon } from 'react-native-elements';
 
 
 class CallUsScreen extends Component{
-    static navigationOptions = () => ({
-        title: 'اتصل بنا ',
-        headerStyle: {
-            backgroundColor: '#74b245'
-          },
-          headerTintColor: 'white',
-    })
+
     render(){
         return(
             <ImageBackground

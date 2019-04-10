@@ -22,6 +22,7 @@ import Name from '../../assets/images/Artboard3/profile.png';
 import Email from '../../assets/images/Artboard3/email.png';
 import Phone from '../../assets/images/Artboard3/phone.png';
 import ButtonBG from '../../assets/images/Artboard3/ButtonBG.png';
+import localization from '../../localization/localization';
 
 class Artboard3 extends Component{
 
@@ -33,7 +34,7 @@ class Artboard3 extends Component{
          return (
             <ImageBackground source={BG}  style={styles.pageBG}>
                 {/* HEADER */}
-                <Header title="أتصل بنا"/>
+                <Header title={localization.callUs}/>
                 
                 <Image source={Logo} style={{position:'absolute', width:wp('100%'), height:hp('100%')}}/>
 
@@ -41,7 +42,7 @@ class Artboard3 extends Component{
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
-                            placeholder="الاسم"
+                            placeholder={localization.userName}
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="username"
@@ -54,7 +55,7 @@ class Artboard3 extends Component{
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
-                            placeholder="رقم الهاتف"
+                            placeholder={localization.phone}
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="username"
@@ -69,7 +70,7 @@ class Artboard3 extends Component{
                             multiline={true}
                             numberOfLines={5}
                             style={[styles.textInput, {height:hp('25%'), textAlignVertical: 'top', paddingTop:wp("2%")}]}
-                            placeholder="الرساله"
+                            placeholder={localization.messege}
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="password"
@@ -83,7 +84,7 @@ class Artboard3 extends Component{
                         <TouchableOpacity style={{justifyContent:'center', alignItems:'center', width:wp('38%'), height:hp('10%')}}>
                             <Image source={ButtonBG} style={{width:wp('38%'), height:hp('10%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>
                             <View>
-                                <Text style={styles.buttonText}> ارسال </Text>
+                                <Text style={styles.buttonText}> {localization.send} </Text>
                             </View>
                         </TouchableOpacity>
                     </View>
