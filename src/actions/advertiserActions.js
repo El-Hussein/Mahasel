@@ -13,7 +13,7 @@ import {
 
     DELETING_ATTEMPT, 
     DELETED_SUCCESFULLY, 
-    DELETEING_FAILED, 
+    DELETING_FAILED, 
 } from './constants';
 import axios from 'axios';
 import RNFetchBlob from 'rn-fetch-blob';
@@ -231,7 +231,7 @@ function deletingAdvertiserSuccess() {
 
 function deletingAdvertiserFailure(msg) {
     return {
-        type: DELETEING_FAILED,
+        type: DELETING_FAILED,
         msg
     }
 }

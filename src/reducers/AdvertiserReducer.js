@@ -56,14 +56,13 @@ export default function AdvertiserReducer(state = initialState, action) {
             return {
                 ...state,
                 isAdding: false,
-                ads: {...ads, ...action.data},
+                ads: state.ads.concat(action.data),
                 error:null,
             }
         case ADDING_FAILED:
             return {
                 ...state,
                 isAdding: false,
-                ads:{},
                 error: action.msg
             }
             

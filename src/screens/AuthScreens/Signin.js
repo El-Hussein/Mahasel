@@ -159,14 +159,14 @@ class Signin extends Component{
                         </TouchableOpacity>
                     </View>
 
-                    <View style={{justifyContent:'space-between', marginHorizontal:wp('25%'), flexDirection:'row'}}>
+                    {/* <View style={{justifyContent:'space-between', marginHorizontal:wp('25%'), flexDirection:'row'}}>
                         <TouchableOpacity>
                             <Image source={Twitter}  style={styles.social}/>
                         </TouchableOpacity>    
                         <TouchableOpacity>
                             <Image source={Facebook} style={styles.social} />
                         </TouchableOpacity>
-                    </View>
+                    </View> */}
 
                 </View>
 

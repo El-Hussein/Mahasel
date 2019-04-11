@@ -256,22 +256,39 @@ export function updateProfile(data) {
         .then((response) => response.json())
         .then((responseJson) => {
             // Perform success response.
-            console.warn('respones: ' + JSON.stringify(responseJson));
+            console.log('respones: ' + JSON.stringify(responseJson));
             if(responseJson.value){
                 user = responseJson.data;
-                saveUser(user)
-                console.warn('added successfully' + responseJson.data);
+                delUser(user)
+                console.log('updated successfully' + responseJson.data);
                 return(dispatch(updateProfileSuccess(responseJson.data)))
             }
             else{
-                console.warn('error');
+                console.log('error');
                 return(dispatch(updateProfileFailure(responseJson.msg)))
             } 
         })
         .catch((error) => {
-            console.warn('error: ' + error)
+            console.log('error: ' + error)
         });
     }
+}
+
+async function updateUser(user){
+    return await AsyncStorage.setItem('user', JSON.stringify(user)).then((data)=>{
+      console.log('user updated successfully, ' + data)
+    }).catch((error)=>{
+      console.log('ERROR updating user: ' + error)
+    });
+}
+
+async function delUser(user){
+    return await AsyncStorage.removeItem('user').then((data)=>{
+      console.log('user deleted successfully, ' + data)
+      updateUser(user)
+    }).catch((error)=>{
+      console.log('ERROR deleting user: ' + error)
+    });
 }
 
 function updateProfileAttempt() {

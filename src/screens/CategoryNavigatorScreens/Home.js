@@ -52,7 +52,7 @@ class Home extends Component {
 
     render(){
         const { categories, isFetching } = this.props.categories
-        console.log(this.props.categories)
+        console.log(this.props.auth)
         return(
             <ImageBackground
              source={main_background}
@@ -115,7 +115,8 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        categories: state.category
+        categories: state.category,
+        auth: state.auth
     }
 }
 

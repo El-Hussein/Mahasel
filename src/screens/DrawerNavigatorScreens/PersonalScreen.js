@@ -82,8 +82,10 @@ class PersonalScreen extends Component {
                 country:this.state.country,
                 adddress:this.state.adddress,
                 city:this.state.city,
-                image:this.state.photo,
                 token:this.props.auth.userToken
+            }
+            if(this.state.ImageSource){
+                data['image'] = this.state.ImageSource.uri;
             }
             this.props.updateProfile(data);
             this.refs.toast.show(localization.updated);
@@ -282,12 +284,13 @@ class PersonalScreen extends Component {
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
-                            placeholder={localization.password}
+                            placeholder={localization.newPassword}
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="password"
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
+                            secureTextEntry={true}
                             value={this.state.password}
                             onChangeText={(password) => this.setState({password})}
                         />
@@ -303,6 +306,7 @@ class PersonalScreen extends Component {
                             ref="passwordConfirmation"
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
+                            secureTextEntry={true}
                             value={this.state.passwordConfirm}
                             onChangeText={(passwordConfirm) => this.setState({passwordConfirm})}
                         />

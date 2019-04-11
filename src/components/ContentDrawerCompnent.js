@@ -62,10 +62,11 @@ class ContentDrawerComponent extends Component{
 
     render () {
         user = this.props.auth.user;
+        userToken = this.props.auth.userToken;
          return (
             <View>
                 <Image source={DrawerBG}  style={[{height:hp('100%'), width:wp('100%'), backgroundColor:'red', position:'absolute', zIndex:-1}, I18nManager.isRTL? {left:0}:{right:0} ]}/>
-                {user.token?
+                {userToken?
                     <View style={{height:hp('34.5%'), width:wp('85%'), justifyContent:'center', alignItems:'center'}}>
                         <Image source={{uri:user.image}} style={{width:wp('18%'), borderWidth:wp('0.8%'), borderColor:'white', height:wp('18%'), borderRadius:wp('9%'), backgroundColor:'red', marginBottom:wp('1%')}}/>
                         <Text style={{fontWeight:'bold', fontSize:wp('4.2%'), color:'white'}}> {user.name} </Text>
