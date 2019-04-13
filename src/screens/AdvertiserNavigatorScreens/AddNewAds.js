@@ -39,7 +39,7 @@ class AddAds extends Component {
         }
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
+ 
     validate(){
         error = false;
         if(!this.state.name){
@@ -261,6 +261,7 @@ class AddAds extends Component {
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="phone"
+                            keyboardType='numeric'
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             onChangeText={(phone) => this.setState({phone})}
@@ -277,6 +278,7 @@ class AddAds extends Component {
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="quantity"
+                            keyboardType='numeric'
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             onChangeText={(quantity) => this.setState({quantity})}
@@ -293,6 +295,7 @@ class AddAds extends Component {
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="price"
+                            keyboardType='numeric'
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             onChangeText={(price) => this.setState({price})}

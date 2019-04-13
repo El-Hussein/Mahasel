@@ -66,7 +66,7 @@ class Register extends Component{
             passwordMatch:null,
         }
     }
-
+ 
     validate(){
         error = false;
         if(!this.state.username){
@@ -350,6 +350,7 @@ class Register extends Component{
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="phone"
+                            keyboardType='numeric'
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             onChangeText={(phone) => this.setState({phone})}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { View, Image, Text, FlatList, StyleSheet, TouchableOpacity, I18nManager, ActivityIndicator } from 'react-native'
+import { View, Image, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, I18nManager, ActivityIndicator } from 'react-native'
 import { Icon } from 'react-native-elements';
 import {
   widthPercentageToDP as wp,
@@ -16,8 +16,18 @@ import {fetchProducts, fetchProduct} from '../../actions/productsActions'
 
 
 class FruitListScreen extends Component {
+    constructor(){
+        super()
+        this.loadMore = this.loadMore.bind(this)
+    }
     componentDidMount(){
-        this.props.fetchProducts(this.props.navigation.getParam('category_id'))
+        this.props.fetchProducts(this.props.navigation.getParam('category_id'), 1 )
+    }
+
+    loadMore(){
+        if(this.props.products.pagination.next_page_url){
+            this.props.fetchProducts(this.props.navigation.getParam('category_id'), this.props.products.pagination.current_page+1 )
+        }
     }
     
     state = {
@@ -60,22 +70,34 @@ class FruitListScreen extends Component {
             </TouchableOpacity>
         )
     }
+    ListEmptyView = () => {
+        return (
+            <View style={styles.MainContainer}>
+                <Text style={{textAlign: 'center'}}> {localization.noProductsAvailable} </Text>
+            </View>
+        );
+    }
+      
     render() {
         const { products, isFetching } = this.props.products
-        // alert(JSON.stringify(products))
+        
         return (
             <View style={{backgroundColor:'white'}}>
                 {/* HEADER */}
                 <Header title={localization.fruits} backScreen="SignIn"/>
-                {isFetching? <ActivityIndicator size={50} color="green" /> :
+                <ScrollView style={{height:hp('89%')}}>
                 <FlatList
-                    data={products}
-                    // data={this.state.data}
+                    data={products.length?products:[]}
                     renderItem={this.renderItem}
                     keyExtractor={(item) => item.name}
-                    style={{height:hp('89%')}}
-                />
+                    style={{height:'auto'}}
+                    ListEmptyComponent={this.ListEmptyView}
+                    onEndReached={()=>this.loadMore()}
+                    onEndThreshold={0}
+                    />
+                {isFetching? <ActivityIndicator size={20} color="green" /> :null
                 }
+                </ScrollView>
             </View>
         )
     }

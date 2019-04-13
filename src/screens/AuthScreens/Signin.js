@@ -108,6 +108,7 @@ class Signin extends Component{
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="phone"
+                            keyboardType='numeric'
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             onChangeText={(phone) => this.setState({phone})}
@@ -158,7 +159,7 @@ class Signin extends Component{
                             </View>
                         </TouchableOpacity>
                     </View>
-
+ 
                     {/* <View style={{justifyContent:'space-between', marginHorizontal:wp('25%'), flexDirection:'row'}}>
                         <TouchableOpacity>
                             <Image source={Twitter}  style={styles.social}/>

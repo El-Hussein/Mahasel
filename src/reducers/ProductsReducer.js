@@ -2,7 +2,10 @@ import {  FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_FAILURE, FETCHING_PRODUCTS, FET
 
 const initialState = {
     products: [],
-    products: null,
+    products: {},
+    pagination: {
+        current_page:0,
+    },
     isFetching: false,
     error: false
 }
@@ -19,7 +22,8 @@ export default function productsReducer(state = initialState, action) {
             return {
                 ...state,
                 isFetching: false,
-                products: action.data
+                products: [...state.products, ...action.data],
+                pagination: action.pagination,
             }
         case FETCH_PRODUCTS_FAILURE:
             return {

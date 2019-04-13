@@ -71,9 +71,9 @@ class Home extends Component {
                         renderItem={({item}) =>{
                             return(
 
-                                <View style={{ borderColor: '#DD1E1A', marginHorizontal:wp('8%')}}>
+                                <View style={{height:hp('24%'), marginHorizontal:wp('8%')}}>
                                     <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Products', {'category_id':item.id})}}>
-                                      <Image source={item.image} style={{ width: wp('84%'), height:hp('22%'), }}/>
+                                      <Image source={{uri: item.image}} style={{borderColor: '#DD1E1A', borderWidth:wp('0.2%'), width: wp('84%'), borderRadius:wp('2%'), height:hp('20%'),}}/>
 
                                       <View style={styles.catView}>
                                           <Text style={[styles.catTextStyle, !I18nManager.isRTL?{borderTopLeftRadius: wp('1%'), borderBottomLeftRadius: wp('1%') }:{borderTopRightRadius: wp('1%'), borderBottomRightRadius: wp('1%') }]}>{item.name}</Text>
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   
     catView: {
         flex: 1,
-        top: hp('5%'),
+        top: hp('7%'),
         right: 0,
         position:'absolute',
         width:null,

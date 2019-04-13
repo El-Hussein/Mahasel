@@ -131,84 +131,6 @@ class Product extends Component {
 
                 </View>
                 }
-                {/* <ShareSheet visible={this.state.visible} onCancel={this.onCancel.bind(this)}>
-                    <Button iconSrc={{ uri: TWITTER_ICON }}
-                            onPress={()=>{
-                        this.onCancel();
-                        setTimeout(() => {
-                            Share.shareSingle(Object.assign(shareOptions, {
-                            "social": "twitter"
-                            }));
-                        },300);
-                        }}>Twitter</Button>
-                    <Button iconSrc={{ uri: FACEBOOK_ICON }}
-                            onPress={()=>{
-                        this.onCancel();
-                        setTimeout(() => {
-                            Share.shareSingle(Object.assign(shareOptions, {
-                            "social": "facebook"
-                            }));
-                        },300);
-                        }}>Facebook</Button>
-                    <Button iconSrc={{ uri: WHATSAPP_ICON }}
-                            onPress={()=>{
-                        this.onCancel();
-                        setTimeout(() => {
-                            Share.shareSingle(Object.assign(shareOptions, {
-                            "social": "whatsapp"
-                            }));
-                        },300);
-                        }}>Whatsapp</Button>
-                    <Button iconSrc={{ uri: GOOGLE_PLUS_ICON }}
-                            onPress={()=>{
-                        this.onCancel();
-                        setTimeout(() => {
-                            Share.shareSingle(Object.assign(shareOptions, {
-                            "social": "googleplus"
-                            }));
-                        },300);
-                        }}>Google +</Button>
-                    <Button iconSrc={{ uri: EMAIL_ICON }}
-                            onPress={()=>{
-                        this.onCancel();
-                        setTimeout(() => {
-                            Share.shareSingle(Object.assign(shareOptions, {
-                            "social": "email"
-                            }));
-                        },300);
-                        }}>Email</Button>
-                    <Button iconSrc={{ uri: PINTEREST_ICON }}
-                            onPress={()=>{
-                        this.onCancel();
-                        setTimeout(() => {
-                            Share.shareSingle(Object.assign(shareOptions, {
-                            "social": "pinterest"
-                            }));
-                        },300);
-                        }}>Pinterest</Button>
-                    <Button
-                        iconSrc={{ uri: CLIPBOARD_ICON }}
-                        onPress={()=>{
-                        this.onCancel();
-                        setTimeout(() => {
-                            if(typeof shareOptions["url"] !== undefined) {
-                            Clipboard.setString(shareOptions["url"]);
-                            if (Platform.OS === "android") {
-                                ToastAndroid.show('Link copiado al portapapeles', ToastAndroid.SHORT);
-                            } else if (Platform.OS === "ios") {
-                                AlertIOS.alert('Link copiado al portapapeles');
-                            }
-                            }
-                        },300);
-                        }}>Copy Link</Button>
-                    <Button iconSrc={{ uri: MORE_ICON }}
-                        onPress={()=>{
-                        this.onCancel();
-                        setTimeout(() => {
-                            Share.open(shareOptions)
-                        },300);
-                        }}>More</Button>
-                </ShareSheet> */}
             </View>
         )
     }
@@ -273,7 +195,8 @@ const styles = StyleSheet.create({
     buttonsViewStyle: {
         flex: 1,
         flexDirection: 'row',
-        justifyContent: 'space-between',
+        justifyContent: 'space-around',
+        paddingHorizontal:wp('5%'),
         alignItems: 'center',
         marginTop: hp('2%'),
         marginHorizontal: wp('10%')

@@ -112,6 +112,7 @@ export default localization = new LocalizedStrings({
         deleted:'Advertiser deleted successfully',
         added:' advertisment added succfully',
         languageUpdated:'please refresh app to apply changes',
+        noProductsAvailable:'No Products Available in this Category',
 
 
 
@@ -232,6 +233,7 @@ export default localization = new LocalizedStrings({
         deleted:'تم حذف الاعلان بنجاح ',
         added:'تم اضافة الاعلان بنجاح',
         languageUpdated:'من فضلك اعد فتح التطبيق حتي يتم تحديث التغيرات',
+        noProductsAvailable:'لا يوجد اي منتجات في هذه الفئة',
 
 
         selectImage:'اختر صورة من فضلك'

@@ -2,16 +2,16 @@ import { FETCH_PRODUCTS_SUCCESS, FETCH_PRODUCTS_FAILURE, FETCHING_PRODUCTS, FETC
 import axios from 'axios';
 import { LocalStorage } from '../localStorage/LocalStorage';
 
-export function fetchProducts(id) {
+export function fetchProducts(id, page_number) {
 
     return (dispatch) => {
         dispatch(getProducts())
-        axios.get(`http://mahasel.feckrah.com/public/api/ads/${id}`, {headers:{'X-localization':LocalStorage.lang}})
+        axios.get(`http://mahasel.feckrah.com/public/api/ads/1?page=${id}?page=${page_number}`, {headers:{'X-localization':LocalStorage.lang}})
             .then(function (response) {
                 console.log('products API response: ' + JSON.stringify(response.data))
                 if(response.data.value){
-                    // console.warn(response.data.data);
-                    return(dispatch(getProductsSuccess(response.data.data.ads)))
+                    // console.warn(response.data.data.paginate);
+                    return(dispatch(getProductsSuccess(response.data.data.ads, response.data.data.paginate)))
                 }
                 else{
                     return(dispatch(getProductsFailure(err)))
@@ -27,10 +27,11 @@ function getProducts() {
     }
 }
 
-function getProductsSuccess(data) {
+function getProductsSuccess(data, pagination) {
     return {
         type: FETCH_PRODUCTS_SUCCESS,
-        data
+        data:data,
+        pagination:pagination,
     }
 }
 
