@@ -8,7 +8,7 @@ export class LocalStorage{
             console.log('lang: ' + LocalStorage.lang)
         }
         else{
-            LocalStorage.lang=null;
+            LocalStorage.lang='ar';
         }
     }
 }

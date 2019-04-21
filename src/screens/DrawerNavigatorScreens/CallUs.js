@@ -6,7 +6,9 @@ import {
     Image,
     TextInput,
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    ActivityIndicator,
+    ScrollView
 } from 'react-native';
 import {
     widthPercentageToDP as wp,
@@ -15,6 +17,7 @@ import {
     removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 import Header from '../../components/Header';
+import Toast from 'react-native-easy-toast'
 
 import BG from '../../assets/images/Artboard3/bg.png';
 import Logo from '../../assets/images/Artboard3/logo.png';
@@ -23,11 +26,105 @@ import Email from '../../assets/images/Artboard3/email.png';
 import Phone from '../../assets/images/Artboard3/phone.png';
 import ButtonBG from '../../assets/images/Artboard3/ButtonBG.png';
 import localization from '../../localization/localization';
+import { LocalStorage } from '../../localStorage/LocalStorage';
 
 class Artboard3 extends Component{
 
     constructor(props) {
-         super()
+        super()
+        this.state = {
+            username:'',
+            usernameError:false,
+            phone:'',
+            phoneError:false,
+            message:'',
+            messegeError:false,
+            sending : false,
+        }
+        this._sendMessage = this._sendMessage.bind(this);
+    }
+
+    validate(){
+        error = false;
+        if(!this.state.username){
+            this.setState({
+                usernameError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                usernameError:false
+            })
+        }
+        if(!this.state.phone){
+            this.setState({
+                phoneError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                phoneError:false
+            })
+        }
+        if(!this.state.message){
+            this.setState({
+                messegeError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                messegeError:false
+            })
+        }
+        // console.warn(error)
+        return error;
+    }
+
+    clearForm(){
+        this.setState({
+            username:null,
+            phone:null,
+            message:null,
+        })
+    }
+
+    _sendMessage(){
+        if(this.validate()) return;
+        this.setState({
+            sending:true,
+        })
+        // console.warn('test');
+        formData = new FormData();
+        formData.append('name', this.state.username)
+        formData.append('email', this.state.phone)
+        formData.append('message', this.state.message)
+        fetch( 'http://mahasel.feckrah.com/public/api/contact', {
+            method: 'POST',
+            headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'multipart/form-data',
+            'X-localization' : LocalStorage.lang
+            },
+            body: formData
+        })
+        .then((response) => response.json())
+        .then((responseJson) => {
+            // Perform success response.
+            // console.warn('respones' + JSON.stringify(responseJson));
+            if(responseJson.value){
+                this.refs.toast.show(localization.sent);
+                this.clearForm()
+            }
+            else{
+                this.refs.toast.show(localization.errorSent);
+            } 
+        })
+        .catch((error) => {
+            // console.warn('error: ' + error)
+        });
+        this.setState({
+            sending:false,
+        })
     }
 
     render () {
@@ -37,8 +134,9 @@ class Artboard3 extends Component{
                 <Header title={localization.callUs}/>
                 
                 <Image source={Logo} style={{position:'absolute', width:wp('100%'), height:hp('100%')}}/>
-
+                <ScrollView>
                 <View style={{marginHorizontal:wp('10%'), marginTop:hp('24%')}}>
+                    {this.state.usernameError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.usernameError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
@@ -48,23 +146,27 @@ class Artboard3 extends Component{
                             ref="username"
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
+                            value={this.state.username}
+                            onChangeText={(username) => this.setState({username})}
                         />
                         <Image source={Name} style={styles.image4_5}/>
                     </View>
-
+                    {this.state.phoneError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.phoneError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput
                             style={styles.textInput}
                             placeholder={localization.phone}
                             autoCorrect={false}
                             returnKeyType="next"
-                            ref="username"
+                            ref="phone"
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
+                            value={this.state.phone}
+                            onChangeText={(phone) => this.setState({phone})}
                         />
                         <Image source={Phone} style={styles.image4_5}/>
                     </View>
-
+                    {this.state.messegeError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.messegeError}</Text>:null}
                     <View style={[styles.inputBorder, {alignItems: "flex-start"}]} >
                         <TextInput
                             multiline={true}
@@ -73,23 +175,26 @@ class Artboard3 extends Component{
                             placeholder={localization.messege}
                             autoCorrect={false}
                             returnKeyType="next"
-                            ref="password"
+                            ref="message"
+                            value={this.state.message}
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
+                            onChangeText={(message) => this.setState({message})}
                         />
                         <Image source={Email} style={[styles.image4_5, {marginTop:wp('2%')}]}/>
                     </View>
 
                     <View style={{justifyContent:'center', alignItems:'center'}}>
-                        <TouchableOpacity style={{justifyContent:'center', alignItems:'center', width:wp('38%'), height:hp('10%')}}>
+                        <TouchableOpacity onPress={()=>this._sendMessage()} style={{justifyContent:'center', alignItems:'center', width:wp('38%'), height:hp('10%')}}>
                             <Image source={ButtonBG} style={{width:wp('38%'), height:hp('10%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>
                             <View>
-                                <Text style={styles.buttonText}> {localization.send} </Text>
+                                {this.state.sending?<View style={{flexDirection:'row'}}><ActivityIndicator/><Text style={styles.buttonText}> {localization.send} </Text></View>:<Text style={styles.buttonText}> {localization.send} </Text>} 
                             </View>
                         </TouchableOpacity>
                     </View>
                 </View>
-
+                </ScrollView>
+                <Toast ref="toast"/>
             </ImageBackground>
         )
     }
@@ -98,33 +203,9 @@ class Artboard3 extends Component{
 export default Artboard3
 
 const styles = StyleSheet.create({
-    header:{
-        height:hp('7%'),
-        backgroundColor:"#A07532",
-        justifyContent:'space-between',
-        alignItems:'center',
-        padding:wp('5%'),
-        flexDirection:'row'
-    },
     image4_5:{
         width:wp('4.5%'), 
         height:wp('4.5%'), 
-        resizeMode:'contain'
-    },
-    rowCenter:{
-        justifyContent:'center', 
-        alignItems:'center', 
-        flexDirection:'row'
-    },
-    textHeader:{
-        color:'white', 
-        fontSize:wp('4.5%'), 
-        marginHorizontal:wp('3%'), 
-        fontWeight:'bold'
-    },
-    image6_5:{
-        width:wp('6.5%'), 
-        height:wp('6.5%'), 
         resizeMode:'contain'
     },
     logo:{

@@ -27,6 +27,7 @@ const initialState = {
     isLoging: false,
     isLogingOut: false,
     error:null,
+    errorRegistering:null,
 }
 
 export default function AuthenticationReducer(state = initialState, action) {
@@ -64,7 +65,7 @@ export default function AuthenticationReducer(state = initialState, action) {
                 isRegistring: false,
                 user: action.data,
                 userToken:action.data.token,
-                error:null,
+                errorRegistering:null,
             }
         case REGISTER_FAILED:
             return {
@@ -72,7 +73,7 @@ export default function AuthenticationReducer(state = initialState, action) {
                 isRegistring: false,
                 user:{},
                 userToken:null,
-                error: action.msg
+                errorRegistering: action.msg
             }
             
         // LOGIN ACTIONS Hanlders

@@ -229,7 +229,7 @@ class Register extends Component{
             phone:this.state.phone,
             password:this.state.password,
             country:this.state.country,
-            city:this.state.city+'kkkkkk',
+            city:this.state.city,
             address:this.state.address,
             image:this.state.ImageSource.uri,
         }
@@ -266,7 +266,7 @@ class Register extends Component{
                 </View>
 
                 <View style={{marginHorizontal:wp('10%')}}>
-                    {this.props.auth.error?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{this.props.auth.error}</Text>:null}
+                    {this.props.auth.errorRegistering?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{this.props.auth.errorRegistering}</Text>:null}
                     {this.state.usernameError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.usernameError}</Text>:null}
                     <View style={styles.inputBorder} >
                         <TextInput

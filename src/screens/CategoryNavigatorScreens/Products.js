@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import { View, Image, Text, FlatList, StyleSheet, ScrollView, TouchableOpacity, I18nManager, ActivityIndicator } from 'react-native'
-import { Icon } from 'react-native-elements';
+import { View, Image, Text, FlatList, StyleSheet, ScrollView, Picker, TouchableOpacity, I18nManager, ActivityIndicator } from 'react-native'
+import Icon from 'react-native-vector-icons/FontAwesome';
 import {
   widthPercentageToDP as wp,
   heightPercentageToDP as hp,
@@ -12,21 +12,44 @@ import Header from '../../components/Header';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import {fetchProducts, fetchProduct} from '../../actions/productsActions'
+import { fetchCities } from '../../actions/locationActions';
+import {fetchProducts, fetchProduct, filterProducts} from '../../actions/productsActions';
+import Country from '../../assets/images/country.png';
+import City from '../../assets/images/city.png';
 
 
 class FruitListScreen extends Component {
-    constructor(){
+    constructor(props){
         super()
+        this.state = {
+            city:0,
+            country:0,
+        }
         this.loadMore = this.loadMore.bind(this)
+        console.warn(props.navigation.getParam('category_id'))
     }
     componentDidMount(){
         this.props.fetchProducts(this.props.navigation.getParam('category_id'), 1 )
     }
 
+    renderPickerCountryItem(){
+        return this.props.location.countries.map( (country, i) => {
+            return <Picker.Item key={i} value={country.id} label={country.name} />
+        });
+    }
+    renderPickerCityItem(){
+        return this.props.location.cities.map( (city, i) => {
+            return <Picker.Item key={i} value={city.id} label={city.name} />
+        });
+    }
+
     loadMore(){
-        if(this.props.products.pagination.next_page_url){
-            this.props.fetchProducts(this.props.navigation.getParam('category_id'), this.props.products.pagination.current_page+1 )
+        if(this.props.products.paginationFilter.next_page_url){
+            this.props.filterProducts(this.props.navigation.getParam('category_id'), this.props.products.paginationFilter.current_page+1 , this.state.city)    
+        }else{
+            if(this.props.products.pagination.next_page_url){
+                this.props.fetchProducts(this.props.navigation.getParam('category_id'), this.props.products.pagination.current_page+1)
+            }
         }
     }
     
@@ -79,24 +102,113 @@ class FruitListScreen extends Component {
     }
       
     render() {
-        const { products, isFetching } = this.props.products
-        
-        return (
-            <View style={{backgroundColor:'white'}}>
-                {/* HEADER */}
-                <Header title={localization.fruits} backScreen="SignIn"/>
-                <ScrollView style={{height:hp('89%')}}>
-                <FlatList
-                    data={products.length?products:[]}
+        const { products, isFetching, productsFilter, isFiltering, paginationFilter, pagination } = this.props.products
+        console.warn(paginationFilter.total!=0?productsFilter.length>0?JSON.stringify(productsFilter):'filter empty':products.length>0?JSON.stringify(products):'empty')
+        // this.props.location.cities?console.warn(this.props.location.cities):null
+        FlatProduct = ()=>{
+
+            if(isFetching){
+                return(
+                    <ActivityIndicator size={20} color="green" />
+                )
+            }
+            if(products.length>0){
+                return(
+                    <FlatList
+                    data={products.length>0?products:[]}
+                    extraData = {isFetching}
                     renderItem={this.renderItem}
                     keyExtractor={(item) => item.name}
-                    style={{height:'auto'}}
+                    style={{height:hp('80%')}}
                     ListEmptyComponent={this.ListEmptyView}
                     onEndReached={()=>this.loadMore()}
                     onEndThreshold={0}
                     />
-                {isFetching? <ActivityIndicator size={20} color="green" /> :null
-                }
+                )
+            }else if(pagination.total != undefined){
+                return(
+                    <View style={styles.MainContainer}>
+                        <Text style={{textAlign: 'center'}}> {localization.userName} </Text>
+                    </View>
+                )
+            }else{
+                return(
+                    null
+                )
+            }
+        }
+        FlatProductFilter = ()=>{
+            if(isFiltering){
+                return(
+                    <ActivityIndicator size={20} color="green" />
+                )
+            }
+            if(productsFilter.length>0){
+                return(
+                    <FlatList
+                    data={productsFilter.length>0?productsFilter:[]}
+                    extraData = {isFiltering}
+                    renderItem={this.renderItem}
+                    keyExtractor={(item) => item.name}
+                    style={{height:hp('80%')}}
+                    ListEmptyComponent={this.ListEmptyViewFilter}
+                    onEndReached={()=>this.loadMore()}
+                    onEndThreshold={0}
+                    />
+                )
+            }else{
+                return(
+                    <View style={styles.MainContainer}>
+                        <Text style={{textAlign: 'center'}}> {localization.noProductsAvailableFilter} </Text>
+                    </View>
+                )
+            } 
+        }
+        return (
+            <View style={{backgroundColor:'white'}}>
+                {/* HEADER */}
+                <Header title={localization.fruits} backScreen="SignIn"/>
+                <View style={{marginHorizontal:wp('10%')}}>
+                    
+                    <View style={{backgroundColor:'#538805', marginBottom:hp('2%'), width:wp('80%'), justifyContent:'center', alignItems:'center', height:hp('6%'), borderRadius:wp('3.5%')}}>
+                        <Icon name="arrow-down" color="white" size={wp('3%')} style={{position:'absolute', left:wp('3%')}}/>
+                        <Picker
+                        selectedValue={this.state.country}
+                        style={{color:'white', width:wp('50%'), marginRight:wp('0%')}}
+                        onValueChange={(itemValue, itemIndex) =>{
+                            this.props.fetchCities(itemValue);
+                            this.setState({country: itemValue, city:0})
+                        }}>
+                            <Picker.Item label={localization.country} value="0" />
+                            {this.props.location.countries?this.renderPickerCountryItem():<Picker.Item label=" "/>}
+                        </Picker>
+                        <Image source={Country} style={[styles.image4_5, {position:'absolute', right:wp('3%')}]}/>
+                    </View>
+
+                    <View style={{backgroundColor:'#538805', marginBottom:hp('2%'), width:wp('80%'), justifyContent:'center', alignItems:'center', height:hp('6%'), borderRadius:wp('3.5%')}}>
+                        <Icon name="arrow-down" color="white" size={wp('3%')} style={{position:'absolute', left:wp('3%')}}/>
+                        <Picker
+                        selectedValue={this.state.city}
+                        style={{color:'white', width:wp('50%'), marginRight:wp('0%')}}
+                        onValueChange={(itemValue, itemIndex) =>{
+                            this.setState({city: itemValue});
+                            // console.warn(itemValue)
+                            if(itemValue == 0)return;
+                            this.props.filterProducts(this.props.navigation.getParam('category_id'), 1 , itemValue)
+                        }
+                        }>
+                            <Picker.Item label={localization.city} value="0" />
+                            {this.props.location.cities?this.renderPickerCityItem():<Picker.Item label=" "/>}
+                        </Picker>
+                        <Image source={City} style={[styles.image4_5, {position:'absolute', right:wp('3%')}]}/>
+                    </View>
+
+                </View>  
+                <ScrollView style={{height:hp('89%')}}>
+                
+                <FlatProduct />
+                
+                <FlatProductFilter />
                 </ScrollView>
             </View>
         )
@@ -114,13 +226,14 @@ const styles = StyleSheet.create({
 
 function mapStateToProps(state) {
     return {
-        products: state.products
+        products: state.products,
+        location: state.location,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators({ fetchProducts, fetchProduct }, dispatch)
+        ...bindActionCreators({ fetchProducts, fetchProduct, filterProducts, fetchCities }, dispatch)
     }
 }
 

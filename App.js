@@ -14,6 +14,7 @@ import Splash from './src/screens/Splash';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { fetchCategories } from './src/actions/categoryActions';
+import { fetchTerms } from './src/actions/termsActions';
 import { fetchCountries } from './src/actions/locationActions';
 import { loginPass, loginPassToken } from './src/actions/authinticationActions';
 import {LocalStorage} from './src/localStorage/LocalStorage';
@@ -40,11 +41,14 @@ class App extends Component {
     
   }
   
-  componentWillMount(){
-    this.checkLang();
-    this.checkUser();
-    this.props.fetchCategories();
-    this.props.fetchCountries();
+  componentDidMount(){
+    setTimeout(()=>{
+      this.checkLang();
+      this.checkUser();
+      this.props.fetchCategories();
+      this.props.fetchTerms();
+      this.props.fetchCountries();
+    }, 2000)
   }
 
   
@@ -112,7 +116,7 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-      ...bindActionCreators({ fetchCategories, loginPass, fetchCountries, loginPassToken }, dispatch)
+      ...bindActionCreators({ fetchCategories, loginPass, fetchCountries, loginPassToken, fetchTerms }, dispatch)
   }
 }
 

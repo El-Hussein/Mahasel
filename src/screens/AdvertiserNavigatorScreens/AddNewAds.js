@@ -12,6 +12,7 @@ import ImagePicker from 'react-native-image-picker';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import { fetchCities } from '../../actions/locationActions';
 
 import Header from '../../components/Header';
 import localization from '../../localization/localization';
@@ -21,6 +22,8 @@ import BG from '../../assets/images/bg.png';
 import LO from '../../assets/images/logoR.png'
 import Name from '../../assets/images/user.png';
 import Phone from '../../assets/images/phone.png';
+import Country from '../../assets/images/country.png';
+import City from '../../assets/images/city.png';
 import des from '../../assets/images/des.png';
 import cat from '../../assets/images/cat.png';
 import ButtonBG from '../../assets/images/buttonBG.png';
@@ -50,6 +53,26 @@ class AddAds extends Component {
         }else{
             this.setState({
                 nameError:false
+            })
+        }
+        if(!this.state.country){
+            this.setState({
+                countryError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                countryError:false
+            })
+        }
+        if(!this.state.city){
+            this.setState({
+                cityError:true
+            })
+            error = true;
+        }else{
+            this.setState({
+                cityError:false
             })
         }
         if(!this.state.phone){
@@ -124,6 +147,8 @@ class AddAds extends Component {
             quantity:null,
             phone:null,
             ImageSource:null,
+            country:'0',
+            cities:'0',
         })
     }
     
@@ -137,7 +162,8 @@ class AddAds extends Component {
             quantity:this.state.quantity,
             phone:this.state.phone,
             image:this.state.ImageSource.uri,
-            token:this.props.auth.userToken
+            token:this.props.auth.userToken,
+            city_id:this.state.city,
         }        
 
         // console.warn(data);
@@ -181,6 +207,18 @@ class AddAds extends Component {
     
             });
         }
+        });
+    }
+
+    renderPickerCountryItem(){
+        return this.props.location.countries.map( (country, i) => {
+            return <Picker.Item key={i} value={country.id} label={country.name} />
+        });
+    }
+    
+    renderPickerCityItem(){
+        return this.props.location.cities.map( (city, i) => {
+            return <Picker.Item key={i} value={city.id} label={city.name} />
         });
     }
 
@@ -303,6 +341,39 @@ class AddAds extends Component {
                         />
                         <Image source={Phone} style={styles.image4_5}/>
                     </View>
+
+                    {this.state.countryError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.countryError}</Text>:null}
+                    <View style={{backgroundColor:'#538805', marginBottom:hp('2%'), width:wp('80%'), justifyContent:'center', alignItems:'center', height:hp('6%'), borderRadius:wp('3.5%')}}>
+                        <Icon name="arrow-down" color="white" size={wp('3%')} style={{position:'absolute', left:wp('3%')}}/>
+                        <Picker
+                        selectedValue={this.state.country}
+                        style={{color:'white', width:wp('50%'), marginRight:wp('0%')}}
+                        onValueChange={(itemValue, itemIndex) =>{
+                            console.warn(itemValue)
+                            this.props.fetchCities(itemValue);
+                            this.setState({country: itemValue})
+                        }}>
+                            <Picker.Item label={localization.country} value="0" />
+                            {this.props.location.countries?this.renderPickerCountryItem():<Picker.Item label=" "/>}
+                        </Picker>
+                        <Image source={Country} style={[styles.image4_5, {position:'absolute', right:wp('3%')}]}/>
+                    </View>
+
+                    {this.state.cityError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.cityError}</Text>:null}
+                    <View style={{backgroundColor:'#538805', marginBottom:hp('2%'), width:wp('80%'), justifyContent:'center', alignItems:'center', height:hp('6%'), borderRadius:wp('3.5%')}}>
+                        <Icon name="arrow-down" color="white" size={wp('3%')} style={{position:'absolute', left:wp('3%')}}/>
+                        <Picker
+                        selectedValue={this.state.city}
+                        style={{color:'white', width:wp('50%'), marginRight:wp('0%')}}
+                        onValueChange={(itemValue, itemIndex) =>
+                            this.setState({city: itemValue})
+                        }>
+                            <Picker.Item label={localization.city} value="0" />
+                            {this.props.location.cities?this.renderPickerCityItem():<Picker.Item label=" "/>}
+                        </Picker>
+                        <Image source={City} style={[styles.image4_5, {position:'absolute', right:wp('3%')}]}/>
+                    </View>
+
                     {this.state.photoError?<Text style={{color:'red', textAlign:'center', textAlignVertical:'center', marginBottom:wp('1%'), fontSize:wp('4%')}}>{localization.selectImage}</Text>:null}
 
                     {/* image upload */}
@@ -390,12 +461,13 @@ function mapStateToProps(state) {
         ads: state.ads,
         auth: state.auth,
         categories: state.category,
+        location: state.location,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        ...bindActionCreators({ addingAdvertiser }, dispatch)
+        ...bindActionCreators({ addingAdvertiser,fetchCities }, dispatch)
     }
 }
 

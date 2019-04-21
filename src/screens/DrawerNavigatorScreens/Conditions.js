@@ -14,13 +14,15 @@ import {
     removeOrientationListener as rol
 } from 'react-native-responsive-screen';
 import Header from '../../components/Header';
-
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { updateProfile } from '../../actions/authinticationActions'
 import BG from '../../assets/images/Artboard4/bg.png';
 import Logo from '../../assets/images/Artboard4/logo.png';
 import ButtonBG from '../../assets/images/Artboard3/ButtonBG.png';
 import localization from '../../localization/localization';
 
-class Artboard4 extends Component{
+class Conditions extends Component{
 
     constructor(props) {
          super()
@@ -39,9 +41,9 @@ class Artboard4 extends Component{
 
                 <View style={{marginHorizontal:wp('10%')}}>
 
-                    <View style={[styles.inputBorder, {height:hp('55%')}]} >
-                        
-                    </View>
+                    <Text style={[styles.inputBorder, {height:hp('55%')}]} >
+                        {this.props.terms.terms}
+                    </Text>
 
                     <View style={{justifyContent:'center', alignItems:'center'}}>
                     <TouchableOpacity style={{justifyContent:'center', alignItems:'center', width:wp('38%'), height:hp('10%')}}>
@@ -58,7 +60,18 @@ class Artboard4 extends Component{
     }
 }
 
-export default Artboard4
+function mapStateToProps(state) {
+    return {
+        terms: state.terms
+    }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        ...bindActionCreators({  }, dispatch)
+    }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(Conditions); 
 
 const styles = StyleSheet.create({
     header:{

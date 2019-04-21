@@ -47,7 +47,8 @@ const styles = StyleSheet.create({
         justifyContent:'flex-end',
         alignItems:'center',
         padding:wp('5%'),
-        flexDirection:'row'
+        flexDirection:'row',
+        zIndex:1,
     },
     image4_5:{
         width:wp('4.5%'), 

@@ -1,5 +1,5 @@
 // Drawer Nav for all links with default home page 
-// profile, books, settings, conditions, call_us, exit
+// profile, books, settings, conditions, callus, exit
 
 import React from 'react';
 import { createDrawerNavigator } from 'react-navigation';
@@ -12,7 +12,7 @@ import CategoryNavigator from './CategoryNavigator';
 import AdsNavigator from './AdsNavigator';
 import Orders from '../screens/DrawerNavigatorScreens/Orders';
 import Conditions from '../screens/DrawerNavigatorScreens/Conditions';
-import Call_Us from '../screens/DrawerNavigatorScreens/Call_Us';
+import CallUs from '../screens/DrawerNavigatorScreens/CallUs';
 import PersonalScreen from '../screens/DrawerNavigatorScreens/PersonalScreen';
 
 import ContentDrawerComponent from '../components/ContentDrawerCompnent';
@@ -21,45 +21,21 @@ export default RootNavigator = createDrawerNavigator(
     {
         CategoryNavigator: {
             screen: CategoryNavigator,
-            navigationOptions: {
-                title:'Home'
-            }
         },
         Profile:{
             screen: PersonalScreen,
-            navigationOption:{
-                title:"Profile", 
-            }
         },
-        // Profile: {
-        //     screen: Profile,
-        //     navigationOption:{
-        //         title:"Profile", 
-        //     }
-        // },
         Orders: {
             screen: Orders,
-            navigationOption:{
-                title:"Orders", 
-            }
         },
         myAds: {
             screen: AdsNavigator,
-            navigationOption:{
-                title:"myAds", 
-            }
         },
-        Call_Us: {
-            screen: Call_Us,
-            navigationOption:{
-                title:"Call_Us", 
-            }
+        CallUs: {
+            screen: CallUs,
         },
         Conditions: {
             screen: Conditions,
-            navigationOptions: {
-                title:'Conditions'
-            }
         },
     },
     {

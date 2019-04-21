@@ -105,6 +105,7 @@ export default localization = new LocalizedStrings({
         addressError:'you have to enter address',
         cityError:'you have to choose city',
         CountryError:'you have to choose country',
+        messegeError:'you have to enter messege',
         addAds:"Add Advertisment",
         kilo:'kilo',
         update:'update',
@@ -113,11 +114,13 @@ export default localization = new LocalizedStrings({
         added:' advertisment added succfully',
         languageUpdated:'please refresh app to apply changes',
         noProductsAvailable:'No Products Available in this Category',
+        noProductsAvailableFilter:'No Products Available in this city',
 
 
 
-
-        selectImage:'please select an Image'
+        selectImage:'please select an Image',
+        sent:'your message sent succfully please wait till us contact you back.',
+        errorSent:'error sending message',
     },
     ar: {
         travelDate:'تاريخ الذهاب',
@@ -225,6 +228,7 @@ export default localization = new LocalizedStrings({
         addressError:'هذا الحقل مطلوب',
         cityError:'هذا الحقل مطلوب',
         CountryError:'هذا الحقل مطلوب',
+        messegeError:'يجب ادخال رسالة',
         addAds:"اضف اعلان",
         kilo:'كيلو',
 
@@ -234,8 +238,10 @@ export default localization = new LocalizedStrings({
         added:'تم اضافة الاعلان بنجاح',
         languageUpdated:'من فضلك اعد فتح التطبيق حتي يتم تحديث التغيرات',
         noProductsAvailable:'لا يوجد اي منتجات في هذه الفئة',
+        noProductsAvailableFilter:'لا يوجد اي منتجات في هذه المدينة',
 
-
-        selectImage:'اختر صورة من فضلك'
+        selectImage:'اختر صورة من فضلك',
+        sent:'تم الارسال بنجاح من فضلك انتظر حتي يتم التواصل معك.',
+        errorSent:'حدث خطأ في الارسال.',
     }
 })

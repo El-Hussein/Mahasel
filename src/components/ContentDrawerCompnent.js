@@ -43,7 +43,7 @@ class ContentDrawerComponent extends Component{
             list:[
                 {id:0,name:localization.home, icon:home, link:'Home'},
                 // {id:2,name:localization.orders, icon:orders, link:'Orders'},
-                {id:1,name:localization.callUs, icon:callus, link:'Call_Us'},
+                {id:1,name:localization.callUs, icon:callus, link:'CallUs'},
                 {id:2,name:localization.termsConditions, icon:terms, link:'Conditions'},
                 {id:3,name:localization.myAds, icon:callus, link:'myAds'},
                 {id:4,name:localization.settings, icon:settings, link:'Profile'},
