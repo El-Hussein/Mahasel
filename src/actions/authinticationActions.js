@@ -64,7 +64,7 @@ export function register(data) {
                 return(dispatch(registerFailure(responseJson.msg)))
             } 
         })
-        // .catch(err => console.log('error: ' + err))
+        .catch(err => console.log('network error'))
     }
 }
 
@@ -110,7 +110,7 @@ export function login(data) {
                     return(dispatch(loginFailure(errorMSG)))
                 } 
             })
-            .catch(err => dispatch(loginFailure(err)))
+            .catch(err => dispatch(loginFailure('network error')))
     }
 }
 
@@ -269,7 +269,7 @@ export function updateProfile(data) {
             } 
         })
         .catch((error) => {
-            console.log('error: ' + error)
+            console.log('network fialed')
         });
     }
 }

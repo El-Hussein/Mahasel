@@ -13,10 +13,10 @@ export function fetchOrders() {
                     return(dispatch(getOrdersSuccess(response.data.data)))
                 }
                 else{
-                    return(dispatch(getOrdersFailure(err)))
+                    return(dispatch(getOrdersFailure('network error')))
                 } 
             })
-            .catch(err => dispatch(getOrdersFailure(err)))
+            .catch(err => dispatch(getOrdersFailure('network error')))
     }
 }
 

@@ -29,7 +29,7 @@ export function fetchProducts(id, page_number) {
                     return(dispatch(getProductsFailure("ERROR")))
                 } 
             })
-            .catch(err => dispatch(getProductsFailure(err)))
+            .catch(err => dispatch(getProductsFailure('network error')))
     }
 }
 
@@ -77,7 +77,7 @@ export function filterProducts(id, page_number, city_id) {
                 return(dispatch(getProductsFilterFailure("ERROR")))
             } 
         })
-        .catch(err => dispatch(getProductsFilterFailure(err)))
+        .catch(err => dispatch(getProductsFilterFailure('network error')))
     }
 }
 
@@ -126,7 +126,7 @@ export function fetchProduct(id) {
                     return(dispatch(getProductFailure("ERROR")))
                 } 
             })
-            .catch(err => dispatch(getProductFailure(err)))
+            .catch(err => dispatch(getProductFailure('network error')))
     }
 }
 

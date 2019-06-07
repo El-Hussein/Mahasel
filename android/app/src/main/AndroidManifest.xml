@@ -3,27 +3,13 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
-    <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
-    <uses-permission android:name="android.permission.CAMERA" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <application
       android:name=".MainApplication"
       android:label="@string/app_name"
       android:icon="@mipmap/ic_launcher"
       android:allowBackup="false"
-      android:theme="@style/AppTheme"
-      android:supportsRtl="true">
-      <provider
-          android:name="android.support.v4.content.FileProvider"
-          android:authorities="com.mahasel.provider"
-          android:grantUriPermissions="true"
-          android:exported="false">
-          <meta-data
-              android:name="android.support.PROVIDER_PATHS"
-              android:resource="@xml/filepaths" />
-      </provider>
+      android:theme="@style/AppTheme">
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -36,4 +22,5 @@
       </activity>
       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
     </application>
+
 </manifest>

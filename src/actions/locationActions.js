@@ -21,10 +21,10 @@ export function fetchCountries() {
                     return(dispatch(getCountriesSuccess(response.data.data)))
                 }
                 else{
-                    return(dispatch(getCountriesFailure(err)))
+                    return(dispatch(getCountriesFailure('network error')))
                 } 
             })
-            .catch(err => dispatch(getCountriesFailure(err)))
+            .catch(err => dispatch(getCountriesFailure('network error')))
     }
 }
 
@@ -61,10 +61,10 @@ export function fetchCities(id) {
                     return(dispatch(getCitiesSuccess(response.data.data)))
                 }
                 else{
-                    return(dispatch(getCitiesFailure(err)))
+                    return(dispatch(getCitiesFailure('network error')))
                 } 
             })
-            .catch(err => dispatch(getCitiesFailure(err)))
+            .catch(err => dispatch(getCitiesFailure('network error')))
     }
 }
 

@@ -12,10 +12,10 @@ export function fetchTerms() {
                     return(dispatch(getTermsSuccess(response.data.data)))
                 }
                 else{
-                    return(dispatch(getTermsFailure(err)))
+                    return(dispatch(getTermsFailure('network error')))
                 } 
             })
-            .catch(err => dispatch(getTermsFailure(err)))
+            .catch(err => dispatch(getTermsFailure('network error')))
     }
 }
 

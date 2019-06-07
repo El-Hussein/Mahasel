@@ -38,6 +38,7 @@ class AddAds extends Component {
             photo: null,
             ImageSource: null,
             data: null,
+            city:0,
         
         }
         this.handleSubmit = this.handleSubmit.bind(this);

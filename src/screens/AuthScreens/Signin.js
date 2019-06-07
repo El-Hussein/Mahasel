@@ -31,6 +31,7 @@ import ButtonBG from '../../assets/images/buttonBG.png';
 import ButtonBGS from '../../assets/images/buttonBGSolid.png';
 import Facebook from '../../assets/images/Facebook.png';
 import Twitter from '../../assets/images/Twitter.png';
+import { withNavigationFocus } from "react-navigation";
 
 class Signin extends Component{
  
@@ -79,16 +80,29 @@ class Signin extends Component{
             phone:this.state.phone,
             password:this.state.password,
         }
-        this.props.login(data);  
+        this.props.login(data)
+        setTimeout(()=>{
+            if(this.props.auth.userToken != null){
+                // this.refs.toast.show(localization.signed);
+                this.props.navigation.navigate('Home');
+            }  
+        },3000)
+    }
+
+    componentDidUpdate(){
+        if (this.props.isFocused) {
+            if(this.props.auth.userToken != null){
+                // this.refs.toast.show(localization.signed);
+                this.props.navigation.navigate('Home');
+            }  
+        }
+        
     }
 
     render () {   
         // console.log(this.props.categories);
         // console.log(this.props.auth)
-        if(this.props.auth.userToken != null){
-            // this.refs.toast.show(localization.signed);
-            this.props.navigation.navigate('Home');
-        }
+        
         return (
             <ImageBackground source={BG}  style={styles.pageBG}>
                 {/* HEADER */}
@@ -188,7 +202,7 @@ function mapDispatchToProps(dispatch) {
     }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Signin)
+export default connect(mapStateToProps, mapDispatchToProps)(withNavigationFocus(Signin))
 var FONT_BACK_LABEL   = 16;
 if (PixelRatio.get() <= 2) {
     FONT_BACK_LABEL = 14;

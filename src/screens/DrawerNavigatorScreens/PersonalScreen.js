@@ -253,6 +253,7 @@ class PersonalScreen extends Component {
                             autoCorrect={false}
                             returnKeyType="next"
                             ref="phone"
+                            keyboardType='numeric'
                             placeholderTextColor="#A3A3A3"
                             underlineColorAndroid="transparent"
                             value={this.state.phone}

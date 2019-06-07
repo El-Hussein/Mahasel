@@ -12,10 +12,10 @@ export function fetchCategories() {
                     return(dispatch(getCategoriesSuccess(response.data.data)))
                 }
                 else{
-                    return(dispatch(getCategoriesFailure(err)))
+                    return(dispatch(getCategoriesFailure('network error')))
                 } 
             })
-            .catch(err => dispatch(getCategoriesFailure(err)))
+            .catch(err => dispatch(getCategoriesFailure('network error')))
     }
 }
 

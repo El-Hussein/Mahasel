@@ -40,10 +40,10 @@ export function fetchAds(token) {
                     return(dispatch(getAdsSuccess(response.data.data.ads)))
                 }
                 else{
-                    return(dispatch(getAdsFailure(err)))
+                    return(dispatch(getAdsFailure('network fialed')))
                 } 
             })
-            .catch(err => {dispatch(getAdsFailure(err));console.warn(err)})
+            .catch(err => {dispatch(getAdsFailure('network fialed'));console.warn('network fialed')})
     }
 }
 
@@ -81,6 +81,7 @@ export function addingAdvertiser(data) {
         formData.append('category_id', data.cat_id)
         formData.append('sub_category_id', data.cat_id)
         formData.append('region_id', data.cat_id)
+        formData.append('city_id', data.city_id)
         formData.append('price', data.price)
         formData.append('phone', data.phone)
         formData.append('quantity', data.quantity)
@@ -107,7 +108,7 @@ export function addingAdvertiser(data) {
             } 
         })
         .catch((error) => {
-            console.log('error: ' + error)
+            console.log('network fialed')
         });
     }
 }
@@ -154,7 +155,7 @@ export function editingAdvertiser(data) {
                     return(dispatch(editingAdvertiserFailure(errorMSG)))
                 } 
             })
-            .catch(err => dispatch(editingAdvertiserFailure(err)))
+            .catch(err => dispatch(editingAdvertiserFailure('network fialed')))
     }
 }
 
@@ -211,7 +212,7 @@ export function deleteAds(token, id) {
                     return(dispatch(deletingAdvertiserFailure(response.data)))
                 } 
             })
-            .catch(err => {dispatch(deletingAdvertiserFailure(err));console.warn(err)})
+            .catch(err => {dispatch(deletingAdvertiserFailure('network fialed'));console.warn('network fialed')})
     }
 }
 

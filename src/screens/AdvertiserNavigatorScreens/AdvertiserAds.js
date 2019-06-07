@@ -90,13 +90,14 @@ class AdsList extends Component {
                 {this.props.auth.userToken?
                 <View>
                 {!isFetching?
+                    ads.length>0?
                     <FlatList
                         data={ads}
                         // extraData={ads}
                         renderItem={this.renderItem}
                         keyExtractor={(item, index) => index.toString()}
                         style={{height:hp('80%')}}
-                    />:<ActivityIndicator/>}
+                    />:null:<ActivityIndicator/>}
                     <View style={{justifyContent:'flex-start', alignItems:'center', marginTop:hp('1%')}}>
                         <TouchableOpacity onPress={()=>{this.props.navigation.navigate('AddNewAds')}} style={{justifyContent:'center', alignItems:'center', width:wp('40%'), height:hp('7%')}}>
                             <Image source={ButtonBG} style={{width:wp('40%'), height:hp('7%'), right:wp('0%'), top:hp('0%'), resizeMode:'contain', justifyContent:'center', position:'absolute'}}/>

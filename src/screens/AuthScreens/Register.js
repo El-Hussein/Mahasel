@@ -233,8 +233,12 @@ class Register extends Component{
             address:this.state.address,
             image:this.state.ImageSource.uri,
         }
-        this.props.register(data);  
-        console.warn(this.props.auth)      
+        this.props.register(data); 
+        setTimeout(()=>{
+            if(this.props.auth.userToken != null){
+                this.props.navigation.navigate('Home');
+            }
+        },3000) 
     }
 
     renderPickerCountryItem(){
@@ -250,10 +254,7 @@ class Register extends Component{
 
     render () {
         const { ImageSource } = this.state
-        if(this.props.auth.userToken != null){
-            this.refs.toast.show(localization.registered);
-            this.props.navigation.navigate('Home');
-        }
+        
         return (
             <ImageBackground source={BG}  style={styles.pageBG}>
                 {/* HEADER */}

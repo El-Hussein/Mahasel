@@ -168,7 +168,7 @@ class FruitListScreen extends Component {
             <View style={{backgroundColor:'white'}}>
                 {/* HEADER */}
                 <Header title={localization.fruits} backScreen="SignIn"/>
-                <View style={{marginHorizontal:wp('10%')}}>
+                <View style={{marginHorizontal:wp('10%'), paddingTop:hp('1%')}}>
                     
                     <View style={{backgroundColor:'#538805', marginBottom:hp('2%'), width:wp('80%'), justifyContent:'center', alignItems:'center', height:hp('6%'), borderRadius:wp('3.5%')}}>
                         <Icon name="arrow-down" color="white" size={wp('3%')} style={{position:'absolute', left:wp('3%')}}/>
